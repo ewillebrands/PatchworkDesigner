@@ -12,6 +12,9 @@ const quilt: quilt = {
     { name: 'block 4' },
     { name: 'block 5' },
   ],
+  border: 0.5,
+  binding: true,
+  rounded: 0.25,
 }
 </script>
 
@@ -21,6 +24,9 @@ const quilt: quilt = {
     :style="{
       'grid-template-columns': `repeat(${quilt.blockCountWidth}, 1fr)`,
       'grid-template-rows': `repeat(${quilt.blockCountLength}, 1fr)`,
+      border: `${100 * quilt.border}px solid rgb(5, 97, 154)`,
+      'border-radius': `${100 * quilt.rounded}px`,
+      outline: quilt.binding ? `5px solid hotpink` : 0,
     }"
   >
     <QuiltBlock v-for="block in quilt.blocks" :key="block.name" />
@@ -30,8 +36,6 @@ const quilt: quilt = {
 <style scoped>
 .patchwork {
   display: grid;
-  /* grid-template-columns: repeat(4, 1fr); */
-  /* grid-template-rows: repeat(6, 1fr); */
-  background-color: blue;
+  background-color: rgb(5, 97, 154);
 }
 </style>
