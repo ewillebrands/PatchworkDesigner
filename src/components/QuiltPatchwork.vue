@@ -20,27 +20,24 @@ function initBlocks(x: number, y: number) {
   for (let count = 0; count < totalBlocks; count++) {
     blockList.push({ name: `block ${count + 1}` })
   }
+  quilt.blocks = blockList
   console.log(blockList)
 }
 
-initBlocks(quilt.blockCountWidth, quilt.blockCountLength)
+// initBlocks(quilt.blockCountWidth, quilt.blockCountLength)
 
 function startDesign() {
   const form = document.getElementById('startdesign') as HTMLFormElement
-  console.log(`form contains ${form}`)
-  for (let i = 0; i < form.elements.length; i++) {
-    const element = form.elements[i] as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
 
-    // Only log inputs that have a name and a value
-    if (element.name) {
-      console.log(`Name: ${element.name}, Value: ${element.value}`)
-    }
-  }
+  // get input elements and their values and put them into quilt props
   const rows = form.elements.namedItem('rows') as HTMLInputElement
   const columns = form.elements.namedItem('columns') as HTMLInputElement
+  quilt.blockCountLength = parseInt(rows.value)
+  quilt.blockCountWidth = parseInt(columns.value)
 
-  initBlocks(parseInt(columns.value), parseInt(rows.value))
+  initBlocks(quilt.blockCountWidth, quilt.blockCountLength)
   console.log('design started')
+  console.log(quilt)
 }
 </script>
 
@@ -66,14 +63,14 @@ function startDesign() {
     <label for="columns">Amount of columns</label>
     <input type="number" id="columns" name="columns" min="1" max="20" />
 
-    <label for="blocksize">Block size</label>
+    <!-- ToDo <label for="blocksize">Block size</label>
     <select name="blocksize" id="blocksize">
       <option value="">--Please choose an option--</option>
       <option value="8">8"</option>
       <option value="10">10"</option>
       <option value="12">12"</option>
       <option value="15">15"</option>
-    </select>
+    </select> -->
 
     <button type="button" @click="startDesign">Start to design</button>
   </form>
