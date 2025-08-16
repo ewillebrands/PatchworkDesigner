@@ -1,27 +1,25 @@
 <script setup lang="ts">
+import { reactive } from 'vue'
 import PlainBlock from './blocks/PlainPatch.vue'
-import type { quilt, block } from './_types'
+import type { quilt } from './_types'
 import HalfSquareTriangle from './blocks/HalfSquareTriangle.vue'
 
-let blockList: block[] = []
-
-const quilt: quilt = {
-  blockCountWidth: 3,
-  blockCountLength: 3,
-  blocks: blockList,
+const quilt = reactive<quilt>({
+  blockCountWidth: 0,
+  blockCountLength: 0,
+  blockList: [],
   border: 0.5,
   binding: true,
   rounded: 0.25,
-}
+})
 
 function initBlocks(x: number, y: number) {
-  blockList = []
+  quilt.blockList = []
   const totalBlocks = x * y
   for (let count = 0; count < totalBlocks; count++) {
-    blockList.push({ name: `block ${count + 1}` })
+    quilt.blockList.push({ name: `block ${count + 1}` })
   }
-  quilt.blocks = blockList
-  console.log(blockList)
+  console.log(quilt.blockList)
 }
 
 // initBlocks(quilt.blockCountWidth, quilt.blockCountLength)
@@ -52,7 +50,7 @@ function startDesign() {
       outline: quilt.binding ? `5px solid hotpink` : 0,
     }"
   >
-    <PlainBlock v-for="block in quilt.blocks" :key="block.name" fabric="#05619a" />
+    <PlainBlock v-for="block in quilt.blockList" :key="block.name" fabric="#05619a" />
   </div>
   <form id="startdesign" action="">
     <legend>Choose the width and height of your quilt</legend>
