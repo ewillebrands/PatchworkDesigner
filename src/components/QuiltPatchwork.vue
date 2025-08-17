@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { shallowReactive } from 'vue'
 import PlainBlock from './blocktemplates/PlainPatch.vue'
 import type { quilt } from './_types'
 import HalfSquareTriangle from './blocktemplates/HalfSquareTriangle.vue'
 
-const quilt = reactive<quilt>({
+const quilt = shallowReactive<quilt>({
   blockCountWidth: 0,
   blockCountLength: 0,
   blockList: [],
@@ -43,25 +43,39 @@ function startDesign() {
 
 <template>
   <div
+    v-if="quilt.blockList.length > 0"
     class="patchwork"
     :style="{
-      'grid-template-columns': `repeat(${quilt.blockCountWidth}, 1fr)`,
-      'grid-template-rows': `repeat(${quilt.blockCountLength}, 1fr)`,
+      gridTemplateColumns: `repeat(${quilt.blockCountWidth}, 1fr)`,
+      gridTemplateRows: `repeat(${quilt.blockCountLength}, 1fr)`,
       border: `${100 * quilt.border}px solid rgb(5, 97, 154)`,
-      'border-radius': `${100 * quilt.rounded}px`,
+      borderRadius: `${100 * quilt.rounded}px`,
       outline: quilt.binding ? `5px solid hotpink` : 0,
     }"
   >
     <component v-for="block in quilt.blockList" :key="block.position" :is="block.design" />
   </div>
   <form id="startdesign" action="">
-    <legend>Choose the width and height of your quilt</legend>
-
-    <label for="rows">Amount of rows</label>
-    <input type="number" id="rows" name="rows" min="1" max="20" />
-
-    <label for="columns">Amount of columns</label>
-    <input type="number" id="columns" name="columns" min="1" max="20" />
+    <fieldset>
+      <legend>Blocks</legend>
+      <div class="field">
+        <label for="rows">Amount of rows</label>
+        <input type="number" id="rows" name="rows" min="1" max="20" />
+      </div>
+      <div class="field">
+        <label for="columns">Amount of columns</label>
+        <input type="number" id="columns" name="columns" min="1" max="20" />
+      </div>
+      <!-- ToDo <div class="field">
+        <label for="blocksize">Block size</label>
+      <select name="blocksize" id="blocksize">
+        <option value="">--Please choose an option--</option>
+        <option value="8">8"</option>
+        <option value="10">10"</option>
+        <option value="12">12"</option>
+        <option value="15">15"</option>
+      </select> </div>-->
+    </fieldset>
 
     <button type="button" @click="startDesign">Start to design</button>
   </form>
@@ -70,6 +84,7 @@ function startDesign() {
 <style scoped>
 .patchwork {
   display: grid;
-  background-color: #05619a;
 }
+
+/* Form */
 </style>
