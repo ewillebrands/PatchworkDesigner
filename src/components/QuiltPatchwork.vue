@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
-import PlainBlock from './blocks/PlainPatch.vue'
+import PlainBlock from './blocktemplates/PlainPatch.vue'
 import type { quilt } from './_types'
-import HalfSquareTriangle from './blocks/HalfSquareTriangle.vue'
+import HalfSquareTriangle from './blocktemplates/HalfSquareTriangle.vue'
 
 const quilt = reactive<quilt>({
   blockCountWidth: 0,
@@ -17,12 +17,14 @@ function initBlocks(x: number, y: number) {
   quilt.blockList = []
   const totalBlocks = x * y
   for (let count = 0; count < totalBlocks; count++) {
-    quilt.blockList.push({ name: `block ${count + 1}` })
+    if (count % 2 === 0) {
+      quilt.blockList.push({ design: PlainBlock, position: [count + 1, count + 1] })
+    } else {
+      quilt.blockList.push({ design: HalfSquareTriangle, position: [count + 1, count + 1] })
+    }
   }
   console.log(quilt.blockList)
 }
-
-// initBlocks(quilt.blockCountWidth, quilt.blockCountLength)
 
 function startDesign() {
   const form = document.getElementById('startdesign') as HTMLFormElement
@@ -50,7 +52,7 @@ function startDesign() {
       outline: quilt.binding ? `5px solid hotpink` : 0,
     }"
   >
-    <PlainBlock v-for="block in quilt.blockList" :key="block.name" fabric="#05619a" />
+    <component v-for="block in quilt.blockList" :key="block.position" :is="block.design" />
   </div>
   <form id="startdesign" action="">
     <legend>Choose the width and height of your quilt</legend>
@@ -60,15 +62,6 @@ function startDesign() {
 
     <label for="columns">Amount of columns</label>
     <input type="number" id="columns" name="columns" min="1" max="20" />
-
-    <!-- ToDo <label for="blocksize">Block size</label>
-    <select name="blocksize" id="blocksize">
-      <option value="">--Please choose an option--</option>
-      <option value="8">8"</option>
-      <option value="10">10"</option>
-      <option value="12">12"</option>
-      <option value="15">15"</option>
-    </select> -->
 
     <button type="button" @click="startDesign">Start to design</button>
   </form>
