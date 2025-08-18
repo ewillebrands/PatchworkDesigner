@@ -58,23 +58,42 @@ function startDesign() {
   <form id="startdesign" action="">
     <fieldset>
       <legend>Blocks</legend>
-      <div class="field">
-        <label for="rows">Amount of rows</label>
-        <input type="number" id="rows" name="rows" min="1" max="20" />
+      <div class="controlgroup">
+        <div class="field">
+          <label for="rows">Rows</label>
+          <input type="number" id="rows" name="rows" min="1" max="20" />
+        </div>
+        <div class="field">
+          <label for="columns">Columns</label>
+          <input type="number" id="columns" name="columns" min="1" max="20" />
+        </div>
       </div>
+
       <div class="field">
-        <label for="columns">Amount of columns</label>
-        <input type="number" id="columns" name="columns" min="1" max="20" />
-      </div>
-      <!-- ToDo <div class="field">
         <label for="blocksize">Block size</label>
-      <select name="blocksize" id="blocksize">
-        <option value="">--Please choose an option--</option>
-        <option value="8">8"</option>
-        <option value="10">10"</option>
-        <option value="12">12"</option>
-        <option value="15">15"</option>
-      </select> </div>-->
+        <select name="blocksize" id="blocksize">
+          <option value="">--Pick a size--</option>
+          <option value="8">8"</option>
+          <option value="10">10"</option>
+          <option value="12">12"</option>
+          <option value="15">15"</option>
+        </select>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Border and binding</legend>
+      <div class="field">
+        <label for="border">Border in inches</label>
+        <input type="number" id="border" name="border" />
+      </div>
+      <div class="field">
+        <label for="binding">Binding in inches</label>
+        <input type="number" id="binding" name="binding" />
+      </div>
+      <div class="field">
+        <label for="radius">Corner radius in inches</label>
+        <input type="number" id="radius" name="radius" />
+      </div>
     </fieldset>
 
     <button type="button" @click="startDesign">Start to design</button>
