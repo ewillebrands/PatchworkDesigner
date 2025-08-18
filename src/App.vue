@@ -5,6 +5,7 @@ import QuiltPatchwork from './components/QuiltPatchwork.vue'
 <template>
   <header>
     <h1>Patchwork Designer</h1>
+    <p>Some text here</p>
   </header>
 
   <main>
