@@ -5,8 +5,8 @@ export interface quilt {
   blockCountLength: number
   blockList: block[]
   border: number
-  binding: boolean
-  rounded: number
+  binding: number
+  radius: number
 }
 export interface block {
   design: Component

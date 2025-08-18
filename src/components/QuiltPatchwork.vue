@@ -8,9 +8,9 @@ const quilt = shallowReactive<quilt>({
   blockCountWidth: 0,
   blockCountLength: 0,
   blockList: [],
-  border: 0.5,
-  binding: true,
-  rounded: 0.25,
+  border: 0,
+  binding: 0,
+  radius: 0,
 })
 
 function initBlocks(x: number, y: number) {
@@ -28,20 +28,20 @@ function initBlocks(x: number, y: number) {
 
 //object for mapping formfields to quilt properties
 const formFields = ref({
-  rows: 1,
-  columns: 1,
+  rows: 4,
+  columns: 4,
   blocksize: '',
-  border: 0.5,
-  binding: true,
-  radius: 0.25,
+  border: 10,
+  binding: 0.5,
+  radius: 5,
 })
 
 function startDesign() {
   quilt.blockCountWidth = formFields.value.columns
   quilt.blockCountLength = formFields.value.rows
-  // quilt.border = formFields.value.border
-  // quilt.binding = formFields.value.binding
-  // quilt.rounded = formFields.value.radius
+  quilt.border = formFields.value.border
+  quilt.binding = formFields.value.binding
+  quilt.radius = formFields.value.radius
   // console.log('startDesign called')
 
   initBlocks(quilt.blockCountWidth, quilt.blockCountLength)
@@ -57,9 +57,9 @@ function startDesign() {
     :style="{
       gridTemplateColumns: `repeat(${quilt.blockCountWidth}, 1fr)`,
       gridTemplateRows: `repeat(${quilt.blockCountLength}, 1fr)`,
-      border: `${100 * quilt.border}px solid rgb(5, 97, 154)`,
-      borderRadius: `${100 * quilt.rounded}px`,
-      outline: quilt.binding ? `5px solid hotpink` : 0,
+      border: `${10 * quilt.border}px solid rgb(5, 97, 154)`,
+      borderRadius: `${10 * quilt.radius}px`,
+      outline: `${10 * quilt.binding}px solid hotpink`,
     }"
   >
     <component v-for="block in quilt.blockList" :key="block.position" :is="block.design" />
