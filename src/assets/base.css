@@ -54,7 +54,7 @@
     --color-background-mute: var(--color-black-mute);
 
     --color-text: var(--color-white-soft);
-    --color-text-inverted: var(--black-soft);
+    --color-text-inverted: var(--color-black-soft);
 
     --color-input-border: var(--color-warmgrey-300);
 
