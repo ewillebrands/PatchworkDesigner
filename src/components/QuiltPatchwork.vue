@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { shallowReactive } from 'vue'
+import { shallowReactive, ref } from 'vue'
 import PlainBlock from './blocktemplates/PlainPatch.vue'
 import type { quilt } from './_types'
 import HalfSquareTriangle from './blocktemplates/HalfSquareTriangle.vue'
@@ -26,14 +26,23 @@ function initBlocks(x: number, y: number) {
   console.log(quilt.blockList)
 }
 
-function startDesign() {
-  const form = document.getElementById('startdesign') as HTMLFormElement
+//object for mapping formfields to quilt properties
+const formFields = ref({
+  rows: 1,
+  columns: 1,
+  blocksize: '',
+  border: 0.5,
+  binding: true,
+  radius: 0.25,
+})
 
-  // get input elements and their values and put them into quilt props
-  const rows = form.elements.namedItem('rows') as HTMLInputElement
-  const columns = form.elements.namedItem('columns') as HTMLInputElement
-  quilt.blockCountLength = parseInt(rows.value)
-  quilt.blockCountWidth = parseInt(columns.value)
+function startDesign() {
+  quilt.blockCountWidth = formFields.value.columns
+  quilt.blockCountLength = formFields.value.rows
+  // quilt.border = formFields.value.border
+  // quilt.binding = formFields.value.binding
+  // quilt.rounded = formFields.value.radius
+  // console.log('startDesign called')
 
   initBlocks(quilt.blockCountWidth, quilt.blockCountLength)
   console.log('design started')
@@ -61,11 +70,18 @@ function startDesign() {
       <div class="controlgroup">
         <div class="field">
           <label for="rows">Rows</label>
-          <input type="number" id="rows" name="rows" min="1" max="20" />
+          <input v-model="formFields.rows" type="number" id="rows" name="rows" min="1" max="20" />
         </div>
         <div class="field">
           <label for="columns">Columns</label>
-          <input type="number" id="columns" name="columns" min="1" max="20" />
+          <input
+            v-model="formFields.columns"
+            type="number"
+            id="columns"
+            name="columns"
+            min="1"
+            max="20"
+          />
         </div>
       </div>
 
@@ -84,15 +100,15 @@ function startDesign() {
       <legend>Border and binding</legend>
       <div class="field">
         <label for="border">Border in inches</label>
-        <input type="number" id="border" name="border" />
+        <input v-model="formFields.border" type="number" id="border" name="border" />
       </div>
       <div class="field">
         <label for="binding">Binding in inches</label>
-        <input type="number" id="binding" name="binding" />
+        <input v-model="formFields.binding" type="number" id="binding" name="binding" />
       </div>
       <div class="field">
         <label for="radius">Corner radius in inches</label>
-        <input type="number" id="radius" name="radius" />
+        <input v-model="formFields.radius" type="number" id="radius" name="radius" />
       </div>
     </fieldset>
 
