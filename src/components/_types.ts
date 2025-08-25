@@ -1,15 +1,15 @@
 import type { Component } from 'vue'
 
 export interface quilt {
-  blockCountWidth: number
-  blockCountLength: number
+  columns: number
+  rows: number
   blockList: block[]
   border: number
   binding: number
   radius: number
 }
 export interface block {
-  design: Component
+  design: string | Component
   position: [number, number]
   rotation?: [number]
 }

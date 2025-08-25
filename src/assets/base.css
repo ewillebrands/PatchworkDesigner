@@ -28,9 +28,13 @@
   --color-black-soft: #222222;
   --color-black-mute: #282828;
 
+  --color-dusk-light: hsl(210, 50%, 50%);
   --color-dusk: hsl(210, 50%, 25%);
+  --color-dusk-dark: hsl(210, 50%, 15%);
 
+  --color-dawn-light: hsl(36, 93%, 68%);
   --color-dawn: hsl(30, 75%, 60%);
+  --color-dawn-dark: hsl(30, 94%, 47%);
 }
 
 /* semantic color variables for this project */
