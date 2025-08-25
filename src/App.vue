@@ -6,6 +6,7 @@ import QuiltDesignForm from './components/QuiltDesignForm.vue'
 import PlainPatch from './components/blocktemplates/PlainPatch.vue'
 import HalfSquareTriangle from './components/blocktemplates/HalfSquareTriangle.vue'
 import FabricsCollection from './components/FabricsCollection.vue'
+import BlockDesigns from './components/BlockDesigns.vue'
 
 const quilt = shallowReactive<{
   columns: number
@@ -73,6 +74,7 @@ function printColor(color: string) {
     <QuiltPatchwork :quiltDesign="quilt" />
     <QuiltDesignForm @startDesign="startDesign" />
     <FabricsCollection @fabricSelected="printColor" />
+    <BlockDesigns />
   </main>
 </template>
 
