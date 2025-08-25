@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import PlainBlock from './blocktemplates/PlainPatch.vue'
 import type { quilt } from './_types'
-import HalfSquareTriangle from './blocktemplates/HalfSquareTriangle.vue'
 
 defineProps<{
   quiltDesign: quilt
