@@ -23,13 +23,10 @@ const blockDesigns = ref([
 </script>
 
 <template>
-  <div class="blockDesigns">
-    <h2>Block Designs</h2>
-    <div class="designList">
-      <div v-for="(design, index) in blockDesigns" :key="index" class="designItem">
-        <component :is="design.component" :fabrics="design.fabrics"></component>
-        <span>{{ design.name }}</span>
-      </div>
+  <div class="designList">
+    <div v-for="(design, index) in blockDesigns" :key="index" class="designItem">
+      <component :is="design.component" :fabrics="design.fabrics"></component>
+      <span>{{ design.name }}</span>
     </div>
   </div>
 </template>
@@ -44,14 +41,18 @@ const blockDesigns = ref([
   flex-wrap: wrap;
 }
 .designItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 6rem;
-  height: 8rem;
+  gap: 0.5rem;
 
   span {
-    height: 1.5rem;
+    height: 2.4rem;
+    line-height: 120%;
     overflow: hidden;
-    white-space: nowrap;
     text-overflow: ellipsis;
+    text-align: center;
     display: block;
   }
 }

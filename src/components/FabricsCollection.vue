@@ -16,18 +16,15 @@ const fabricsCollection = ref([
 </script>
 
 <template>
-  <div class="fabrics-palette">
-    <h2>Fabrics Collection</h2>
-    <div class="swatches">
-      <div
-        v-for="fabric in fabricsCollection"
-        :key="fabric.name"
-        class="swatch"
-        :style="{ backgroundColor: `${fabric.color}` }"
-        :title="fabric.name"
-        @click="emit('fabricSelected', fabric.color)"
-      ></div>
-    </div>
+  <div class="swatches">
+    <div
+      v-for="fabric in fabricsCollection"
+      :key="fabric.name"
+      class="swatch"
+      :style="{ backgroundColor: `${fabric.color}` }"
+      :title="fabric.name"
+      @click="emit('fabricSelected', fabric.color)"
+    ></div>
   </div>
 </template>
 

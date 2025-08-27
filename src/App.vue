@@ -7,6 +7,7 @@ import PlainPatch from './components/blocktemplates/PlainPatch.vue'
 import HalfSquareTriangle from './components/blocktemplates/HalfSquareTriangle.vue'
 import FabricsCollection from './components/FabricsCollection.vue'
 import BlockDesigns from './components/BlockDesigns.vue'
+import AccordionPanel from './components/AccordionPanel.vue'
 
 const quilt = shallowReactive<{
   columns: number
@@ -72,9 +73,15 @@ function printColor(color: string) {
 
   <main>
     <QuiltPatchwork :quiltDesign="quilt" />
-    <QuiltDesignForm @startDesign="startDesign" />
-    <FabricsCollection @fabricSelected="printColor" />
-    <BlockDesigns />
+    <AccordionPanel :title="'Quilt setup'">
+      <QuiltDesignForm @startDesign="startDesign" />
+    </AccordionPanel>
+    <AccordionPanel :title="'Fabrics collection'"
+      ><FabricsCollection @fabricSelected="printColor"
+    /></AccordionPanel>
+    <AccordionPanel :title="'Block designs'">
+      <BlockDesigns />
+    </AccordionPanel>
   </main>
 </template>
 
