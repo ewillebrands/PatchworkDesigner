@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faAngleUp } from '@fortawesome/free-solid-svg-icons'
 
 defineProps<{
   title: string
@@ -11,7 +13,12 @@ const showPanel = ref(false)
 <template>
   <div class="accordion-panel">
     <button class="accordion-header" @click="showPanel = !showPanel">
-      {{ title }}<i class="fas fa-angle-down"></i>
+      {{ title
+      }}<FontAwesomeIcon
+        class="transition"
+        :icon="faAngleUp"
+        :rotation="showPanel ? undefined : '180'"
+      />
     </button>
     <div v-if="showPanel" class="accordion-content">
       <slot />
@@ -20,8 +27,8 @@ const showPanel = ref(false)
 </template>
 
 <style scoped>
-i {
-  animation-duration: 0.5s;
+.transition {
+  transition: 0.5s;
 }
 .accordion-panel {
   border: solid var(--color-input-border);
