@@ -1,20 +1,22 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import PlainPatch from './blocktemplates/PlainPatch.vue'
+import HalfSquareTriangle from './blocktemplates/HalfSquareTriangle.vue'
 
 const blockDesigns = ref([
   {
     name: 'Simple Square 1',
-    component: 'PlainPatch',
+    component: PlainPatch,
     fabrics: ['#2222aa'],
   },
   {
     name: 'Simple Square 2',
-    component: 'PlainPatch',
+    component: PlainPatch,
     fabrics: ['#aa2222'],
   },
   {
     name: 'Half Square Triangle',
-    component: 'HalfSquareTriangle',
+    component: HalfSquareTriangle,
     fabrics: ['#2222aa', '#aa2222'],
   },
 ])
@@ -26,7 +28,7 @@ const blockDesigns = ref([
     <div class="designList">
       <div v-for="(design, index) in blockDesigns" :key="index" class="designItem">
         <component :is="design.component" :fabrics="design.fabrics"></component>
-        <p>{{ design.name }}</p>
+        <span>{{ design.name }}</span>
       </div>
     </div>
   </div>
@@ -42,6 +44,15 @@ const blockDesigns = ref([
   flex-wrap: wrap;
 }
 .designItem {
-  text-align: center;
+  width: 6rem;
+  height: 8rem;
+
+  span {
+    height: 1.5rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+  }
 }
 </style>
