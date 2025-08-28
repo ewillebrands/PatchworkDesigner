@@ -25,5 +25,6 @@ defineProps<{
 <style scoped>
 .patchwork {
   display: grid;
+  margin: 20px;
 }
 </style>

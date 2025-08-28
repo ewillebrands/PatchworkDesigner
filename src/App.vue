@@ -67,22 +67,56 @@ function printColor(color: string) {
 
 <template>
   <header>
-    <h1>Patchwork Designer</h1>
-    <p>Some text here</p>
+    <h1>Quilt Designer</h1>
   </header>
 
-  <main>
-    <QuiltPatchwork :quiltDesign="quilt" />
-    <AccordionPanel :title="'Quilt setup'">
-      <QuiltDesignForm @startDesign="startDesign" />
-    </AccordionPanel>
-    <AccordionPanel :title="'Fabrics collection'"
-      ><FabricsCollection @fabricSelected="printColor"
-    /></AccordionPanel>
-    <AccordionPanel :title="'Block designs'">
-      <BlockDesigns />
-    </AccordionPanel>
+  <main class="main">
+    <div class="canvas">
+      <p v-if="!quilt">Please use the form on the right to start your quilt design.</p>
+      <QuiltPatchwork :quiltDesign="quilt" />
+    </div>
+    <div class="toolbar">
+      <div class="accordion">
+        <AccordionPanel :title="'Quilt setup'">
+          <QuiltDesignForm @startDesign="startDesign" />
+        </AccordionPanel>
+        <AccordionPanel :title="'Fabrics collection'"
+          ><FabricsCollection @fabricSelected="printColor"
+        /></AccordionPanel>
+        <AccordionPanel :title="'Block designs'">
+          <BlockDesigns />
+        </AccordionPanel>
+      </div>
+    </div>
   </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+.main {
+  display: flex;
+  flex-direction: row;
+}
+.canvas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-grow: 1;
+  overflow: auto;
+}
+.toolbar {
+  /* position: absolute;
+  top: 0;
+  right: 0; */
+  height: 100vh;
+  overflow: auto;
+  background-color: var(--color-background-soft);
+  width: 36rem;
+  padding: 1rem;
+}
+.accordion {
+  width: 100%;
+  border: solid var(--color-input-border);
+  border-width: 2px 0;
+}
+</style>
