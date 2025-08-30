@@ -20,6 +20,7 @@ defineProps<{
   >
     <component
       v-for="block in quiltDesign.blockList"
+      class="block"
       :key="block.position"
       :is="block.design"
       :style="{
@@ -34,5 +35,10 @@ defineProps<{
 .patchwork {
   display: grid;
   margin: 20px;
+}
+.block {
+  :hover {
+    outline: 2px solid orange;
+  }
 }
 </style>

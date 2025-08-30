@@ -35,7 +35,6 @@ function startDesign(quiltDesign: quilt) {
   quilt.binding = quiltDesign.binding
   quilt.radius = quiltDesign.radius
   initBlocks(quilt.columns, quilt.rows)
-  console.log(quilt)
 }
 
 function initBlocks(x: number, y: number) {
@@ -72,7 +71,9 @@ function printColor(color: string) {
 
   <main class="main">
     <div class="canvas">
-      <p v-if="!quilt">Please use the form on the right to start your quilt design.</p>
+      <p v-if="quilt.blockList.length === 0">
+        Please use Quilt setup on the right to start your quilt design.
+      </p>
       <QuiltPatchwork :quiltDesign="quilt" />
     </div>
     <div class="toolbar">
