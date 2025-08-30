@@ -9,8 +9,8 @@ const formFields = ref({
   columns: 4,
   blockSize: '12',
   border: 10,
-  binding: 0.5,
-  radius: 5,
+  binding: 3 / 8,
+  radius: 2,
 })
 </script>
 
@@ -51,15 +51,37 @@ const formFields = ref({
       <legend>Border and binding</legend>
       <div class="field">
         <label for="border">Border in inches</label>
-        <input v-model="formFields.border" type="number" id="border" name="border" />
+        <input
+          v-model="formFields.border"
+          type="number"
+          id="border"
+          name="border"
+          min="0"
+          max="20"
+        />
       </div>
       <div class="field">
         <label for="binding">Binding in inches</label>
-        <input v-model="formFields.binding" type="number" id="binding" name="binding" />
+        <input
+          v-model="formFields.binding"
+          type="number"
+          id="binding"
+          name="binding"
+          step="0.125"
+          min="0"
+          max="2"
+        />
       </div>
       <div class="field">
         <label for="radius">Corner radius in inches</label>
-        <input v-model="formFields.radius" type="number" id="radius" name="radius" />
+        <input
+          v-model="formFields.radius"
+          type="number"
+          id="radius"
+          name="radius"
+          min="0"
+          max="20"
+        />
       </div>
     </fieldset>
 
