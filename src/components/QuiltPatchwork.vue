@@ -19,9 +19,9 @@ defineProps<{
     }"
   >
     <component
-      v-for="block in quiltDesign.blockList"
+      v-for="(block, index) in quiltDesign.blockList"
       class="block"
-      :key="block.position"
+      :key="index"
       :is="block.design"
       :style="{
         width: `${10 * quiltDesign.blockSize}px`,
@@ -37,8 +37,9 @@ defineProps<{
   margin: 20px;
 }
 .block {
-  :hover {
-    outline: 2px solid orange;
+  &:hover {
+    border: 2px solid orange;
+    z-index: 99;
   }
 }
 </style>
