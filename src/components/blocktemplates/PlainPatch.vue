@@ -10,12 +10,9 @@ const props = withDefaults(
 </script>
 
 <template>
-  <div class="block" :style="{ backgroundColor: `${props.fabrics[0]}` }"></div>
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M 0 0 H 100 V 100 H 0 Z" :fill="props.fabrics[0]" />
+  </svg>
 </template>
 
-<style scoped>
-.block {
-  width: 100%;
-  height: 100%;
-}
-</style>
+<style scoped></style>
