@@ -10,18 +10,8 @@ const props = withDefaults(
 </script>
 
 <template>
-  <div
-    class="halfSquareTriangle"
-    :style="{
-      borderColor: `${props.fabrics[0]} ${props.fabrics[0]} ${props.fabrics[1]} ${props.fabrics[1]}`,
-    }"
-  ></div>
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+    <path d="M 0 0 L 100 100 H 0 Z" :fill="fabrics[0]" />
+    <path d="M 0 0 L 100 100 V 0 Z" :fill="fabrics[1]" />
+  </svg>
 </template>
-
-<style scoped>
-.halfSquareTriangle {
-  width: 0;
-  height: 0;
-  border: solid 50px;
-}
-</style>
