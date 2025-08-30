@@ -15,8 +15,7 @@ const props = withDefaults(
 
 <style scoped>
 .block {
-  width: 100px;
-  height: 100px;
-  border: 1px solid #000000;
+  width: 100%;
+  height: 100%;
 }
 </style>

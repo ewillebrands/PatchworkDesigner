@@ -13,6 +13,7 @@ const quilt = shallowReactive<{
   columns: number
   rows: number
   blockList: block[]
+  blockSize: number
   border: number
   binding: number
   radius: number
@@ -20,6 +21,7 @@ const quilt = shallowReactive<{
   columns: 0,
   rows: 0,
   blockList: [],
+  blockSize: 0,
   border: 0,
   binding: 0,
   radius: 0,
@@ -28,12 +30,11 @@ const quilt = shallowReactive<{
 function startDesign(quiltDesign: quilt) {
   quilt.columns = quiltDesign.columns
   quilt.rows = quiltDesign.rows
+  quilt.blockSize = quiltDesign.blockSize
   quilt.border = quiltDesign.border
   quilt.binding = quiltDesign.binding
   quilt.radius = quiltDesign.radius
-  console.log('startDesign called')
   initBlocks(quilt.columns, quilt.rows)
-  console.log('design started')
   console.log(quilt)
 }
 
@@ -58,7 +59,6 @@ function initBlocks(x: number, y: number) {
       }
     }
   }
-  console.log(quilt.blockList)
 }
 function printColor(color: string) {
   console.log(color)

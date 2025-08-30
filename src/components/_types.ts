@@ -4,6 +4,7 @@ export interface quilt {
   columns: number
   rows: number
   blockList: block[]
+  blockSize: number
   border: number
   binding: number
   radius: number

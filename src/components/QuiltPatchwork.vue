@@ -18,7 +18,15 @@ defineProps<{
       outline: `${10 * quiltDesign.binding}px solid hotpink`,
     }"
   >
-    <component v-for="block in quiltDesign.blockList" :key="block.position" :is="block.design" />
+    <component
+      v-for="block in quiltDesign.blockList"
+      :key="block.position"
+      :is="block.design"
+      :style="{
+        width: `${10 * quiltDesign.blockSize}px`,
+        height: `${10 * quiltDesign.blockSize}px`,
+      }"
+    />
   </div>
 </template>
 

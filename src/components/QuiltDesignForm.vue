@@ -7,7 +7,7 @@ const emit = defineEmits(['startDesign'])
 const formFields = ref({
   rows: 4,
   columns: 4,
-  blocksize: '',
+  blockSize: '12',
   border: 10,
   binding: 0.5,
   radius: 5,
@@ -38,7 +38,7 @@ const formFields = ref({
 
       <div class="field">
         <label for="blocksize">Block size</label>
-        <select name="blocksize" id="blocksize">
+        <select v-model="formFields.blockSize" name="blocksize" id="blocksize">
           <option value="">--Pick a size--</option>
           <option value="8">8"</option>
           <option value="10">10"</option>
