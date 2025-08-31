@@ -1,8 +1,22 @@
 {
-  "posts": [
+  "blockDesigns": [
     {
       "id": 1,
-      "title": "hello"
+      "name": "Simple Square 1",
+      "component": "PlainPatch",
+      "fabrics": ["#2222aa"]
+    },
+    {
+      "id": 2,
+      "name": "Simple Square 2",
+      "component": "PlainPatch",
+      "fabrics": ["#aa2222"]
+    },
+    {
+      "id": 3,
+      "name": "Half Square Triangle",
+      "component": "HalfSquareTriangle",
+      "fabrics": ["#2222aa", "#aa2222"]
     }
   ],
   "profile": {
