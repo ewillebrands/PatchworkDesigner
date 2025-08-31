@@ -8,6 +8,7 @@ import HalfSquareTriangle from './components/blocktemplates/HalfSquareTriangle.v
 import FabricsCollection from './components/FabricsCollection.vue'
 import BlockDesigns from './components/BlockDesigns.vue'
 import AccordionPanel from './components/AccordionPanel.vue'
+import BlockDesignOptions from './components/BlockDesignOptions.vue'
 
 const quilt = shallowReactive<{
   columns: number
@@ -26,6 +27,8 @@ const quilt = shallowReactive<{
   binding: 0,
   radius: 0,
 })
+
+const selection = 'Quilt'
 
 function startDesign(quiltDesign: quilt) {
   quilt.columns = quiltDesign.columns
@@ -78,8 +81,9 @@ function printColor(color: string) {
     </div>
     <div class="toolbar">
       <div class="accordion">
-        <AccordionPanel :title="'Quilt setup'">
-          <QuiltDesignForm @startDesign="startDesign" />
+        <AccordionPanel :title="`${selection} Design options`">
+          <QuiltDesignForm v-if="selection === 'Quilt'" @startDesign="startDesign" />
+          <BlockDesignOptions v-else />
         </AccordionPanel>
         <AccordionPanel :title="'Fabrics collection'"
           ><FabricsCollection @fabricSelected="printColor"
@@ -106,9 +110,6 @@ function printColor(color: string) {
   overflow: auto;
 }
 .toolbar {
-  /* position: absolute;
-  top: 0;
-  right: 0; */
   height: 100vh;
   overflow: auto;
   background-color: var(--color-background-soft);

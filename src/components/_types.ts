@@ -1,4 +1,5 @@
-import type { Component } from 'vue'
+import PlainPatch from './blocktemplates/PlainPatch.vue'
+import HalfSquareTriangle from './blocktemplates/HalfSquareTriangle.vue'
 
 export interface quilt {
   columns: number
@@ -10,7 +11,14 @@ export interface quilt {
   radius: number
 }
 export interface block {
-  design: string | Component
+  design: BlockDesign
   position: [number, number]
   rotation?: [number]
+}
+
+export interface BlockDesign {
+  id: number
+  name: string
+  component: typeof PlainPatch | typeof HalfSquareTriangle | string
+  fabrics: string[]
 }
