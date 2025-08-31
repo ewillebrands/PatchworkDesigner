@@ -1,14 +1,11 @@
 {
-  "quilt": [
+  "posts": [
     {
       "id": 1,
-      "title": "quilt"
+      "title": "hello"
     }
   ],
-  "blockDesigns": [
-    {
-    "id": 1,
-    "name": "Simple Square 1"
-    }
-  ]
+  "profile": {
+    "name": "typicode"
+  }
 }
