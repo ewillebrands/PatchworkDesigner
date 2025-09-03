@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import QuiltprojectService from '../services/QuiltprojectService'
+import QuiltprojectService from '@/services/QuiltprojectService'
 import type { BlockDesign } from './_types'
 import PlainPatch from './blocktemplates/PlainPatch.vue'
 import HalfSquareTriangle from './blocktemplates/HalfSquareTriangle.vue'
@@ -9,8 +9,7 @@ const blockDesigns = ref<BlockDesign[] | null>(null)
 
 onMounted(() => {
   QuiltprojectService.getBlockDesigns()
-    .then((response) => {
-      console.log(response.data)
+    .then((response: { data: BlockDesign[] }) => {
       blockDesigns.value = response.data.map((design: BlockDesign) => {
         let component
         switch (design.component) {
