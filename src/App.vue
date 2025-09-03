@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { shallowReactive } from 'vue'
+import { shallowReactive, ref } from 'vue'
 import type { quilt, block } from './components/_types'
 import QuiltPatchwork from './components/QuiltPatchwork.vue'
 import QuiltDesignForm from './components/QuiltDesignForm.vue'
@@ -26,7 +26,8 @@ const quilt = shallowReactive<{
   radius: 0,
 })
 
-const selection = 'Quilt'
+const selectionName = ref('Quilt')
+const selectedBlock = ref<block | null>(null)
 
 function startDesign(quiltDesign: quilt) {
   quilt.columns = quiltDesign.columns
@@ -63,6 +64,17 @@ function alternateBlocks(x: number, y: number) {
 function printColor(color: string) {
   console.log(color)
 }
+function printBlockProperties(block: block) {
+  console.log(block)
+  selectionName.value = `Block ${block.position}`
+  selectedBlock.value = block
+}
+
+function selectQuilt() {
+  console.log(quilt)
+  selectionName.value = 'Quilt'
+  selectedBlock.value = null
+}
 </script>
 
 <template>
@@ -71,17 +83,21 @@ function printColor(color: string) {
   </header>
 
   <main class="main">
-    <div class="canvas">
+    <div class="canvas" @click="selectQuilt">
       <p v-if="quilt.blockList.length === 0">
         Please use Quilt setup on the right to start your quilt design.
       </p>
-      <QuiltPatchwork :quiltDesign="quilt" />
+      <QuiltPatchwork
+        :quiltDesign="quilt"
+        @quiltSelected="selectQuilt"
+        @blockSelected="printBlockProperties"
+      />
     </div>
     <div class="toolbar">
       <div class="accordion">
-        <AccordionPanel :title="`${selection} Design options`">
-          <QuiltDesignForm v-if="selection === 'Quilt'" @startDesign="startDesign" />
-          <BlockDesignOptions v-else />
+        <AccordionPanel :title="`${selectionName} Design options`">
+          <QuiltDesignForm v-if="selectionName === 'Quilt'" @startDesign="startDesign" />
+          <BlockDesignOptions v-else :selectedBlock="selectedBlock" />
         </AccordionPanel>
         <AccordionPanel :title="'Fabrics collection'"
           ><FabricsCollection @fabricSelected="printColor"

@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { block } from './_types'
+
+defineProps<{
+  selectedBlock: block | null
+}>()
 
 //object for mapping formfields to block properties
 const formFields = ref({
@@ -7,6 +12,9 @@ const formFields = ref({
 })
 </script>
 <template>
+  <p>Design: {{ selectedBlock?.design }}</p>
+  <p>Position: {{ selectedBlock?.position }}</p>
+  <p>Rotation: {{ selectedBlock?.rotation || 0 }} degrees</p>
   <form action="">
     <div class="field">
       <label for="blockdesign">Design</label>

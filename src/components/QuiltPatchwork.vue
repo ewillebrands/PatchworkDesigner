@@ -8,6 +8,8 @@ defineProps<{
   quiltDesign: quilt
 }>()
 
+const emit = defineEmits(['blockSelected', 'quiltSelected'])
+
 const blockDesignMap = ref<Record<string, BlockDesign>>({})
 onMounted(async () => {
   const response = await QuiltprojectService.getBlockDesigns()
@@ -27,6 +29,7 @@ onMounted(async () => {
       borderRadius: `${10 * quiltDesign.radius}px`,
       outline: `${10 * quiltDesign.binding}px solid hotpink`,
     }"
+    @click="emit('quiltSelected')"
   >
     <component
       v-for="(block, index) in quiltDesign.blockList"
@@ -34,7 +37,7 @@ onMounted(async () => {
       :is="blockDesignMap[block.design]?.component"
       :fabrics="blockDesignMap[block.design]?.fabrics"
       class="block"
-      @click="console.log(block.position)"
+      @click.stop="emit('blockSelected', block)"
       :style="{
         width: `${10 * quiltDesign.blockSize}px`,
         height: `${10 * quiltDesign.blockSize}px`,
