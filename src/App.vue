@@ -3,8 +3,6 @@ import { shallowReactive } from 'vue'
 import type { quilt, block } from './components/_types'
 import QuiltPatchwork from './components/QuiltPatchwork.vue'
 import QuiltDesignForm from './components/QuiltDesignForm.vue'
-import PlainPatch from './components/blocktemplates/PlainPatch.vue'
-import HalfSquareTriangle from './components/blocktemplates/HalfSquareTriangle.vue'
 import FabricsCollection from './components/FabricsCollection.vue'
 import BlockDesigns from './components/BlockDesigns.vue'
 import AccordionPanel from './components/AccordionPanel.vue'
@@ -37,17 +35,17 @@ function startDesign(quiltDesign: quilt) {
   quilt.border = quiltDesign.border
   quilt.binding = quiltDesign.binding
   quilt.radius = quiltDesign.radius
-  initBlocks(quilt.columns, quilt.rows)
+  alternateBlocks(quilt.columns, quilt.rows)
 }
 
-function initBlocks(x: number, y: number) {
+function alternateBlocks(x: number, y: number) {
   quilt.blockList = []
   for (let row = 0; row < y; row++) {
     if (x % 2 === 0 && row % 2 === 0) {
       for (let col = 0; col < x; col++) {
         const count = row * x + col
         quilt.blockList.push({
-          design: count % 2 === 0 ? HalfSquareTriangle : PlainPatch,
+          design: count % 2 === 0 ? 'Simple Square 1' : 'Simple Square 2',
           position: [row + 1, col + 1],
         })
       }
@@ -55,7 +53,7 @@ function initBlocks(x: number, y: number) {
       for (let col = 0; col < x; col++) {
         const count = row * x + col
         quilt.blockList.push({
-          design: count % 2 === 0 ? PlainPatch : HalfSquareTriangle,
+          design: count % 2 === 0 ? 'Simple Square 2' : 'Simple Square 1',
           position: [row + 1, col + 1],
         })
       }

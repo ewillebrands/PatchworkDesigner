@@ -11,7 +11,7 @@ export interface quilt {
   radius: number
 }
 export interface block {
-  design: BlockDesign
+  design: string // should match one of the BlockDesign.name values
   position: [number, number]
   rotation?: [number]
 }

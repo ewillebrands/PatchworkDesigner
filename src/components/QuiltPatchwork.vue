@@ -1,9 +1,19 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import type { quilt } from './_types'
+import QuiltprojectService from '@/services/QuiltprojectService'
+import type { BlockDesign } from './_types'
 
 defineProps<{
   quiltDesign: quilt
 }>()
+
+const blockDesignMap = ref<Record<string, BlockDesign>>({})
+onMounted(async () => {
+  const response = await QuiltprojectService.getBlockDesigns()
+  // Create a map for quick lookup by name
+  blockDesignMap.value = Object.fromEntries(response.data.map((design) => [design.name, design]))
+})
 </script>
 
 <template>
@@ -20,10 +30,11 @@ defineProps<{
   >
     <component
       v-for="(block, index) in quiltDesign.blockList"
+      :key="index"
+      :is="blockDesignMap[block.design]?.component"
+      :fabrics="blockDesignMap[block.design]?.fabrics"
       class="block"
       @click="console.log(block.position)"
-      :key="index"
-      :is="block.design"
       :style="{
         width: `${10 * quiltDesign.blockSize}px`,
         height: `${10 * quiltDesign.blockSize}px`,
