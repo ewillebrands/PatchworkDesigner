@@ -1,6 +1,7 @@
 import axios from 'axios'
-import type { QuiltprojectServiceType } from './_types'
 import type { BlockDesign } from '../components/_types'
+import componentMap from '@/components/blocktemplates/ComponentMap'
+import PlainPatch from '@/components/blocktemplates/PlainPatch.vue'
 
 const apiClient = axios.create({
   baseURL: 'https://my-json-server.typicode.com/ewillebrands/PatchworkDesigner',
@@ -9,13 +10,28 @@ const apiClient = axios.create({
     'Content-Type': 'application/json',
   },
 })
-const QuiltprojectService: QuiltprojectServiceType = {
-  getBlockDesigns(): Promise<{ data: BlockDesign[] }> {
-    return apiClient.get('/blockdesigns')
-  },
-  getBlockDesignByName(name): Promise<{ data: BlockDesign }> {
-    return apiClient.get(`/blockdesigns/${name}`)
-  },
+async function getBlockDesigns(): Promise<{ data: BlockDesign[] }> {
+  const response = await apiClient.get('/blockdesigns')
+  // Map each design's component string to the actual Vue component
+  const mappedData = response.data.map((design: BlockDesign) => ({
+    ...design,
+    component: componentMap[String(design.component)] || PlainPatch,
+  }))
+  return { data: mappedData }
 }
 
-export default QuiltprojectService
+async function getBlockDesignByName(name: string): Promise<{ data: BlockDesign }> {
+  const response = await apiClient.get(`/blockdesigns?name=${name}`)
+  const design = response.data[0]
+  return {
+    data: {
+      ...design,
+      component: componentMap[String(design.component)] || PlainPatch,
+    },
+  }
+}
+
+export default {
+  getBlockDesigns,
+  getBlockDesignByName,
+}

@@ -2,35 +2,12 @@
 import { ref, onMounted } from 'vue'
 import QuiltprojectService from '@/services/QuiltprojectService'
 import type { BlockDesign } from './_types'
-import PlainPatch from './blocktemplates/PlainPatch.vue'
-import HalfSquareTriangle from './blocktemplates/HalfSquareTriangle.vue'
 
-const blockDesigns = ref<BlockDesign[] | null>(null)
+const blockDesigns = ref<BlockDesign[]>([])
 
-onMounted(() => {
-  QuiltprojectService.getBlockDesigns()
-    .then((response: { data: BlockDesign[] }) => {
-      blockDesigns.value = response.data.map((design: BlockDesign) => {
-        let component
-        switch (design.component) {
-          case 'PlainPatch':
-            component = PlainPatch
-            break
-          case 'HalfSquareTriangle':
-            component = HalfSquareTriangle
-            break
-          default:
-            component = PlainPatch // Fallback component
-        }
-        return {
-          ...design,
-          component,
-        }
-      })
-    })
-    .catch((error) => {
-      console.error('Error fetching block designs:', error)
-    })
+onMounted(async () => {
+  const response = await QuiltprojectService.getBlockDesigns()
+  blockDesigns.value = response.data
 })
 </script>
 
