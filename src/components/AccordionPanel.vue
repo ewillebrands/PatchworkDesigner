@@ -13,8 +13,8 @@ const showPanel = ref(false)
 <template>
   <div class="accordion-panel">
     <button class="accordion-header" @click="showPanel = !showPanel">
-      {{ title
-      }}<FontAwesomeIcon
+      {{ title }}
+      <FontAwesomeIcon
         class="transition"
         :icon="faAngleUp"
         :rotation="showPanel ? undefined : '180'"
