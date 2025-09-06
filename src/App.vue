@@ -64,8 +64,7 @@ function alternateBlocks(x: number, y: number) {
 function printColor(color: string) {
   console.log(color)
 }
-function printBlockProperties(block: block) {
-  console.log(block)
+function selectBlock(block: block) {
   selectionName.value = `Block ${block.position}`
   selectedBlock.value = block
 }
@@ -90,7 +89,7 @@ function selectQuilt() {
       <QuiltPatchwork
         :quiltDesign="quilt"
         @quiltSelected="selectQuilt"
-        @blockSelected="printBlockProperties"
+        @blockSelected="selectBlock"
       />
     </div>
     <div class="toolbar">

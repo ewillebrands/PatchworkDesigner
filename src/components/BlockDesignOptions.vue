@@ -1,29 +1,42 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import type { block } from './_types'
+import QuiltprojectService from '@/services/QuiltprojectService'
+import type { BlockDesign } from './_types'
 
-defineProps<{
+const props = defineProps<{
   selectedBlock: block | null
 }>()
 
+const blockDesigns = ref<BlockDesign[]>([])
 //object for mapping formfields to block properties
 const formFields = ref({
-  blockDesign: 1,
+  blockDesign: props.selectedBlock?.design || '',
+})
+
+// Watch for changes in selectedBlock
+watch(
+  () => props.selectedBlock,
+  (newBlock) => {
+    if (newBlock) {
+      formFields.value.blockDesign = newBlock.design
+    }
+  },
+)
+onMounted(async () => {
+  const response = await QuiltprojectService.getBlockDesigns()
+  blockDesigns.value = response.data
 })
 </script>
+
 <template>
-  <p>Design: {{ selectedBlock?.design }}</p>
-  <p>Position: {{ selectedBlock?.position }}</p>
-  <p>Rotation: {{ selectedBlock?.rotation || 0 }} degrees</p>
   <form action="">
     <div class="field">
       <label for="blockdesign">Design</label>
       <select v-model="formFields.blockDesign" name="blockdesign" id="blockdesign">
-        <option value="1">Plain patch</option>
-        <option value="2">Half square triangle</option>
-        <option value="3">Four patch</option>
-        <option value="4">Nine patch</option>
+        <option v-for="design in blockDesigns" :key="design.id">{{ design.name }}</option>
       </select>
     </div>
+    <p>Rotation: {{ selectedBlock?.rotation || 0 }} degrees</p>
   </form>
 </template>
