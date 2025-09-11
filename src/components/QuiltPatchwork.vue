@@ -41,6 +41,7 @@ onMounted(async () => {
       :style="{
         width: `${10 * quiltDesign.blockSize}px`,
         height: `${10 * quiltDesign.blockSize}px`,
+        transform: `rotate(${block.rotation}deg)`,
       }"
     />
   </div>
