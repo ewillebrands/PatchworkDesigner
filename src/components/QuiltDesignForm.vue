@@ -11,6 +11,7 @@ const formFields = ref({
   border: 10,
   binding: 3 / 8,
   radius: 2,
+  arrangement: 'alternating',
 })
 </script>
 
@@ -44,6 +45,13 @@ const formFields = ref({
           <option value="10">10"</option>
           <option value="12">12"</option>
           <option value="15">15"</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="arrangement">Arrangement</label>
+        <select v-model="formFields.arrangement" name="arrangement" id="arrangement">
+          <option value="alternating">alternating blocks</option>
+          <option value="rotational">rotational arrangement</option>
         </select>
       </div>
     </fieldset>
