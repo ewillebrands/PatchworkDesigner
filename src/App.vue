@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import type { quilt, block, blockPosition, initialQuiltDesign } from './components/_types'
-import QuiltPatchwork from './components/QuiltView.vue'
+import QuiltPatchwork from './components/QuiltPatchwork.vue'
 import QuiltDesignForm from './components/QuiltDesignForm.vue'
 import FabricsCollection from './components/FabricsCollection.vue'
 import BlockDesigns from './components/BlockDesigns.vue'
