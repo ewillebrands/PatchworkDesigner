@@ -19,6 +19,9 @@ onMounted(async () => {
 </script>
 
 <template>
+  <p v-if="quiltDesign.blockList.length === 0">
+    Please use Quilt setup on the right to start your quilt design.
+  </p>
   <div
     v-if="quiltDesign.blockList.length > 0"
     class="quilt"

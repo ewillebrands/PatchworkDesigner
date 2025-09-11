@@ -127,9 +127,6 @@ function selectQuilt() {
 
   <main class="main">
     <div class="canvas" @click="selectQuilt">
-      <p v-if="quilt.blockList.length === 0">
-        Please use Quilt setup on the right to start your quilt design.
-      </p>
       <QuiltView :quiltDesign="quilt" @quiltSelected="selectQuilt" @blockSelected="selectBlock" />
     </div>
     <div class="toolbar">
