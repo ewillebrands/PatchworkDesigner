@@ -21,7 +21,7 @@ onMounted(async () => {
 <template>
   <div
     v-if="quiltDesign.blockList.length > 0"
-    class="patchwork"
+    class="quilt"
     :style="{
       gridTemplateColumns: `repeat(${quiltDesign.columns}, 1fr)`,
       gridTemplateRows: `repeat(${quiltDesign.rows}, 1fr)`,
@@ -48,7 +48,7 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-.patchwork {
+.quilt {
   display: grid;
   margin: 20px;
 }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import type { quilt, block, blockPosition, initialQuiltDesign } from './components/_types'
-import QuiltPatchwork from './components/QuiltPatchwork.vue'
+import QuiltView from './components/QuiltView.vue'
 import QuiltDesignForm from './components/QuiltDesignForm.vue'
 import FabricsCollection from './components/FabricsCollection.vue'
 import BlockDesigns from './components/BlockDesigns.vue'
@@ -130,11 +130,7 @@ function selectQuilt() {
       <p v-if="quilt.blockList.length === 0">
         Please use Quilt setup on the right to start your quilt design.
       </p>
-      <QuiltPatchwork
-        :quiltDesign="quilt"
-        @quiltSelected="selectQuilt"
-        @blockSelected="selectBlock"
-      />
+      <QuiltView :quiltDesign="quilt" @quiltSelected="selectQuilt" @blockSelected="selectBlock" />
     </div>
     <div class="toolbar">
       <div class="accordion">
