@@ -53,16 +53,20 @@ onMounted(async () => {
 <style scoped>
 .quilt {
   display: grid;
-  margin: 20px;
+  margin: 400px;
 }
-.block {
-  &:hover {
-    outline: 4px solid var(--color-primary);
-    border: 4px solid var(--color-background);
-    border-radius: 4px;
-    cursor: pointer;
-    position: relative;
-    z-index: 99;
-  }
+.block:hover:not(:active) {
+  outline: 2px solid var(--color-primary);
+  border: 2px solid var(--color-background);
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+  z-index: 50;
+}
+.block:active {
+  outline: 2px solid var(--color-background);
+  outline-offset: 2px;
+  border: 2px solid var(--color-primary);
+  z-index: 50;
 }
 </style>

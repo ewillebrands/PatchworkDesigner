@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import type { quilt, block, blockPosition, initialQuiltDesign } from './components/_types'
-import QuiltView from './components/QuiltView.vue'
+import QuiltDesign from './components/QuiltDesign.vue'
 import QuiltDesignForm from './components/QuiltDesignForm.vue'
 import FabricsCollection from './components/FabricsCollection.vue'
 import BlockDesigns from './components/BlockDesigns.vue'
@@ -126,8 +126,8 @@ function selectQuilt() {
   </header>
 
   <main class="main">
-    <div class="canvas" @click="selectQuilt">
-      <QuiltView :quiltDesign="quilt" @quiltSelected="selectQuilt" @blockSelected="selectBlock" />
+    <div class="canvas-viewer" @click="selectQuilt">
+      <QuiltDesign :quiltDesign="quilt" @quiltSelected="selectQuilt" @blockSelected="selectBlock" />
     </div>
     <div class="toolbar">
       <div class="accordion">
@@ -156,7 +156,7 @@ function selectQuilt() {
   display: flex;
   flex-direction: row;
 }
-.canvas {
+.canvas-viewer {
   display: flex;
   justify-content: center;
   align-items: center;

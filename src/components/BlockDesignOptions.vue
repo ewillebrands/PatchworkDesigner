@@ -14,6 +14,8 @@ const blockDesigns = ref<BlockDesign[]>([])
 //object for mapping formfields to block properties
 const formFields = ref({
   blockDesign: props.selectedBlock?.design || '',
+
+  //invisible field for rotation
   blockRotation: props.selectedBlock?.rotation || 0,
 })
 
@@ -71,15 +73,12 @@ function rotateRight() {
       <button @click.prevent="rotateRight">Rotate Right</button>
     </div>
     <p>Rotation: {{ selectedBlock?.rotation }} degrees</p>
-    <div class="field">
-      <label for="blockrotation">Rotation</label>
-      <input
-        id="blockrotation"
-        type="number"
-        v-model="formFields.blockRotation"
-        @change="handleRotationChange"
-        step="90"
-      />
-    </div>
   </form>
 </template>
+
+<style scoped>
+.buttons {
+  display: flex;
+  gap: 12px;
+}
+</style>
