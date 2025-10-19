@@ -31,8 +31,11 @@ const showPanel = ref(false)
   transition: 0.5s;
 }
 .accordion-panel {
-  border: solid var(--color-input-border);
-  border-width: 2px 0;
+  border-top: 1px solid var(--color-divider);
+
+  &:last-child {
+    border-bottom: 1px solid var(--color-divider);
+  }
 }
 .accordion-header {
   display: flex;
@@ -40,15 +43,15 @@ const showPanel = ref(false)
   justify-content: space-between;
   background-color: transparent;
   color: var(--color-primary);
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: bold;
   border: none;
   width: 100%;
   text-align: left;
   cursor: pointer;
-  padding: 0.75rem 1rem;
+  padding: 0.5rem 0;
 }
 .accordion-content {
-  padding: 0 1rem 1rem 1rem;
+  padding-bottom: 1rem;
 }
 </style>

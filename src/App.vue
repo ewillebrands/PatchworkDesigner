@@ -7,6 +7,7 @@ import FabricsCollection from './components/FabricsCollection.vue'
 import BlockDesigns from './components/BlockDesigns.vue'
 import AccordionPanel from './components/AccordionPanel.vue'
 import BlockDesignOptions from './components/BlockDesignOptions.vue'
+import SideBar from './components/SideBar.vue'
 
 const quilt = reactive<{
   columns: number
@@ -125,55 +126,49 @@ function selectQuilt() {
     <h1>Quilt Designer</h1>
   </header>
 
-  <main class="main">
+  <main>
     <div class="canvas-viewer" @click="selectQuilt">
       <QuiltDesign :quiltDesign="quilt" @quiltSelected="selectQuilt" @blockSelected="selectBlock" />
     </div>
-    <div class="toolbar">
-      <div class="accordion">
-        <AccordionPanel :title="`${selectionName} Design options`">
-          <QuiltDesignForm v-if="selectionName === 'Quilt'" @startDesign="startDesign" />
-          <BlockDesignOptions
-            v-else
-            :selectedBlock="selectedBlock"
-            @applyBlockDesign="applyBlockDesign"
-            @applyBlockRotation="applyBlockRotation"
-          />
-        </AccordionPanel>
-        <AccordionPanel :title="'Fabrics collection'"
-          ><FabricsCollection @fabricSelected="printColor"
-        /></AccordionPanel>
-        <AccordionPanel :title="'Block designs'">
-          <BlockDesigns />
-        </AccordionPanel>
-      </div>
-    </div>
+    <SideBar title="Toolbox">
+      <AccordionPanel :title="`${selectionName} Design options`">
+        <QuiltDesignForm v-if="selectionName === 'Quilt'" @startDesign="startDesign" />
+        <BlockDesignOptions
+          v-else
+          :selectedBlock="selectedBlock"
+          @applyBlockDesign="applyBlockDesign"
+          @applyBlockRotation="applyBlockRotation"
+        />
+      </AccordionPanel>
+      <AccordionPanel :title="'Fabrics collection'"
+        ><FabricsCollection @fabricSelected="printColor"
+      /></AccordionPanel>
+      <AccordionPanel :title="'Block designs'">
+        <BlockDesigns />
+      </AccordionPanel>
+    </SideBar>
   </main>
 </template>
 
 <style scoped>
-.main {
+header {
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--color-divider);
+}
+main {
   display: flex;
   flex-direction: row;
+  flex: 1 1 0%;
+  min-height: 0;
+  align-items: stretch;
+  height: 100%;
 }
 .canvas-viewer {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100%;
   flex-grow: 1;
   overflow: auto;
-}
-.toolbar {
-  height: 100vh;
-  overflow: auto;
-  background-color: var(--color-background-soft);
-  width: 36rem;
-  padding: 1rem;
-}
-.accordion {
-  width: 100%;
-  border: solid var(--color-input-border);
-  border-width: 2px 0;
 }
 </style>

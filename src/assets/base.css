@@ -47,6 +47,7 @@
   --color-text-inverted: var(--color-white-soft);
 
   --color-input-border: var(--color-coolgrey-700);
+  --color-divider: var(--color-coolgrey-900);
 
   --color-primary: var(--color-dusk);
 }
@@ -61,6 +62,7 @@
     --color-text-inverted: var(--color-black-soft);
 
     --color-input-border: var(--color-warmgrey-300);
+    --color-divider: var(--color-warmgrey-100);
 
     --color-primary: var(--color-dawn);
   }
@@ -80,7 +82,6 @@
 }
 
 body {
-  min-height: 100vh;
   color: var(--color-text);
   background: var(--color-background);
   transition:

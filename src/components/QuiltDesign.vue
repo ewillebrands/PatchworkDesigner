@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import type { quilt } from './_types'
 import QuiltprojectService from '@/services/QuiltprojectService'
 import type { blockDesign } from './_types'
+import quiltBlock from '@/components/QuiltBlock.vue'
 
 defineProps<{
   quiltDesign: quilt
@@ -37,14 +38,12 @@ onMounted(async () => {
     <component
       v-for="(block, index) in quiltDesign.blockList"
       :key="index"
-      :is="blockDesignMap[block.design]?.component"
-      :fabrics="blockDesignMap[block.design]?.fabrics"
-      class="block"
-      @click.stop="emit('blockSelected', block)"
+      :is="quiltBlock"
+      :quiltBlock="block"
+      @blockSelected="emit('blockSelected', block)"
       :style="{
         width: `${10 * quiltDesign.blockSize}px`,
         height: `${10 * quiltDesign.blockSize}px`,
-        transform: `rotate(${block.rotation}deg)`,
       }"
     />
   </div>
@@ -54,19 +53,5 @@ onMounted(async () => {
 .quilt {
   display: grid;
   margin: 400px;
-}
-.block:hover:not(:active) {
-  outline: 2px solid var(--color-primary);
-  border: 2px solid var(--color-background);
-  border-radius: 2px;
-  cursor: pointer;
-  position: relative;
-  z-index: 50;
-}
-.block:active {
-  outline: 2px solid var(--color-background);
-  outline-offset: 2px;
-  border: 2px solid var(--color-primary);
-  z-index: 50;
 }
 </style>
