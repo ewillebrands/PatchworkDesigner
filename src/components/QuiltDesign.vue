@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import type { quilt } from './_types'
 import QuiltprojectService from '@/services/QuiltprojectService'
-import type { BlockDesign } from './_types'
+import type { blockDesign } from './_types'
 
 defineProps<{
   quiltDesign: quilt
@@ -10,7 +10,7 @@ defineProps<{
 
 const emit = defineEmits(['blockSelected', 'quiltSelected'])
 
-const blockDesignMap = ref<Record<string, BlockDesign>>({})
+const blockDesignMap = ref<Record<string, blockDesign>>({})
 onMounted(async () => {
   const response = await QuiltprojectService.getBlockDesigns()
   // Create a map for quick lookup by name

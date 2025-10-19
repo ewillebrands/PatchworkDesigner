@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import QuiltprojectService from '@/services/QuiltprojectService'
-import type { BlockDesign } from './_types'
+import type { blockDesign } from './_types'
 
-const blockDesigns = ref<BlockDesign[]>([])
+const blockDesigns = ref<blockDesign[]>([])
 
 onMounted(async () => {
   const response = await QuiltprojectService.getBlockDesigns()

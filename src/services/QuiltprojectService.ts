@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { BlockDesign } from '../components/_types'
+import type { blockDesign } from '../components/_types'
 import componentMap from '@/components/blocktemplates/ComponentMap'
 import PlainPatch from '@/components/blocktemplates/PlainPatch.vue'
 
@@ -10,17 +10,17 @@ const apiClient = axios.create({
     'Content-Type': 'application/json',
   },
 })
-async function getBlockDesigns(): Promise<{ data: BlockDesign[] }> {
+async function getBlockDesigns(): Promise<{ data: blockDesign[] }> {
   const response = await apiClient.get('/blockdesigns')
   // Map each design's component string to the actual Vue component
-  const mappedData = response.data.map((design: BlockDesign) => ({
+  const mappedData = response.data.map((design: blockDesign) => ({
     ...design,
     component: componentMap[String(design.component)] || PlainPatch,
   }))
   return { data: mappedData }
 }
 
-async function getBlockDesignByName(name: string): Promise<{ data: BlockDesign }> {
+async function getBlockDesignByName(name: string): Promise<{ data: blockDesign }> {
   const response = await apiClient.get(`/blockdesigns?name=${name}`)
   const design = response.data[0]
   return {

@@ -2,7 +2,7 @@
 import { ref, onMounted, watch, defineEmits } from 'vue'
 import type { block } from './_types'
 import QuiltprojectService from '@/services/QuiltprojectService'
-import type { BlockDesign } from './_types'
+import type { blockDesign } from './_types'
 
 const props = defineProps<{
   selectedBlock: block | null
@@ -10,7 +10,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['applyBlockDesign', 'applyBlockRotation'])
 
-const blockDesigns = ref<BlockDesign[]>([])
+const blockDesigns = ref<blockDesign[]>([])
 //object for mapping formfields to block properties
 const formFields = ref({
   blockDesign: props.selectedBlock?.design || '',

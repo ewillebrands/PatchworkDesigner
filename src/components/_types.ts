@@ -32,7 +32,7 @@ export interface blockPosition {
   col: number
 }
 
-export interface BlockDesign {
+export interface blockDesign {
   id: number
   name: string
   component: typeof PlainPatch | typeof HalfSquareTriangle | string
