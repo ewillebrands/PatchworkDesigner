@@ -9,7 +9,9 @@
       />
     </button>
     <transition name="sidebar-grow">
-      <slot v-if="showSidebar" />
+      <div v-if="showSidebar">
+        <slot />
+      </div>
     </transition>
   </aside>
 </template>

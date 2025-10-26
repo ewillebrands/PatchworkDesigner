@@ -140,9 +140,9 @@ function selectQuilt() {
           @applyBlockRotation="applyBlockRotation"
         />
       </AccordionPanel>
-      <AccordionPanel :title="'Fabrics collection'"
-        ><FabricsCollection @fabricSelected="printColor"
-      /></AccordionPanel>
+      <AccordionPanel :title="'Fabrics collection'">
+        <FabricsCollection @fabricSelected="printColor" />
+      </AccordionPanel>
       <AccordionPanel :title="'Block designs'">
         <BlockDesigns />
       </AccordionPanel>
