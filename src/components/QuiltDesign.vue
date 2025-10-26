@@ -21,7 +21,7 @@ onMounted(async () => {
 
 <template>
   <p v-if="quiltDesign.blockList.length === 0">
-    Please use Quilt setup on the right to start your quilt design.
+    Please use Quilt setup from the toolbox on the top right to start your quilt design.
   </p>
   <div
     v-if="quiltDesign.blockList.length > 0"

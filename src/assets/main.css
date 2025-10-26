@@ -18,6 +18,11 @@ button {
   color: var(--color-text-inverted);
 }
 
+a {
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
 form {
   display: flex;
   flex-direction: column;
