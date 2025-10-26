@@ -1,4 +1,4 @@
-import { createMemoryHistory, createRouter } from 'vue-router'
+import { createWebHistory, createRouter } from 'vue-router'
 
 import HomeView from '../views/HomeView.vue'
 import QuiltDesignView from '../views/QuiltDesignView.vue'
@@ -7,10 +7,10 @@ import BlockDesignView from '../views/BlockDesignView.vue'
 const routes = [
   { path: '/', name: 'home', component: HomeView },
   { path: '/quiltdesign', name: 'quiltdesign', component: QuiltDesignView },
-  { path: '/blockdesign', name: 'blockdesign', component: BlockDesignView },
+  { path: '/blockdesign/:name', name: 'blockdesign', component: BlockDesignView, props: true },
 ]
 
 export const router = createRouter({
-  history: createMemoryHistory(),
+  history: createWebHistory(),
   routes,
 })

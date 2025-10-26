@@ -3,6 +3,13 @@ import { ref, onMounted, watch, defineEmits } from 'vue'
 import type { block } from './_types'
 import QuiltprojectService from '@/services/QuiltprojectService'
 import type { blockDesign } from './_types'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import {
+  faArrowRotateLeft,
+  faArrowRotateRight,
+  faPenRuler,
+} from '@fortawesome/free-solid-svg-icons'
+import { RouterLink } from 'vue-router'
 
 const props = defineProps<{
   selectedBlock: block | null
@@ -69,16 +76,23 @@ function rotateRight() {
       </select>
     </div>
     <div class="buttons">
-      <button @click.prevent="rotateLeft">Rotate Left</button>
-      <button @click.prevent="rotateRight">Rotate Right</button>
+      <button @click.prevent="rotateLeft">
+        <FontAwesomeIcon :icon="faArrowRotateLeft" />
+      </button>
+      <button @click.prevent="rotateRight">
+        <FontAwesomeIcon :icon="faArrowRotateRight" />
+      </button>
+      <RouterLink :to="{ name: 'blockdesign', params: { name: formFields.blockDesign } }">
+        <button><FontAwesomeIcon :icon="faPenRuler" />Open Block Designer</button>
+      </RouterLink>
     </div>
-    <p>Rotation: {{ selectedBlock?.rotation }} degrees</p>
   </form>
 </template>
 
 <style scoped>
 .buttons {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
 }
 </style>

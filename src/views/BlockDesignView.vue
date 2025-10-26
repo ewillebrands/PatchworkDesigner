@@ -4,13 +4,13 @@ import { defineProps, onMounted, ref } from 'vue'
 import QuiltprojectService from '@/services/QuiltprojectService'
 
 const props = defineProps<{
-  currentdesign: string
+  name: string
 }>()
 
 const currentBlockDesign = ref<blockDesign>()
 
 onMounted(async () => {
-  const response = await QuiltprojectService.getBlockDesignByName(props.currentdesign)
+  const response = await QuiltprojectService.getBlockDesignByName(props.name)
   currentBlockDesign.value = response.data
 })
 </script>

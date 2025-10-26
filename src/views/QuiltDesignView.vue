@@ -6,7 +6,7 @@ import QuiltDesignForm from '../components/QuiltDesignForm.vue'
 import FabricsCollection from '../components/FabricsCollection.vue'
 import BlockDesigns from '../components/BlockDesigns.vue'
 import AccordionPanel from '../components/AccordionPanel.vue'
-import BlockDesignOptions from '../components/BlockDesignOptions.vue'
+import BlockOptions from '../components/BlockOptions.vue'
 import SideBar from '../components/SideBar.vue'
 
 const quilt = reactive<{
@@ -44,6 +44,8 @@ function startDesign(initialQuiltDesign: initialQuiltDesign) {
   }
 }
 
+//functions to create blocklist based on arrangement choice:
+//use 2 simple square designs for alternating blocks
 function alternatingBlocks(x: number, y: number) {
   quilt.blockList = []
   for (let row = 0; row < y; row++) {
@@ -66,6 +68,7 @@ function alternatingBlocks(x: number, y: number) {
     }
   }
 }
+//use single half square triangle design for rotational arrangement
 function rotationalArrangement(x: number, y: number) {
   quilt.blockList = []
   for (let row = 0; row < y; row++) {
@@ -90,12 +93,12 @@ function rotationalArrangement(x: number, y: number) {
     }
   }
 }
+
+//functions to apply block design and rotation changes
 function applyBlockDesign(blockPosition: blockPosition, blockdesign: string) {
-  console.log('apply design triggered', blockPosition, blockdesign)
   const blockID = quilt.blockList.findIndex(
     (block) => block.position.row === blockPosition.row && block.position.col === blockPosition.col,
   )
-  console.log('found blockID', blockID)
   quilt.blockList[blockID].design = blockdesign
 }
 function applyBlockRotation(blockPosition: blockPosition, blockrotation: number) {
@@ -106,9 +109,12 @@ function applyBlockRotation(blockPosition: blockPosition, blockrotation: number)
   console.log('found blockID', blockID)
   quilt.blockList[blockID].rotation = blockrotation
 }
+
+//TODO function to handle fabric color selection
 function printColor(color: string) {
   console.log(color)
 }
+
 function selectBlock(block: block) {
   selectionName.value = `Block ${block.position.row}.${block.position.col}`
   selectedBlock.value = block
@@ -128,7 +134,7 @@ function selectQuilt() {
   <SideBar title="Toolbox">
     <AccordionPanel :title="`${selectionName} Design options`">
       <QuiltDesignForm v-if="selectionName === 'Quilt'" @startDesign="startDesign" />
-      <BlockDesignOptions
+      <BlockOptions
         v-else
         :selectedBlock="selectedBlock"
         @applyBlockDesign="applyBlockDesign"
