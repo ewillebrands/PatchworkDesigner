@@ -16,9 +16,7 @@ const props = withDefaults(
 const fabricsData = ref<fabric[]>([])
 
 onMounted(async () => {
-  console.log('Fetching fabrics for:', props.fabrics)
   for (const fabric of props.fabrics) {
-    console.log('Fabric:', fabric)
     const fabricData = await QuiltprojectService.getFabricByName(fabric)
     if (fabricData.data) {
       fabricsData.value.push(fabricData.data)
