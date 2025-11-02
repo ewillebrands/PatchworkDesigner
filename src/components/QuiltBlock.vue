@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, defineEmits, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import QuiltprojectService from '@/services/QuiltprojectService'
 import type { blockDesign, block } from './_types'
 import { vOnClickOutside } from '@vueuse/components'

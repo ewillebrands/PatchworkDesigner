@@ -1,25 +1,24 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import QuiltprojectService from '@/services/QuiltprojectService'
+import type { fabric } from './_types'
 
 const emit = defineEmits(['fabricSelected'])
 
-const fabricsCollection = ref([
-  { name: 'white', color: 'var(--color-white-mute)' },
-  { name: 'black', color: 'var(--color-black-mute)' },
-  { name: 'dusk-light', color: 'var(--color-dusk-light)' },
-  { name: 'dusk', color: 'var(--color-dusk)' },
-  { name: 'dusk-dark', color: 'var(--color-dusk-dark)' },
-  { name: 'dawn-light', color: 'var(--color-dawn-light)' },
-  { name: 'dawn', color: 'var(--color-dawn)' },
-  { name: 'dawn-dark', color: 'var(--color-dawn-dark)' },
-])
+const fabricsCollection = ref<fabric[]>([])
+
+onMounted(async () => {
+  const response = await QuiltprojectService.getFabricsCollection()
+  fabricsCollection.value = response.data
+  console.log('Fabrics loaded:', fabricsCollection.value)
+})
 </script>
 
 <template>
   <div class="swatches">
     <div
-      v-for="fabric in fabricsCollection"
-      :key="fabric.name"
+      v-for="(fabric, index) in fabricsCollection"
+      :key="index"
       class="swatch"
       :style="{ backgroundColor: `${fabric.color}` }"
       :title="fabric.name"
