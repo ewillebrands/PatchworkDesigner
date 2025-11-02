@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { blockDesign } from '../components/_types'
+import type { blockDesign, fabric } from '../components/_types'
 import componentMap from '@/components/blocktemplates/ComponentMap'
 import PlainPatch from '@/components/blocktemplates/PlainPatch.vue'
 
@@ -31,7 +31,49 @@ async function getBlockDesignByName(name: string): Promise<{ data: blockDesign }
   }
 }
 
+async function getFabricsCollection(): Promise<{ data: fabric[] }> {
+  const response = await apiClient.get('/fabrics')
+  return {
+    data: response.data.map((fabric: fabric) => ({
+      id: fabric.id,
+      name: fabric.name,
+      color: fabric.color,
+    })),
+  }
+}
+
+async function getFabricByName(name: string): Promise<{ data: fabric }> {
+  const response = await apiClient.get(`/fabrics?name=${name}`)
+  const fabric = response.data[0]
+  return {
+    data: {
+      id: fabric.id,
+      name: fabric.name,
+      color: fabric.color,
+    },
+  }
+}
+
+async function getFabricsByBlockDesignName(name: string): Promise<{ data: fabric[] }> {
+  const blockDesignResponse = await apiClient.get(`/blockdesigns?name=${name}`)
+  const fabricNames = blockDesignResponse.data[0].fabrics
+  const fabricResponses = await Promise.all(
+    fabricNames.map((name: string) => getFabricByName(name)),
+  )
+  const fabrics = fabricResponses.map((response) => response.data)
+  return {
+    data: fabrics.map((fabric) => ({
+      id: fabric.id,
+      name: fabric.name,
+      color: fabric.color,
+    })),
+  }
+}
+
 export default {
   getBlockDesigns,
   getBlockDesignByName,
+  getFabricsCollection,
+  getFabricByName,
+  getFabricsByBlockDesignName,
 }
