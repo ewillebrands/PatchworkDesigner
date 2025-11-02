@@ -42,9 +42,12 @@ async function getFabricsCollection(): Promise<{ data: fabric[] }> {
   }
 }
 
-async function getFabricByName(name: string): Promise<{ data: fabric }> {
+async function getFabricByName(name: string): Promise<{ data: fabric | null }> {
   const response = await apiClient.get(`/fabrics?name=${name}`)
   const fabric = response.data[0]
+  if (!fabric) {
+    return { data: null }
+  }
   return {
     data: {
       id: fabric.id,
