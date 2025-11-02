@@ -38,3 +38,9 @@ export interface blockDesign {
   component: typeof PlainPatch | typeof HalfSquareTriangle | string
   fabrics: string[]
 }
+
+export interface fabric {
+  id: number
+  name: string
+  color: string
+}
