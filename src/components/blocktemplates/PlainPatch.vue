@@ -9,7 +9,7 @@ const props = withDefaults(
     fabrics?: string[]
   }>(),
   {
-    fabrics: () => ['dawn-light'],
+    fabrics: () => ['black'],
   },
 )
 
