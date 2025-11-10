@@ -9,11 +9,22 @@ import {
   faArrowRotateRight,
   faPenRuler,
 } from '@fortawesome/free-solid-svg-icons'
-import { RouterLink } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 const props = defineProps<{
   selectedBlock: block | null
 }>()
+
+const router = useRouter()
+
+const openBlockDesigner = () => {
+  if (props.selectedBlock) {
+    router.push({
+      name: 'blockdesign',
+      params: { name: props.selectedBlock.design },
+    })
+  }
+}
 
 const emit = defineEmits(['applyBlockDesign', 'applyBlockRotation'])
 
@@ -82,9 +93,9 @@ function rotateRight() {
       <button @click.prevent="rotateRight">
         <FontAwesomeIcon :icon="faArrowRotateRight" />
       </button>
-      <RouterLink :to="{ name: 'blockdesign', params: { name: formFields.blockDesign } }">
-        <button><FontAwesomeIcon :icon="faPenRuler" />Open Block Designer</button>
-      </RouterLink>
+      <button type="button" @click="openBlockDesigner">
+        <FontAwesomeIcon :icon="faPenRuler" />Open Block Designer
+      </button>
     </div>
   </form>
 </template>
