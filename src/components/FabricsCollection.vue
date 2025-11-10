@@ -18,3 +18,4 @@ onMounted(async () => {
 <template>
   <FabricSwatches :fabrics="fabricsCollection" @fabricSelected="emit('fabricSelected', $event)" />
 </template>
+<style scoped></style>

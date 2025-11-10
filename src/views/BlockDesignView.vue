@@ -5,6 +5,7 @@ import QuiltprojectService from '@/services/QuiltprojectService'
 import SideBar from '@/components/SideBar.vue'
 import AccordionPanel from '@/components/AccordionPanel.vue'
 import BlockFabrics from '@/components/BlockFabrics.vue'
+import { router } from '@/router'
 
 const props = defineProps<{
   name: string
@@ -13,8 +14,13 @@ const props = defineProps<{
 const currentBlockDesign = ref<blockDesign>()
 
 onMounted(async () => {
-  const response = await QuiltprojectService.getBlockDesignByName(props.name)
-  currentBlockDesign.value = response.data
+  QuiltprojectService.getBlockDesignByName(props.name)
+    .then((response) => {
+      currentBlockDesign.value = response.data
+    })
+    .catch(() => {
+      router.push({ name: 'notfoundwithresource', params: { resource: `Block Design` } })
+    })
 })
 </script>
 
