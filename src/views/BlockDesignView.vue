@@ -18,8 +18,12 @@ onMounted(async () => {
     .then((response) => {
       currentBlockDesign.value = response.data
     })
-    .catch(() => {
-      router.push({ name: 'notfoundwithresource', params: { resource: `Block Design` } })
+    .catch((error) => {
+      if (error.response && error.response.status === 404) {
+        router.push({ name: 'notfoundwithresource', params: { resource: `Block Design` } })
+      } else {
+        router.push({ name: 'networkerror' })
+      }
     })
 })
 </script>
