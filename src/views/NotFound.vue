@@ -2,8 +2,7 @@
   <div>
     <h1>Oops</h1>
     <p>The {{ resource }} you are looking for does not exist.</p>
-    <RouterLink v-if="resource === 'page'" to="/">Go back to home</RouterLink>
-    <RouterLink v-if="resource !== 'page'" to="/">Go back</RouterLink>
+    <RouterLink to="/">Go back to home</RouterLink>
   </div>
 </template>
 
