@@ -26,6 +26,7 @@ onMounted(async () => {
 
 <template>
   <FabricSwatches
+    editable
     v-if="fabricsData.length"
     :fabrics="fabricsData"
     @fabricSelected="emit('fabricSelected', $event)"

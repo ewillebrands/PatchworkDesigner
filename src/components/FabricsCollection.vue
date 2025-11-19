@@ -11,7 +11,6 @@ const fabricsCollection = ref<fabric[]>([])
 onMounted(async () => {
   const response = await QuiltprojectService.getFabricsCollection()
   fabricsCollection.value = response.data
-  console.log('Fabrics loaded:', fabricsCollection.value)
 })
 </script>
 
