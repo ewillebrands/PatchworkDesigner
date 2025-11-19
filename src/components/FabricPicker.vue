@@ -43,7 +43,7 @@ onMounted(async () => {
   color: var(--color-text);
   gap: 0.5rem;
   border: 1px solid var(--color-input-border);
-  border-radius: 0.25rem;
+  border-radius: 0.5rem 0 0.5rem 0.5rem;
   max-height: 300px;
   overflow-y: auto;
   width: 200px;
