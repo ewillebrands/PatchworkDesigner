@@ -12,15 +12,16 @@ defineProps<{
 <template>
   <div v-if="fabrics.length">
     <div class="swatches" v-if="editable">
-      <button
-        popovertarget="fabric-picker"
-        v-for="(fabric, index) in fabrics"
-        :key="index"
-        class="swatch"
-        :style="{ backgroundColor: `${fabric.color}` }"
-        :title="fabric.name"
-      ></button>
-      <FabricPicker />
+      <div v-for="(fabric, index) in fabrics" :key="index">
+        <button
+          :popovertarget="`fabric-picker-${fabric.name}`"
+          class="swatch"
+          :style="{ backgroundColor: `${fabric.color}` }"
+          :title="fabric.name"
+          :id="fabric.name"
+        ></button>
+        <FabricPicker :anchor="fabric.name" :id="`fabric-picker-${fabric.name}`" />
+      </div>
     </div>
     <div class="swatches" v-else>
       <div
@@ -38,6 +39,7 @@ defineProps<{
 
 <style scoped>
 .swatches {
+  position: relative;
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
