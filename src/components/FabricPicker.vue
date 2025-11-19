@@ -39,6 +39,7 @@ onMounted(async () => {
 <style scoped>
 .fabricpicker {
   flex-direction: column;
+  background-color: var(--color-background-soft);
   color: var(--color-text);
   gap: 0.5rem;
   border: 1px solid var(--color-input-border);
@@ -46,6 +47,15 @@ onMounted(async () => {
   max-height: 300px;
   overflow-y: auto;
   width: 200px;
+  position: fixed;
+  left: calc(100vw - 37rem);
+  top: 4rem;
+}
+
+@media (min-width: 1217px) {
+  .fabricpicker {
+    left: calc(100vw - 49rem);
+  }
 }
 
 @supports (left: anchor(right)) {
