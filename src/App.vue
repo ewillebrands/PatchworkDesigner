@@ -1,7 +1,26 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faHome } from '@fortawesome/free-solid-svg-icons'
+import { useFabricsStore } from './stores/fabrics'
+import { useBlockDesignsStore } from './stores/blockdesigns'
+
+const fabricsStore = useFabricsStore()
+const blockDesignsStore = useBlockDesignsStore()
+onMounted(async () => {
+  await Promise.all([fabricsStore.fetchAll(), blockDesignsStore.fetchAll()])
+  // now stores are populated (or errored)
+  console.log(
+    'stores loaded: ',
+    fabricsStore.fabrics.length,
+    ' fabrics and ',
+    blockDesignsStore.blockDesigns.length,
+    ' block designs',
+  )
+  if (fabricsStore.error) console.error('fabrics error:', fabricsStore.error)
+  if (blockDesignsStore.error) console.error('block designs error:', blockDesignsStore.error)
+})
 </script>
 
 <template>
