@@ -31,6 +31,7 @@ defineProps<{
         :style="{ backgroundColor: `${fabric.color}` }"
         :title="fabric.name"
         @click="emit('fabricSelected', fabric.color)"
+        @fabricPicked="(newFabric: number) => emit('fabricChanged', fabric.id, newFabric)"
       ></div>
     </div>
   </div>

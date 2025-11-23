@@ -40,7 +40,7 @@ onMounted(async () => {
   </div>
   <SideBar title="Toolbox">
     <AccordionPanel :title="`${currentBlockDesign?.name} Fabrics`">
-      <BlockFabrics :fabricNames="currentBlockDesign?.fabrics" />
+      <BlockFabrics v-if="currentBlockDesign" :blockDesignId="currentBlockDesign.id" />
     </AccordionPanel>
   </SideBar>
 </template>

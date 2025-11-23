@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { fabric } from './_types'
 import { ref, onMounted } from 'vue'
-import QuiltprojectService from '@/services/QuiltprojectService'
+import { useFabricsStore } from '@/stores/fabrics'
 
+const fabricsStore = useFabricsStore()
 const props = defineProps<{
   anchor: string
   id: string
@@ -12,9 +13,8 @@ const emit = defineEmits(['fabricPicked'])
 
 const fabricsCollection = ref<fabric[]>([])
 
-onMounted(async () => {
-  const response = await QuiltprojectService.getFabricsCollection()
-  fabricsCollection.value = response.data
+onMounted(() => {
+  fabricsCollection.value = fabricsStore.getAll as fabric[]
 })
 </script>
 
@@ -26,7 +26,7 @@ onMounted(async () => {
         class="fabric"
         v-for="(fabric, index) in fabricsCollection"
         :key="index"
-        @click="emit('fabricPicked', fabric.name)"
+        @click="emit('fabricPicked', fabric.id)"
       >
         <div class="swatch" :style="{ backgroundColor: `${fabric.color}` }"></div>
         <div>{{ fabric.name }}</div>

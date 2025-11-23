@@ -57,6 +57,21 @@ async function getFabricByName(name: string): Promise<{ data: fabric | null }> {
   }
 }
 
+async function getFabricById(id: number): Promise<{ data: fabric | null }> {
+  const response = await apiClient.get(`/fabrics?id=${id}`)
+  const fabric = response.data[0]
+  if (!fabric) {
+    return { data: null }
+  }
+  return {
+    data: {
+      id: fabric.id,
+      name: fabric.name,
+      color: fabric.color,
+    },
+  }
+}
+
 async function getFabricsByBlockDesignName(name: string): Promise<{ data: fabric[] }> {
   const blockDesignResponse = await apiClient.get(`/blockdesigns?name=${name}`)
   const fabricNames = blockDesignResponse.data[0].fabrics
@@ -78,5 +93,6 @@ export default {
   getBlockDesignByName,
   getFabricsCollection,
   getFabricByName,
+  getFabricById,
   getFabricsByBlockDesignName,
 }

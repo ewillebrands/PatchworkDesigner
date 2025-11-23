@@ -18,6 +18,7 @@ onMounted(async () => {
     blockDesignsStore.blockDesigns.length,
     ' block designs',
   )
+  console.log('blockDesigns:', blockDesignsStore.blockDesigns)
   if (fabricsStore.error) console.error('fabrics error:', fabricsStore.error)
   if (blockDesignsStore.error) console.error('block designs error:', blockDesignsStore.error)
 })

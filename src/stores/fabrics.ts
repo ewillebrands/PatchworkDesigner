@@ -10,8 +10,12 @@ export const useFabricsStore = defineStore('fabrics', {
     highestId: 0,
   }),
   getters: {
-    getFabricById: (state) => {
+    getAll: (state) => state.fabrics,
+    getById: (state) => {
       return (id: number) => state.fabrics.find((fabric) => fabric.id === id)
+    },
+    getByName: (state) => {
+      return (name: string) => state.fabrics.find((fabric) => fabric.name === name)
     },
   },
   actions: {

@@ -10,7 +10,7 @@ export const useBlockDesignsStore = defineStore('blockdesigns', {
     highestId: 0,
   }),
   getters: {
-    getBlockDesignById: (state) => {
+    getById: (state) => {
       return (id: number) => state.blockDesigns.find((design) => design.id === id)
     },
   },
@@ -37,13 +37,15 @@ export const useBlockDesignsStore = defineStore('blockdesigns', {
     removeBlockDesign(id: number) {
       this.blockDesigns = this.blockDesigns.filter((design) => design.id !== id)
     },
-    changeBlockDesignFabric(designId: number, oldFabricName: string, newFabricName: string) {
+    // ...existing code...
+    changeBlockDesignFabric(designId: number, oldFabricId: number, newFabricId: number) {
       const design = this.blockDesigns.find((d) => d.id === designId)
       if (design) {
-        design.fabrics = design.fabrics.map((fabric) =>
-          fabric === oldFabricName ? newFabricName : fabric,
+        design.fabrics = design.fabrics.map((fabricId) =>
+          fabricId === oldFabricId ? newFabricId : fabricId,
         )
       }
     },
+    // ...existing code...
   },
 })

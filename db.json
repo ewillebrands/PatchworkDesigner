@@ -4,19 +4,19 @@
       "id": 1,
       "name": "Simple Square 1",
       "component": "PlainPatch",
-      "fabrics": ["dusk"]
+      "fabrics": [4]
     },
     {
       "id": 2,
       "name": "Simple Square 2",
       "component": "PlainPatch",
-      "fabrics": ["dawn-light"]
+      "fabrics": [6]
     },
     {
       "id": 3,
       "name": "Half Square Triangle",
       "component": "HalfSquareTriangle",
-      "fabrics": ["dusk", "dawn-light"]
+      "fabrics": [4, 6]
     }
   ],
   "fabrics": [

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, defineEmits } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import type { block } from './_types'
 import QuiltprojectService from '@/services/QuiltprojectService'
 import type { blockDesign } from './_types'

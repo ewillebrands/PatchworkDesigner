@@ -36,7 +36,7 @@ export interface blockDesign {
   id: number
   name: string
   component: typeof PlainPatch | typeof HalfSquareTriangle | string
-  fabrics: string[]
+  fabrics: number[] // array of fabric IDs
 }
 
 export interface fabric {
