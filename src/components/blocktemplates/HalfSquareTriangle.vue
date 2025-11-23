@@ -6,10 +6,10 @@ import { ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{
-    fabrics?: string[]
+    fabrics?: number[]
   }>(),
   {
-    fabrics: () => ['white', 'black'],
+    fabrics: () => [1, 2],
   },
 )
 
@@ -17,7 +17,7 @@ const fabricsData = ref<fabric[]>([])
 
 onMounted(async () => {
   for (const fabric of props.fabrics) {
-    const fabricData = await QuiltprojectService.getFabricByName(fabric)
+    const fabricData = await QuiltprojectService.getFabricById(fabric)
     if (fabricData.data) {
       fabricsData.value.push(fabricData.data)
     } else {
