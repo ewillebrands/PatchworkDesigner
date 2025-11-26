@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import type { quilt, block, blockPosition, initialQuiltDesign } from '../components/_types'
+import type { quiltDesign, block, blockPosition, initialQuiltDesign } from '../components/_types'
 import QuiltDesign from '../components/QuiltDesign.vue'
 import QuiltDesignForm from '../components/QuiltDesignForm.vue'
 import FabricsCollection from '../components/FabricsCollection.vue'
@@ -9,23 +9,7 @@ import AccordionPanel from '../components/AccordionPanel.vue'
 import BlockOptions from '../components/BlockOptions.vue'
 import SideBar from '../components/SideBar.vue'
 
-const quilt = reactive<{
-  columns: number
-  rows: number
-  blockList: block[]
-  blockSize: number
-  border: number
-  binding: number
-  radius: number
-}>({
-  columns: 0,
-  rows: 0,
-  blockList: [],
-  blockSize: 0,
-  border: 0,
-  binding: 0,
-  radius: 0,
-})
+const quilt = reactive<quiltDesign>({} as quiltDesign)
 
 const selectionName = ref('Quilt')
 const selectedBlock = ref<block | null>(null)
@@ -129,7 +113,11 @@ function selectQuilt() {
 
 <template>
   <div class="canvas-viewer" @click="selectQuilt">
-    <QuiltDesign :quiltDesign="quilt" @quiltSelected="selectQuilt" @blockSelected="selectBlock" />
+    <QuiltDesign
+      :currentQuiltDesign="quilt"
+      @quiltSelected="selectQuilt"
+      @blockSelected="selectBlock"
+    />
   </div>
   <SideBar title="Toolbox">
     <AccordionPanel :title="`${selectionName} Design options`">

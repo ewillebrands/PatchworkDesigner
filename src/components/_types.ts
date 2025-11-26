@@ -1,7 +1,9 @@
 import PlainPatch from './blocktemplates/PlainPatch.vue'
 import HalfSquareTriangle from './blocktemplates/HalfSquareTriangle.vue'
 
-export interface quilt {
+export interface quiltDesign {
+  id: number
+  name: string
   columns: number
   rows: number
   blockList: block[]
