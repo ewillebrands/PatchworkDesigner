@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import type { quiltDesign, block, blockPosition, initialQuiltDesign } from '../components/_types'
-import QuiltDesign from '../components/QuiltDesign.vue'
+import QuiltDesignViewer from '../components/QuiltDesignViewer.vue'
 import QuiltDesignForm from '../components/QuiltDesignForm.vue'
 import FabricsCollection from '../components/FabricsCollection.vue'
 import BlockDesigns from '../components/BlockDesigns.vue'
@@ -113,7 +113,7 @@ function selectQuilt() {
 
 <template>
   <div class="canvas-viewer" @click="selectQuilt">
-    <QuiltDesign
+    <QuiltDesignViewer
       :currentQuiltDesign="quilt"
       @quiltSelected="selectQuilt"
       @blockSelected="selectBlock"

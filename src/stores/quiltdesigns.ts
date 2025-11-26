@@ -18,7 +18,6 @@ export const useQuiltDesignsStore = defineStore('quiltdesigns', {
     },
   },
   actions: {
-    // populate store from database
     addQuiltDesign(design: quiltDesign) {
       this.quiltDesigns.push({ ...design, id: this.highestId++ })
     },
