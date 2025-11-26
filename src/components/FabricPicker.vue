@@ -13,6 +13,11 @@ const emit = defineEmits(['fabricPicked'])
 
 const fabricsCollection = ref<fabric[]>([])
 
+const pickFabric = (newFabric: number) => {
+  emit('fabricPicked', newFabric)
+  console.log('Picked fabric', newFabric)
+}
+
 onMounted(() => {
   fabricsCollection.value = fabricsStore.getAll as fabric[]
 })
@@ -26,7 +31,7 @@ onMounted(() => {
         class="fabric"
         v-for="(fabric, index) in fabricsCollection"
         :key="index"
-        @click="emit('fabricPicked', fabric.id)"
+        @click="pickFabric(fabric.id)"
       >
         <div class="swatch" :style="{ backgroundColor: `${fabric.color}` }"></div>
         <div>{{ fabric.name }}</div>

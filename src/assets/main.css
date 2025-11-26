@@ -91,3 +91,13 @@ form {
     border: 1px solid var(--color-input-border);
   }
 }
+
+.patch {
+  stroke: rgba(0, 0, 0, 0.5); /* subtle dark outline */
+  stroke-width: 0.4; /* small width; adjust to taste */
+  stroke-linejoin: round;
+}
+
+.outline-patch {
+  border: 0.4px solid rgba(0, 0, 0, 0.5);
+}

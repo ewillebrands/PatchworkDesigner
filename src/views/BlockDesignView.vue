@@ -1,31 +1,34 @@
 <script setup lang="ts">
 import type { blockDesign } from '@/components/_types'
-import { onMounted, ref } from 'vue'
-import QuiltprojectService from '@/services/QuiltprojectService'
+import { computed, watch } from 'vue'
 import SideBar from '@/components/SideBar.vue'
 import AccordionPanel from '@/components/AccordionPanel.vue'
 import BlockFabrics from '@/components/BlockFabrics.vue'
 import { router } from '@/router'
+import { useBlockDesignsStore } from '@/stores/blockdesigns'
 
 const props = defineProps<{
   name: string
 }>()
 
-const currentBlockDesign = ref<blockDesign>()
+const blockDesignsStore = useBlockDesignsStore()
 
-onMounted(async () => {
-  QuiltprojectService.getBlockDesignByName(props.name)
-    .then((response) => {
-      currentBlockDesign.value = response.data
-    })
-    .catch((error) => {
-      if (error.response && error.response.status === 404) {
-        router.push({ name: 'notfoundwithresource', params: { resource: `Block Design` } })
-      } else {
-        router.push({ name: 'networkerror' })
-      }
-    })
-})
+// computed reference into the store; reactive to store changes
+const currentBlockDesign = computed<blockDesign | undefined>(() =>
+  blockDesignsStore.getByName?.(props.name),
+)
+
+// if store is still loading we wait; when loading finished and item missing, route to 404/network
+watch(
+  () => [blockDesignsStore.isLoading, currentBlockDesign.value],
+  ([isLoading, design]) => {
+    if (!isLoading && !design) {
+      // not found after store finished loading
+      router.push({ name: 'notfoundwithresource', params: { resource: 'Block Design' } })
+    }
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -35,6 +38,7 @@ onMounted(async () => {
       <component
         :is="currentBlockDesign.component"
         :fabrics="currentBlockDesign.fabrics"
+        class="outline-patch"
       ></component>
     </div>
   </div>

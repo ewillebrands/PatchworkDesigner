@@ -19,7 +19,7 @@ export const useFabricsStore = defineStore('fabrics', {
     },
   },
   actions: {
-    // populate store from server
+    // populate store from database
     async fetchAll() {
       this.isLoading = true
       this.error = null
@@ -35,7 +35,6 @@ export const useFabricsStore = defineStore('fabrics', {
         this.isLoading = false
       }
     },
-
     addFabric(fabric: fabric) {
       this.fabrics.push({ ...fabric, id: this.highestId++ })
     },

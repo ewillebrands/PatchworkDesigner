@@ -13,9 +13,12 @@ export const useBlockDesignsStore = defineStore('blockdesigns', {
     getById: (state) => {
       return (id: number) => state.blockDesigns.find((design) => design.id === id)
     },
+    getByName: (state) => {
+      return (name: string) => state.blockDesigns.find((design) => design.name === name)
+    },
   },
   actions: {
-    // populate store from server
+    // populate store from database
     async fetchAll() {
       this.isLoading = true
       this.error = null
@@ -37,15 +40,16 @@ export const useBlockDesignsStore = defineStore('blockdesigns', {
     removeBlockDesign(id: number) {
       this.blockDesigns = this.blockDesigns.filter((design) => design.id !== id)
     },
-    // ...existing code...
+
     changeBlockDesignFabric(designId: number, oldFabricId: number, newFabricId: number) {
       const design = this.blockDesigns.find((d) => d.id === designId)
       if (design) {
+        console.log('Old fabrics for BlockDesign', design.fabrics)
         design.fabrics = design.fabrics.map((fabricId) =>
           fabricId === oldFabricId ? newFabricId : fabricId,
         )
+        console.log('New fabrics for BlockDesign', design.fabrics)
       }
     },
-    // ...existing code...
   },
 })

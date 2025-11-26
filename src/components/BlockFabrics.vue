@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { fabric } from './_types'
-import { onMounted, ref } from 'vue'
+import { computed } from 'vue'
 import FabricSwatches from './FabricSwatches.vue'
 import { useFabricsStore } from '@/stores/fabrics'
 import { useBlockDesignsStore } from '@/stores/blockdesigns'
@@ -13,35 +13,43 @@ const props = defineProps<{
   blockDesignId: number
 }>()
 
-const fabricsData = ref<fabric[]>([])
+// reactive reference to the block design in the store
+const currentDesign = computed(() =>
+  blockDesignsStore.getById ? blockDesignsStore.getById(props.blockDesignId) : undefined,
+)
 
-// Fetch fabrics by ids associated with the block design
-const fetchFabrics = () => {
-  const blockDesign = blockDesignsStore.getById(props.blockDesignId)
-  if (!blockDesign) return
-  fabricsData.value = []
-  for (const fabricId of blockDesign.fabrics ?? []) {
-    const fabricData = fabricsStore.getById(fabricId)
-    if (fabricData) {
-      fabricsData.value.push(fabricData)
-    }
-  }
-  console.log('Fetched fabrics for BlockDesign', props.blockDesignId, fabricsData.value)
-}
-const ChangeBlockDesignFabric = (oldFabric: number, newFabric: number) => {
+// map design.fabrics (ids or strings) -> fabric objects from fabrics store
+const fabricsForDesign = computed<fabric[]>(() => {
+  const design = currentDesign.value
+  if (!design || !Array.isArray(design.fabrics)) return []
+  return design.fabrics
+    .map((fid) => {
+      const id = typeof fid === 'string' ? parseInt(fid, 10) : fid
+      if (Number.isNaN(id)) return null
+      return fabricsStore.getById ? fabricsStore.getById(id) : null
+    })
+    .filter((f): f is fabric => !!f)
+})
+
+// handle swap emitted by FabricSwatches -> forward to block store
+const handleFabricChanged = ({
+  oldFabric,
+  newFabric,
+}: {
+  oldFabric: number
+  newFabric: number
+}) => {
   blockDesignsStore.changeBlockDesignFabric(props.blockDesignId, oldFabric, newFabric)
 }
-onMounted(() => {
-  fetchFabrics()
-})
 </script>
 
 <template>
   <FabricSwatches
     editable
-    v-if="fabricsData.length"
-    :fabrics="fabricsData"
+    deduplicated
+    v-if="fabricsForDesign.length"
+    :fabrics="fabricsForDesign"
     @fabricSelected="emit('fabricSelected', $event)"
-    @fabricChanged="ChangeBlockDesignFabric($event.oldFabric, $event.newFabric)"
+    @fabricChanged="handleFabricChanged"
   />
 </template>
