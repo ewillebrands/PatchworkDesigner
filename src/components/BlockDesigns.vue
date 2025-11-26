@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import QuiltprojectService from '@/services/QuiltprojectService'
+import { useBlockDesignsStore } from '@/stores/blockdesigns'
 import type { blockDesign } from './_types'
 
-const blockDesigns = ref<blockDesign[]>([])
+const blockDesignCollection = ref<blockDesign[]>([])
+const blockDesignsStore = useBlockDesignsStore()
 
 onMounted(async () => {
-  const response = await QuiltprojectService.getBlockDesigns()
-  blockDesigns.value = response.data
+  blockDesignCollection.value = blockDesignsStore.getAll
 })
 </script>
 
 <template>
   <div class="designList">
-    <div v-for="(design, index) in blockDesigns" :key="index" class="designItem">
+    <div v-for="(design, index) in blockDesignCollection" :key="index" class="designItem">
       <component :is="design.component" :fabrics="design.fabrics"></component>
       <span>{{ design.name }}</span>
     </div>

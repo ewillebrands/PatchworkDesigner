@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 import type { block } from './_types'
-import QuiltprojectService from '@/services/QuiltprojectService'
+import { useBlockDesignsStore } from '@/stores/blockdesigns'
 import type { blockDesign } from './_types'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
@@ -28,7 +28,8 @@ const openBlockDesigner = () => {
 
 const emit = defineEmits(['applyBlockDesign', 'applyBlockRotation'])
 
-const blockDesigns = ref<blockDesign[]>([])
+const blockDesignCollection = ref<blockDesign[]>([])
+const blockDesignsStore = useBlockDesignsStore()
 //object for mapping formfields to block properties
 const formFields = ref({
   blockDesign: props.selectedBlock?.design || '',
@@ -47,9 +48,8 @@ watch(
     }
   },
 )
-onMounted(async () => {
-  const response = await QuiltprojectService.getBlockDesigns()
-  blockDesigns.value = response.data
+onMounted(() => {
+  blockDesignCollection.value = blockDesignsStore.getAll
 })
 
 function handleDesignChange() {
@@ -83,7 +83,7 @@ function rotateRight() {
         id="blockdesign"
         @change="handleDesignChange"
       >
-        <option v-for="design in blockDesigns" :key="design.id">{{ design.name }}</option>
+        <option v-for="design in blockDesignCollection" :key="design.id">{{ design.name }}</option>
       </select>
     </div>
     <div class="buttons">

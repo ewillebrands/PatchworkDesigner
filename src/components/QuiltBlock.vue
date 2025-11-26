@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import QuiltprojectService from '@/services/QuiltprojectService'
+import { useBlockDesignsStore } from '@/stores/blockdesigns'
 import type { blockDesign, block } from './_types'
 import { vOnClickOutside } from '@vueuse/components'
 
@@ -9,10 +9,12 @@ defineProps<{
 }>()
 
 const blockDesignMap = ref<Record<string, blockDesign>>({})
-onMounted(async () => {
-  const response = await QuiltprojectService.getBlockDesigns()
-  // Create a map for quick lookup by name
-  blockDesignMap.value = Object.fromEntries(response.data.map((design) => [design.name, design]))
+const blockDesignsStore = useBlockDesignsStore()
+
+onMounted(() => {
+  blockDesignMap.value = Object.fromEntries(
+    blockDesignsStore.getAll.map((design) => [design.name, design]),
+  )
 })
 
 const emit = defineEmits(['blockSelected'])

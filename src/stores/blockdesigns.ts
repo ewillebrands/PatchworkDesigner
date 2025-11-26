@@ -10,6 +10,7 @@ export const useBlockDesignsStore = defineStore('blockdesigns', {
     highestId: 0,
   }),
   getters: {
+    getAll: (state) => state.blockDesigns,
     getById: (state) => {
       return (id: number) => state.blockDesigns.find((design) => design.id === id)
     },

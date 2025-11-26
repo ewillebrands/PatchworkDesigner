@@ -19,7 +19,7 @@ const pickFabric = (newFabric: number) => {
 }
 
 onMounted(() => {
-  fabricsCollection.value = fabricsStore.getAll as fabric[]
+  fabricsCollection.value = fabricsStore.getAll
 })
 </script>
 

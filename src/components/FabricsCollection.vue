@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import QuiltprojectService from '@/services/QuiltprojectService'
+import { useFabricsStore } from '@/stores/fabrics'
 import type { fabric } from './_types'
 import FabricSwatches from './FabricSwatches.vue'
 
 const emit = defineEmits(['fabricSelected'])
 
 const fabricsCollection = ref<fabric[]>([])
+const fabricsStore = useFabricsStore()
 
-onMounted(async () => {
-  const response = await QuiltprojectService.getFabricsCollection()
-  fabricsCollection.value = response.data
+onMounted(() => {
+  fabricsCollection.value = fabricsStore.getAll
 })
 </script>
 
