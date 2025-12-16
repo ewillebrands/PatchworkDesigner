@@ -1,8 +1,24 @@
+<script setup lang="ts">
+import NewQuiltDesignDialog from '@/components/NewQuiltDesignDialog.vue'
+import { useQuiltDesignsStore } from '@/stores/quiltdesigns'
+import { computed } from 'vue'
+
+const quiltDesignsStore = useQuiltDesignsStore()
+
+const quiltDesigns = computed(() => quiltDesignsStore.getAll)
+</script>
+
 <template>
   <div class="welcome">
     <h2>Welcome to Quillit!</h2>
-    <router-link :to="{ name: 'quiltdesign' }">
-      <button>Get Started</button>
+    <new-quilt-design-dialog />
+    <h2 v-if="quiltDesigns.length > 0">Your Quilt Designs</h2>
+    <router-link
+      v-for="design in quiltDesigns"
+      :key="design.id"
+      :to="{ name: 'quiltdesign', params: { name: design.name } }"
+    >
+      {{ design.name }}
     </router-link>
   </div>
 </template>

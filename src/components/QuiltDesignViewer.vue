@@ -10,7 +10,13 @@ const emit = defineEmits(['blockSelected', 'quiltSelected'])
 </script>
 
 <template>
-  <p v-if="!Array.isArray(currentQuiltDesign?.blockList)">
+  <p
+    v-if="
+      !currentQuiltDesign ||
+      !currentQuiltDesign.blockList ||
+      currentQuiltDesign.blockList.length === 0
+    "
+  >
     Please use Quilt setup from the toolbox on the top right to start your quilt design.
   </p>
   <div
@@ -19,9 +25,9 @@ const emit = defineEmits(['blockSelected', 'quiltSelected'])
     :style="{
       gridTemplateColumns: `repeat(${currentQuiltDesign.columns}, 1fr)`,
       gridTemplateRows: `repeat(${currentQuiltDesign.rows}, 1fr)`,
-      border: `${10 * currentQuiltDesign.border}px solid rgb(5, 97, 154)`,
-      borderRadius: `${10 * currentQuiltDesign.radius}px`,
-      outline: `${10 * currentQuiltDesign.binding}px solid hotpink`,
+      border: `${10 * (currentQuiltDesign.border || 0)}px solid rgb(5, 97, 154)`,
+      borderRadius: `${10 * (currentQuiltDesign.radius || 0)}px`,
+      outline: `${10 * (currentQuiltDesign.binding || 0)}px solid hotpink`,
     }"
     @click="emit('quiltSelected')"
   >

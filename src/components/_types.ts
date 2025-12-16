@@ -14,13 +14,14 @@ export interface quiltDesign {
 }
 
 export interface initialQuiltDesign {
+  name: string
   columns: number
   rows: number
   arrangement: string
   blockSize: number
-  border: number
-  binding: number
-  radius: number
+  border?: number
+  binding?: number
+  radius?: number
 }
 
 export interface block {
