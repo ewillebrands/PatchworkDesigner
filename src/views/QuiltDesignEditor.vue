@@ -1,97 +1,79 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
-import type { quiltDesign, block, blockPosition, initialQuiltDesign } from '../components/_types'
+import { ref, computed } from 'vue'
+import type { block, blockPosition } from '../components/_types'
 import QuiltDesignViewer from '../components/QuiltDesignViewer.vue'
-import QuiltDesignForm from '../components/QuiltDesignForm.vue'
+import QuiltBorderOptions from '../components/QuiltBorderOptions.vue'
+import QuiltBindingOptions from '../components/QuiltBindingOptions.vue'
 import FabricsCollection from '../components/FabricsCollection.vue'
 import BlockDesigns from '../components/BlockDesigns.vue'
 import AccordionPanel from '../components/AccordionPanel.vue'
 import BlockOptions from '../components/BlockOptions.vue'
 import SideBar from '../components/SideBar.vue'
+import { useQuiltDesignsStore } from '@/stores/quiltdesigns'
+// @ts-expect-error: no type declarations for lodash.clonedeep
+import cloneDeep from 'lodash.clonedeep'
+import isEqual from 'fast-deep-equal'
 
-const quilt = reactive<quiltDesign>({} as quiltDesign)
+const props = defineProps<{
+  name: string
+}>()
 
+const quiltDesignsStore = useQuiltDesignsStore()
+
+const localCopy = ref(cloneDeep(quiltDesignsStore.getByName(props.name))) // editable
+const isEdited = computed(() => !isEqual(localCopy.value, quiltDesignsStore.getByName(props.name)))
+
+// if store is still loading we wait; when loading finished and item missing, route to 404/network
+// watch(
+//   () => [quiltDesignsStore.isLoading, currentQuiltDesign.value],
+//   ([isLoading, design]) => {
+//     if (!isLoading && !design) {
+//       // not found after store finished loading
+//       router.push({ name: 'notfoundwithresource', params: { resource: 'Quilt Design' } })
+//     }
+//   },
+//   { immediate: true },
+// )
+
+// const newQuiltDesign = reactive<quiltDesign>({} as quiltDesign)
 const selectionName = ref('Quilt')
 const selectedBlock = ref<block | null>(null)
 
-function startDesign(initialQuiltDesign: initialQuiltDesign) {
-  quilt.columns = initialQuiltDesign.columns
-  quilt.rows = initialQuiltDesign.rows
-  quilt.blockSize = initialQuiltDesign.blockSize
-  quilt.border = initialQuiltDesign.border
-  quilt.binding = initialQuiltDesign.binding
-  quilt.radius = initialQuiltDesign.radius
-  if (initialQuiltDesign.arrangement === 'alternating') {
-    alternatingBlocks(quilt.columns, quilt.rows)
-  } else {
-    rotationalArrangement(quilt.columns, quilt.rows)
-  }
-}
-
-//functions to create blocklist based on arrangement choice:
-//use 2 simple square designs for alternating blocks
-function alternatingBlocks(x: number, y: number) {
-  quilt.blockList = []
-  for (let row = 0; row < y; row++) {
-    if (x % 2 === 0 && row % 2 === 0) {
-      for (let col = 0; col < x; col++) {
-        const count = row * x + col
-        quilt.blockList.push({
-          design: count % 2 === 0 ? 'Simple Square 1' : 'Simple Square 2',
-          position: { row: row + 1, col: col + 1 },
-        })
-      }
-    } else {
-      for (let col = 0; col < x; col++) {
-        const count = row * x + col
-        quilt.blockList.push({
-          design: count % 2 === 0 ? 'Simple Square 2' : 'Simple Square 1',
-          position: { row: row + 1, col: col + 1 },
-        })
-      }
-    }
-  }
-}
-//use single half square triangle design for rotational arrangement
-function rotationalArrangement(x: number, y: number) {
-  quilt.blockList = []
-  for (let row = 0; row < y; row++) {
-    if (x % 2 === 0 && row % 2 === 0) {
-      for (let col = 0; col < x; col++) {
-        const count = row * x + col
-        quilt.blockList.push({
-          design: 'Half Square Triangle',
-          position: { row: row + 1, col: col + 1 },
-          rotation: count % 2 === 0 ? 0 : 90,
-        })
-      }
-    } else {
-      for (let col = 0; col < x; col++) {
-        const count = row * x + col
-        quilt.blockList.push({
-          design: 'Half Square Triangle',
-          position: { row: row + 1, col: col + 1 },
-          rotation: count % 2 === 0 ? 270 : 180,
-        })
-      }
-    }
-  }
-}
+//functions to handle updating quilt design from form
+// function updateDesign(initialQuiltDesign: initialQuiltDesign) {
+//   newQuiltDesign.blockSize = initialQuiltDesign.blockSize
+//   newQuiltDesign.border = initialQuiltDesign.border
+//   newQuiltDesign.binding = initialQuiltDesign.binding
+//   newQuiltDesign.radius = initialQuiltDesign.radius
+//   saveQuiltDesign()
+// }
 
 //functions to apply block design and rotation changes
 function applyBlockDesign(blockPosition: blockPosition, blockdesign: string) {
-  const blockID = quilt.blockList.findIndex(
-    (block) => block.position.row === blockPosition.row && block.position.col === blockPosition.col,
+  const blockID = localCopy.value.blockList.findIndex(
+    (b: block) => b.position.row === blockPosition.row && b.position.col === blockPosition.col,
   )
-  quilt.blockList[blockID].design = blockdesign
+  localCopy.value.blockList[blockID].design = blockdesign
 }
 function applyBlockRotation(blockPosition: blockPosition, blockrotation: number) {
   console.log('apply rotation triggered', blockPosition, blockrotation)
-  const blockID = quilt.blockList.findIndex(
-    (block) => block.position.row === blockPosition.row && block.position.col === blockPosition.col,
+  const blockID = localCopy.value.blockList.findIndex(
+    (b: block) => b.position.row === blockPosition.row && b.position.col === blockPosition.col,
   )
   console.log('found blockID', blockID)
-  quilt.blockList[blockID].rotation = blockrotation
+  localCopy.value.blockList[blockID].rotation = blockrotation
+}
+
+function applyBorderSize(borderSize: number) {
+  localCopy.value.border = borderSize
+}
+
+function applyBindingSize(bindingSize: number) {
+  localCopy.value.binding = bindingSize
+}
+
+function applyBindingRadius(bindingRadius: number) {
+  localCopy.value.radius = bindingRadius
 }
 
 //TODO function to handle fabric color selection
@@ -99,37 +81,56 @@ function printColor(color: string) {
   console.log(color)
 }
 
+//functions to handle selection of quilt or block
 function selectBlock(block: block) {
   selectionName.value = `Block ${block.position.row}.${block.position.col}`
   selectedBlock.value = block
 }
 
 function selectQuilt() {
-  console.log(quilt)
   selectionName.value = 'Quilt'
   selectedBlock.value = null
+}
+
+function saveQuiltDesign() {
+  console.log('Saving quilt design')
+  quiltDesignsStore.updateQuiltDesign(localCopy.value)
+  localCopy.value = cloneDeep(quiltDesignsStore.getByName(props.name))
 }
 </script>
 
 <template>
   <div class="canvas-viewer" @click="selectQuilt">
     <QuiltDesignViewer
-      :currentQuiltDesign="quilt"
+      :currentQuiltDesign="localCopy"
       @quiltSelected="selectQuilt"
       @blockSelected="selectBlock"
     />
   </div>
   <SideBar title="Toolbox">
-    <AccordionPanel :title="`${selectionName} Design options`">
-      <QuiltDesignForm v-if="selectionName === 'Quilt'" @startDesign="startDesign" />
+    <button
+      style="margin: 0.75rem 0; justify-self: flex-end"
+      :disabled="!isEdited"
+      @click="saveQuiltDesign"
+    >
+      Save changes
+    </button>
+    <AccordionPanel v-if="selectionName.startsWith('Block')" :title="`${selectionName} Options`">
       <BlockOptions
-        v-else
         :selectedBlock="selectedBlock"
         @applyBlockDesign="applyBlockDesign"
         @applyBlockRotation="applyBlockRotation"
       />
     </AccordionPanel>
-    <AccordionPanel :title="'Fabrics collection'">
+    <AccordionPanel title="Border"
+      ><QuiltBorderOptions @applyBorderSize="applyBorderSize"
+    /></AccordionPanel>
+    <AccordionPanel title="Binding"
+      ><QuiltBindingOptions
+        @applyBindingSize="applyBindingSize"
+        @applyBindingRadius="applyBindingRadius"
+    /></AccordionPanel>
+    <AccordionPanel title="Fabrics collection">
       <FabricsCollection @fabricSelected="printColor" />
     </AccordionPanel>
     <AccordionPanel :title="'Block designs'">

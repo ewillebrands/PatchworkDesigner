@@ -21,6 +21,10 @@ export const useQuiltDesignsStore = defineStore('quiltdesigns', {
     addQuiltDesign(design: quiltDesign) {
       this.quiltDesigns.push({ ...design, id: this.highestId++ })
     },
+    updateQuiltDesign(updatedDesign: quiltDesign) {
+      const index = this.quiltDesigns.findIndex((design) => design.id === updatedDesign.id)
+      this.quiltDesigns[index] = updatedDesign
+    },
     removeQuiltDesign(id: number) {
       this.quiltDesigns = this.quiltDesigns.filter((design) => design.id !== id)
     },
