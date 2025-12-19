@@ -104,10 +104,10 @@ form {
 }
 
 dialog {
-  border: 2px solid var(--color-divider);
+  border: none;
   background-color: var(--color-background);
-  border-radius: 10px;
-  padding: 20px;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);

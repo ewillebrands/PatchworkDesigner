@@ -10,13 +10,23 @@ const router = useRouter()
 
 const dialog = ref<HTMLDialogElement | null>(null)
 
-const formFields = ref({
+const initialFormFields = {
   name: '',
   rows: 4,
   columns: 4,
   blockSize: 12,
   arrangement: 'alternating',
-})
+}
+
+const formFields = ref({ ...initialFormFields })
+
+function closeDialog() {
+  if (dialog.value) {
+    dialog.value.close()
+    formFields.value = { ...initialFormFields }
+  }
+}
+
 const newQuiltDesign = reactive<quiltDesign>({} as quiltDesign)
 
 function startDesign(initialQuiltDesign: initialQuiltDesign) {
@@ -61,7 +71,7 @@ function alternatingBlocks(x: number, y: number) {
 function rotationalArrangement(x: number, y: number) {
   newQuiltDesign.blockList = []
   for (let row = 0; row < y; row++) {
-    if (x % 2 === 0 && row % 2 === 0) {
+    if (row % 2 === 0) {
       for (let col = 0; col < x; col++) {
         const count = row * x + col
         newQuiltDesign.blockList.push({
@@ -86,11 +96,7 @@ function rotationalArrangement(x: number, y: number) {
 <template>
   <dialog ref="dialog">
     <h2>Create New Quilt Design</h2>
-    <form
-      id="startdesign"
-      @submit.prevent="startDesign(formFields)"
-      @reset.prevent="dialog && dialog.close()"
-    >
+    <form id="startdesign" @submit.prevent="startDesign(formFields)" @reset.prevent="closeDialog">
       <div class="field">
         <label for="name">Name</label>
         <input v-model="formFields.name" type="text" id="name" name="name" required />
