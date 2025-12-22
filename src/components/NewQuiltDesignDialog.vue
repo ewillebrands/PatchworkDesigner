@@ -58,6 +58,11 @@ function onSubmit() {
   startDesign(formFields.value)
 }
 
+//clear custom validity message (on input)
+function clearNameValidity() {
+  nameInput.value?.setCustomValidity('')
+}
+
 function startDesign(initialQuiltDesign: initialQuiltDesign) {
   newQuiltDesign.name = initialQuiltDesign.name
   newQuiltDesign.columns = initialQuiltDesign.columns
@@ -136,6 +141,7 @@ function rotationalArrangement(x: number, y: number) {
           id="name"
           name="name"
           required
+          @input="clearNameValidity"
         />
       </div>
 
