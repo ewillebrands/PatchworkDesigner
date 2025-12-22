@@ -16,6 +16,11 @@ export const useQuiltDesignsStore = defineStore('quiltdesigns', {
     getByName: (state) => {
       return (name: string) => state.quiltDesigns.find((design) => design.name === name)
     },
+    // Boolean getter (case-insensitive) to check existence by name
+    existsByName: (state) => {
+      return (name: string) =>
+        state.quiltDesigns.some((design) => design.name.toLowerCase() === name.trim().toLowerCase())
+    },
   },
   actions: {
     addQuiltDesign(design: quiltDesign) {

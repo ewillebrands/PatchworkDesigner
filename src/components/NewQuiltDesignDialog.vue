@@ -9,6 +9,7 @@ const quiltDesignsStore = useQuiltDesignsStore()
 const router = useRouter()
 
 const dialog = ref<HTMLDialogElement | null>(null)
+const nameInput = ref<HTMLInputElement | null>(null)
 
 const initialFormFields = {
   name: '',
@@ -29,6 +30,34 @@ function closeDialog() {
 
 const newQuiltDesign = reactive<quiltDesign>({} as quiltDesign)
 
+const uniqueName = (name: string): boolean => {
+  return !quiltDesignsStore.existsByName(name)
+}
+
+function onSubmit() {
+  const input = nameInput.value
+  if (!input) return
+
+  // clear any prior custom message so required/pattern checks run normally
+  input.setCustomValidity('')
+
+  // let browser check required/pattern first
+  if (!input.checkValidity()) {
+    input.reportValidity()
+    return
+  }
+
+  // check uniqueness only on submit
+  if (!uniqueName(formFields.value.name)) {
+    input.setCustomValidity('A design with this name already exists. Choose a different name.')
+    input.reportValidity()
+    return
+  }
+
+  // validation passed -> proceed
+  startDesign(formFields.value)
+}
+
 function startDesign(initialQuiltDesign: initialQuiltDesign) {
   newQuiltDesign.name = initialQuiltDesign.name
   newQuiltDesign.columns = initialQuiltDesign.columns
@@ -40,6 +69,7 @@ function startDesign(initialQuiltDesign: initialQuiltDesign) {
     rotationalArrangement(newQuiltDesign.columns, newQuiltDesign.rows)
   }
   quiltDesignsStore.addQuiltDesign(newQuiltDesign)
+  console.log('created new quilt design', newQuiltDesign)
   router.push({ name: 'quiltdesign', params: { name: newQuiltDesign.name } })
 }
 
@@ -82,7 +112,7 @@ function rotationalArrangement(x: number, y: number) {
       }
     } else {
       for (let col = 0; col < x; col++) {
-        const count = row * x + col
+        const count = col
         newQuiltDesign.blockList.push({
           design: 'Half Square Triangle',
           position: { row: row + 1, col: col + 1 },
@@ -96,10 +126,17 @@ function rotationalArrangement(x: number, y: number) {
 <template>
   <dialog ref="dialog">
     <h2>Create New Quilt Design</h2>
-    <form id="startdesign" @submit.prevent="startDesign(formFields)" @reset.prevent="closeDialog">
+    <form id="startdesign" @submit.prevent="onSubmit" @reset.prevent="closeDialog">
       <div class="field">
         <label for="name">Name</label>
-        <input v-model="formFields.name" type="text" id="name" name="name" required />
+        <input
+          ref="nameInput"
+          v-model="formFields.name"
+          type="text"
+          id="name"
+          name="name"
+          required
+        />
       </div>
 
       <fieldset>

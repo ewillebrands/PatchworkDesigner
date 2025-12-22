@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import type { block, blockPosition } from '../components/_types'
 import QuiltDesignViewer from '../components/QuiltDesignViewer.vue'
 import QuiltBorderOptions from '../components/QuiltBorderOptions.vue'
@@ -13,40 +13,32 @@ import { useQuiltDesignsStore } from '@/stores/quiltdesigns'
 // @ts-expect-error: no type declarations for lodash.clonedeep
 import cloneDeep from 'lodash.clonedeep'
 import isEqual from 'fast-deep-equal'
+import { useRouter } from 'vue-router'
 
 const props = defineProps<{
   name: string
 }>()
 
 const quiltDesignsStore = useQuiltDesignsStore()
+const router = useRouter()
 
 const localCopy = ref(cloneDeep(quiltDesignsStore.getByName(props.name))) // editable
 const isEdited = computed(() => !isEqual(localCopy.value, quiltDesignsStore.getByName(props.name)))
 
 // if store is still loading we wait; when loading finished and item missing, route to 404/network
-// watch(
-//   () => [quiltDesignsStore.isLoading, currentQuiltDesign.value],
-//   ([isLoading, design]) => {
-//     if (!isLoading && !design) {
-//       // not found after store finished loading
-//       router.push({ name: 'notfoundwithresource', params: { resource: 'Quilt Design' } })
-//     }
-//   },
-//   { immediate: true },
-// )
+watch(
+  () => [quiltDesignsStore.isLoading, localCopy.value],
+  ([isLoading, design]) => {
+    if (!isLoading && !design) {
+      // not found after store finished loading
+      router.push({ name: 'notfoundwithresource', params: { resource: 'Quilt Design' } })
+    }
+  },
+  { immediate: true },
+)
 
-// const newQuiltDesign = reactive<quiltDesign>({} as quiltDesign)
 const selectionName = ref('Quilt')
 const selectedBlock = ref<block | null>(null)
-
-//functions to handle updating quilt design from form
-// function updateDesign(initialQuiltDesign: initialQuiltDesign) {
-//   newQuiltDesign.blockSize = initialQuiltDesign.blockSize
-//   newQuiltDesign.border = initialQuiltDesign.border
-//   newQuiltDesign.binding = initialQuiltDesign.binding
-//   newQuiltDesign.radius = initialQuiltDesign.radius
-//   saveQuiltDesign()
-// }
 
 //functions to apply block design and rotation changes
 function applyBlockDesign(blockPosition: blockPosition, blockdesign: string) {
