@@ -52,5 +52,13 @@ export const useBlockDesignsStore = defineStore('blockdesigns', {
         console.log('New fabrics for BlockDesign', design.fabrics)
       }
     },
+    changeBlockDesignFabricByIndex(designId: number, oldFabricIndex: number, newFabricId: number) {
+      const design = this.blockDesigns.find((d) => d.id === designId)
+      if (design) {
+        console.log('Old fabrics for BlockDesign', design.fabrics)
+        design.fabrics.splice(oldFabricIndex, 1, newFabricId)
+        console.log('New fabrics for BlockDesign', design.fabrics)
+      }
+    },
   },
 })

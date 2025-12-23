@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { blockDesign } from '@/components/_types'
-import { computed, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import SideBar from '@/components/SideBar.vue'
 import AccordionPanel from '@/components/AccordionPanel.vue'
 import BlockFabrics from '@/components/BlockFabrics.vue'
+import PatchFabric from '@/components/PatchFabric.vue'
 import { router } from '@/router'
 import { useBlockDesignsStore } from '@/stores/blockdesigns'
 
@@ -29,22 +30,38 @@ watch(
   },
   { immediate: true },
 )
+const selectedPatch = ref<number | null>(null)
+
+function deselectPatch() {
+  selectedPatch.value = null
+}
 </script>
 
 <template>
-  <div class="canvas-viewer">
+  <div class="canvas-viewer" @click.self="deselectPatch">
     <div v-if="currentBlockDesign">
       <h1>{{ currentBlockDesign.name }}</h1>
       <component
         :is="currentBlockDesign.component"
         :fabrics="currentBlockDesign.fabrics"
         class="outline-patch"
+        editable
+        @patchSelected="(patch: number) => (selectedPatch = patch)"
       ></component>
     </div>
   </div>
   <SideBar title="Toolbox">
-    <AccordionPanel :title="`${currentBlockDesign?.name} Fabrics`">
-      <BlockFabrics v-if="currentBlockDesign" :blockDesignId="currentBlockDesign.id" />
+    <AccordionPanel
+      v-if="currentBlockDesign && selectedPatch === null"
+      :title="`${currentBlockDesign?.name} Fabrics`"
+    >
+      <BlockFabrics :blockDesignId="currentBlockDesign.id" />
+    </AccordionPanel>
+    <AccordionPanel
+      v-if="currentBlockDesign && selectedPatch !== null"
+      :title="`Selected Patch ${selectedPatch} Fabric`"
+    >
+      <PatchFabric :blockDesignId="currentBlockDesign.id" :patch="selectedPatch" />
     </AccordionPanel>
   </SideBar>
 </template>
