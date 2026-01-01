@@ -121,6 +121,10 @@ dialog::backdrop {
   stroke-width: 0.4; /* small width; adjust to taste */
   stroke-linejoin: round;
 }
+.patch.selected {
+  stroke: rgba(255, 0, 0, 0.8); /* red outline for selected patch */
+  stroke-width: 2; /* thicker width for visibility */
+}
 
 .outline-patch {
   border: 0.4px solid rgba(0, 0, 0, 0.5);
