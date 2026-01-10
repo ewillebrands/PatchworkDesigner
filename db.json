@@ -1,22 +1,64 @@
 {
   "blockDesigns": [
     {
+      "type": "atomic",
       "id": 1,
       "name": "Simple Square 1",
-      "component": "PlainPatch",
-      "fabrics": [4]
+      "patches": [{ "id": 0, "path": "M 0 0 H 100 V 100 H 0 Z", "fabricId": 4 }]
     },
     {
+      "type": "atomic",
       "id": 2,
       "name": "Simple Square 2",
-      "component": "PlainPatch",
-      "fabrics": [6]
+      "patches": [{ "id": 0, "path": "M 0 0 H 100 V 100 H 0 Z", "fabricId": 6 }]
     },
     {
+      "type": "atomic",
       "id": 3,
       "name": "Half Square Triangle",
-      "component": "HalfSquareTriangle",
-      "fabrics": [4, 6]
+      "patches": [
+        { "id": 0, "path": "M 0 0 V 100 L 100 0 Z", "fabricId": 4 },
+        { "id": 1, "path": "M 0 100 H 100 V 0 Z", "fabricId": 6 }
+      ]
+    },
+    {
+      "type": "compound",
+      "id": 4,
+      "name": "Four Patch",
+      "rows": 2,
+      "columns": 2,
+      "subBlocks": [
+        {
+          "type": "atomic",
+          "id": 1,
+          "name": "HST",
+          "patches": [
+            { "id": 0, "path": "M 0 0 V 100 L 100 0 Z", "fabricId": 1 },
+            { "id": 1, "path": "M 0 100 H 100 V 0 Z", "fabricId": 2 }
+          ]
+        },
+        {
+          "type": "atomic",
+          "id": 2,
+          "name": "Plain",
+          "patches": [{ "id": 0, "path": "M 0 0 H 100 V 100 H 0 Z", "fabricId": 3 }]
+        },
+        {
+          "type": "atomic",
+          "id": 3,
+          "name": "Plain",
+          "patches": [{ "id": 0, "path": "M 0 0 H 100 V 100 H 0 Z", "fabricId": 4 }]
+        },
+        {
+          "type": "atomic",
+          "id": 4,
+          "name": "HST",
+          "patches": [
+            { "id": 0, "path": "M 0 0 V 100 L 100 0 Z", "fabricId": 2 },
+            { "id": 1, "path": "M 0 100 H 100 V 0 Z", "fabricId": 1 }
+          ]
+        }
+      ]
     }
   ],
   "fabrics": [
