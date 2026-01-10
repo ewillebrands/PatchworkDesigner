@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useBlockDesignsStore } from '@/stores/blockdesigns'
 import type { BlockDesign, block } from './_types'
 import GenericBlock from './GenericBlock.vue'
@@ -10,14 +10,8 @@ const props = defineProps<{
 
 const blockDesignsStore = useBlockDesignsStore()
 
-const currentBlockDesign = ref<BlockDesign | null>(null)
-onMounted(() => {
-  const blockDesign = blockDesignsStore.getByName
-    ? blockDesignsStore.getByName(props.quiltBlock.design)
-    : null
-  if (blockDesign) {
-    currentBlockDesign.value = blockDesign
-  }
+const currentBlockDesign = computed<BlockDesign | null>(() => {
+  return blockDesignsStore.getByName(props.quiltBlock.design) || null
 })
 
 const emit = defineEmits(['blockSelected'])
