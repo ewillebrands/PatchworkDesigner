@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import type { blockDesign } from '@/components/_types'
+import type { BlockDesign } from '@/components/_types'
 import { ref, computed, watch } from 'vue'
 import SideBar from '@/components/SideBar.vue'
 import AccordionPanel from '@/components/AccordionPanel.vue'
 import BlockFabrics from '@/components/BlockFabrics.vue'
 import PatchFabric from '@/components/PatchFabric.vue'
+import GenericBlock from '@/components/GenericBlock.vue'
 import { router } from '@/router'
 import { useBlockDesignsStore } from '@/stores/blockdesigns'
 
@@ -15,7 +16,7 @@ const props = defineProps<{
 const blockDesignsStore = useBlockDesignsStore()
 
 // computed reference into the store; reactive to store changes
-const currentBlockDesign = computed<blockDesign | undefined>(() =>
+const currentBlockDesign = computed<BlockDesign | undefined>(() =>
   blockDesignsStore.getByName?.(props.name),
 )
 
@@ -41,13 +42,12 @@ function deselectPatch() {
   <div class="canvas-viewer" @click.self="deselectPatch">
     <div v-if="currentBlockDesign">
       <h1>{{ currentBlockDesign.name }}</h1>
-      <component
-        :is="currentBlockDesign.component"
-        :fabrics="currentBlockDesign.fabrics"
-        class="outline-patch"
+      <GenericBlock
+        :block="currentBlockDesign"
+        class="outline-patch blockdesign"
         editable
         @patchSelected="(patch: number) => (selectedPatch = patch)"
-      ></component>
+      />
     </div>
   </div>
   <SideBar title="Toolbox">

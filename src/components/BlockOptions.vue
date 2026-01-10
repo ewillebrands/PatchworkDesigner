@@ -2,7 +2,7 @@
 import { ref, onMounted, watch } from 'vue'
 import type { block } from './_types'
 import { useBlockDesignsStore } from '@/stores/blockdesigns'
-import type { blockDesign } from './_types'
+import type { BlockDesign } from './_types'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
   faArrowRotateLeft,
@@ -28,7 +28,7 @@ const openBlockDesigner = () => {
 
 const emit = defineEmits(['applyBlockDesign', 'applyBlockRotation'])
 
-const blockDesignCollection = ref<blockDesign[]>([])
+const blockDesignCollection = ref<BlockDesign[]>([])
 const blockDesignsStore = useBlockDesignsStore()
 //object for mapping formfields to block properties
 const formFields = ref({
