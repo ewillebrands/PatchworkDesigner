@@ -1,20 +1,23 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useBlockDesignsStore } from '@/stores/blockdesigns'
-import type { blockDesign, block } from './_types'
-import { vOnClickOutside } from '@vueuse/components'
+import type { BlockDesign, block } from './_types'
+import GenericBlock from './GenericBlock.vue'
 
-defineProps<{
+const props = defineProps<{
   quiltBlock: block
 }>()
 
-const blockDesignMap = ref<Record<string, blockDesign>>({})
 const blockDesignsStore = useBlockDesignsStore()
 
+const currentBlockDesign = ref<BlockDesign | null>(null)
 onMounted(() => {
-  blockDesignMap.value = Object.fromEntries(
-    blockDesignsStore.getAll.map((design) => [design.name, design]),
-  )
+  const blockDesign = blockDesignsStore.getByName
+    ? blockDesignsStore.getByName(props.quiltBlock.design)
+    : null
+  if (blockDesign) {
+    currentBlockDesign.value = blockDesign
+  }
 })
 
 const emit = defineEmits(['blockSelected'])
@@ -25,19 +28,14 @@ const selectBlock = () => {
   selected.value = true
   emit('blockSelected')
 }
-const unselectBlock = () => {
-  selected.value = false
-}
 </script>
 
 <template>
-  <component
-    :key="quiltBlock.position.row + '.' + quiltBlock.position.col"
-    :is="blockDesignMap[quiltBlock.design]?.component"
-    :fabrics="blockDesignMap[quiltBlock.design]?.fabrics"
+  <GenericBlock
+    :key="props.quiltBlock.position.row + '.' + props.quiltBlock.position.col"
+    :block="currentBlockDesign"
     :class="selected ? 'block selected' : 'block'"
     @click.stop="selectBlock"
-    v-on-click-outside="unselectBlock"
     :style="{
       transform: `rotate(${quiltBlock.rotation}deg)`,
     }"

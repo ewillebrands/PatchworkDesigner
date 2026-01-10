@@ -1,6 +1,3 @@
-import PlainPatch from './blocktemplates/PlainPatch.vue'
-import HalfSquareTriangle from './blocktemplates/HalfSquareTriangle.vue'
-
 export interface quiltDesign {
   id: number
   name: string
@@ -35,15 +32,36 @@ export interface blockPosition {
   col: number
 }
 
-export interface blockDesign {
-  id: number
-  name: string
-  component: typeof PlainPatch | typeof HalfSquareTriangle | string
-  fabrics: number[] // array of fabric IDs
-}
-
 export interface fabric {
   id: number
   name: string
   color: string
 }
+
+// Atomic patch (single shape in a square)
+export interface PatchDefinition {
+  id: number
+  path: string
+  fabricId: number
+}
+
+// Atomic block (single square with patches)
+export interface AtomicBlock {
+  type: 'atomic'
+  id: number
+  name: string
+  patches: PatchDefinition[]
+  viewBox?: string // defaults to "0 0 100 100" for square blocks
+}
+
+// Compound block (grid of sub-blocks)
+export interface CompoundBlock {
+  type: 'compound'
+  id: number
+  name: string
+  rows: number
+  columns: number
+  subBlocks: (AtomicBlock | CompoundBlock)[] // recursive!
+}
+
+export type BlockDesign = AtomicBlock | CompoundBlock

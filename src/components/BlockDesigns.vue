@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useBlockDesignsStore } from '@/stores/blockdesigns'
-import type { blockDesign } from './_types'
+import GenericBlock from './GenericBlock.vue'
+import type { BlockDesign } from './_types'
 
-const blockDesignCollection = ref<blockDesign[]>([])
+const blockDesignCollection = ref<BlockDesign[]>([])
 const blockDesignsStore = useBlockDesignsStore()
 
 onMounted(async () => {
@@ -14,7 +15,7 @@ onMounted(async () => {
 <template>
   <div class="designList">
     <div v-for="(design, index) in blockDesignCollection" :key="index" class="designItem">
-      <component :is="design.component" :fabrics="design.fabrics"></component>
+      <GenericBlock :block="design"></GenericBlock>
       <span>{{ design.name }}</span>
     </div>
   </div>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { quiltDesign } from './_types'
-import quiltBlock from '@/components/QuiltBlock.vue'
+import QuiltBlock from '@/components/QuiltBlock.vue'
 
 defineProps<{
   currentQuiltDesign: quiltDesign
@@ -29,12 +29,11 @@ const emit = defineEmits(['blockSelected', 'quiltSelected'])
       borderRadius: `${10 * (currentQuiltDesign.radius || 0)}px`,
       outline: `${10 * (currentQuiltDesign.binding || 0)}px solid hotpink`,
     }"
-    @click="emit('quiltSelected')"
+    @click.self="emit('quiltSelected')"
   >
-    <component
+    <QuiltBlock
       v-for="(block, index) in currentQuiltDesign.blockList"
       :key="index"
-      :is="quiltBlock"
       :quiltBlock="block"
       @blockSelected="emit('blockSelected', block)"
       :style="{

@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
-import type { blockDesign } from '../components/_types'
+import type { BlockDesign } from '../components/_types'
 import QuiltprojectService from '@/services/QuiltprojectService.js'
 
 export const useBlockDesignsStore = defineStore('blockdesigns', {
   state: () => ({
-    blockDesigns: [] as blockDesign[],
+    blockDesigns: [] as BlockDesign[],
     isLoading: false,
     error: null as Error | null,
     highestId: 0,
@@ -26,7 +26,7 @@ export const useBlockDesignsStore = defineStore('blockdesigns', {
       try {
         const response = await QuiltprojectService.getBlockDesigns()
         this.blockDesigns = response.data
-        const ids = this.blockDesigns.map((f: blockDesign) => f.id)
+        const ids = this.blockDesigns.map((f: BlockDesign) => f.id)
         this.highestId = ids.length ? Math.max(...ids) + 1 : 0
       } catch (err) {
         this.error = err as Error
@@ -35,7 +35,7 @@ export const useBlockDesignsStore = defineStore('blockdesigns', {
         this.isLoading = false
       }
     },
-    addBlockDesign(design: blockDesign) {
+    addBlockDesign(design: BlockDesign) {
       this.blockDesigns.push({ ...design, id: this.highestId++ })
     },
     removeBlockDesign(id: number) {
@@ -44,20 +44,57 @@ export const useBlockDesignsStore = defineStore('blockdesigns', {
 
     changeBlockDesignFabric(designId: number, oldFabricId: number, newFabricId: number) {
       const design = this.blockDesigns.find((d) => d.id === designId)
-      if (design) {
-        console.log('Old fabrics for BlockDesign', design.fabrics)
-        design.fabrics = design.fabrics.map((fabricId) =>
-          fabricId === oldFabricId ? newFabricId : fabricId,
-        )
-        console.log('New fabrics for BlockDesign', design.fabrics)
+      if (!design) return
+
+      // Recursive function to change fabricId in all patches
+      const replaceFabricInBlock = (block: BlockDesign) => {
+        if (block.type === 'atomic') {
+          // Atomic block: update fabricId in all patches
+          block.patches.forEach((patch) => {
+            if (patch.fabricId === oldFabricId) {
+              patch.fabricId = newFabricId
+            }
+          })
+        } else if (block.type === 'compound') {
+          // Compound block: recursively process each sub-block
+          block.subBlocks.forEach((subBlock) => {
+            replaceFabricInBlock(subBlock)
+          })
+        }
       }
+
+      replaceFabricInBlock(design)
     },
-    changeBlockDesignFabricByIndex(designId: number, oldFabricIndex: number, newFabricId: number) {
+
+    // Simple atomic block, patch 0: path = [0]
+    // Simple atomic block, patch 1: path = [1]
+    // Compound block, sub-block 2, patch 1: path = [2, 1]
+    // Nested compound, sub-block 0 → sub-block 3 → patch 2: path = [0, 3, 2]
+    changePatchFabric(designId: number, path: number[], newFabricId: number) {
       const design = this.blockDesigns.find((d) => d.id === designId)
-      if (design) {
-        console.log('Old fabrics for BlockDesign', design.fabrics)
-        design.fabrics.splice(oldFabricIndex, 1, newFabricId)
-        console.log('New fabrics for BlockDesign', design.fabrics)
+      if (!design) return
+
+      // Navigate through the path to find the target patch
+      let currentBlock: BlockDesign = design
+
+      // Follow path through compound blocks (all indices except last)
+      for (let i = 0; i < path.length - 1; i++) {
+        if (currentBlock.type === 'compound') {
+          currentBlock = currentBlock.subBlocks[path[i]]
+        } else {
+          console.error('Invalid path: expected compound block')
+          return
+        }
+      }
+
+      // Last index is the patch index in the atomic block
+      if (currentBlock.type === 'atomic') {
+        const patchIndex = path[path.length - 1]
+        if (currentBlock.patches[patchIndex]) {
+          currentBlock.patches[patchIndex].fabricId = newFabricId
+        }
+      } else {
+        console.error('Invalid path: final block must be atomic')
       }
     },
   },
