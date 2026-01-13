@@ -1,15 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { computed } from 'vue'
 import { useBlockDesignsStore } from '@/stores/blockdesigns'
 import GenericBlock from './GenericBlock.vue'
-import type { BlockDesign } from './_types'
 
-const blockDesignCollection = ref<BlockDesign[]>([])
 const blockDesignsStore = useBlockDesignsStore()
 
-onMounted(async () => {
-  blockDesignCollection.value = blockDesignsStore.getAll
-})
+const blockDesignCollection = computed(() => blockDesignsStore.getAll)
 </script>
 
 <template>

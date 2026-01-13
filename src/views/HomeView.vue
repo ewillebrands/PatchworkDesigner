@@ -2,6 +2,8 @@
 import NewQuiltDesignDialog from '@/components/NewQuiltDesignDialog.vue'
 import { useQuiltDesignsStore } from '@/stores/quiltdesigns'
 import { computed } from 'vue'
+import BlockDesigns from '@/components/BlockDesigns.vue'
+import FabricsCollection from '@/components/FabricsCollection.vue'
 
 const quiltDesignsStore = useQuiltDesignsStore()
 
@@ -20,6 +22,10 @@ const quiltDesigns = computed(() => quiltDesignsStore.getAll)
     >
       {{ design.name }}
     </router-link>
+    <h2>Your Block Designs</h2>
+    <BlockDesigns />
+    <h2>Your Fabrics Collection</h2>
+    <FabricsCollection />
   </div>
 </template>
 
