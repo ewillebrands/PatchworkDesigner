@@ -1,15 +1,16 @@
 <!-- GenericBlock.vue -->
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, useId } from 'vue'
 import { useFabricsStore } from '@/stores/fabrics'
 import type { BlockDesign, AtomicBlock, CompoundBlock } from './_types'
 
 const props = defineProps<{
   block: BlockDesign | null
   editable?: boolean
-  // For nested rendering, need to know position in parent grid
-  gridPosition?: { row: number; col: number }
 }>()
+
+// Generate unique ID for this component instance to avoid mask ID conflicts
+const instanceId = useId()
 
 const fabricsStore = useFabricsStore()
 
@@ -43,8 +44,8 @@ const gridLayout = computed(() => {
     <defs>
       <mask
         v-for="patch in (block as AtomicBlock).patches"
-        :key="`mask-${block?.id}-${patch.id}`"
-        :id="`mask-${block?.id}-${patch.id}`"
+        :key="`mask-${instanceId}-${patch.id}`"
+        :id="`mask-${instanceId}-${patch.id}`"
       >
         <path :d="patch.path" fill="white" />
       </mask>
@@ -52,8 +53,8 @@ const gridLayout = computed(() => {
 
     <g
       v-for="patch in (block as AtomicBlock).patches"
-      :key="`patch-${block?.id}-${patch.id}`"
-      :mask="`url(#mask-${block?.id}-${patch.id})`"
+      :key="`patch-${instanceId}-${patch.id}`"
+      :mask="`url(#mask-${instanceId}-${patch.id})`"
     >
       <path
         class="patch"

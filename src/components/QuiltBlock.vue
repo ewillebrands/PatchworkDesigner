@@ -4,9 +4,15 @@ import { useBlockDesignsStore } from '@/stores/blockdesigns'
 import type { BlockDesign, block } from './_types'
 import GenericBlock from './GenericBlock.vue'
 
-const props = defineProps<{
-  quiltBlock: block
-}>()
+const props = withDefaults(
+  defineProps<{
+    quiltBlock: block
+    interactive?: boolean
+  }>(),
+  {
+    interactive: true,
+  },
+)
 
 const blockDesignsStore = useBlockDesignsStore()
 
@@ -18,7 +24,9 @@ const emit = defineEmits(['blockSelected'])
 
 const selected = ref(false)
 
-const selectBlock = () => {
+const selectBlock = (event?: Event) => {
+  if (!props.interactive) return
+  event?.stopPropagation()
   selected.value = true
   emit('blockSelected')
 }
@@ -28,8 +36,8 @@ const selectBlock = () => {
   <GenericBlock
     :key="props.quiltBlock.position.row + '.' + props.quiltBlock.position.col"
     :block="currentBlockDesign"
-    :class="selected ? 'block selected' : 'block'"
-    @click.stop="selectBlock"
+    :class="[interactive ? 'block' : 'block-static', { selected }]"
+    @click="interactive ? selectBlock($event) : null"
     :style="{
       transform: `rotate(${quiltBlock.rotation}deg)`,
     }"
@@ -37,12 +45,15 @@ const selectBlock = () => {
 </template>
 
 <style>
-.block {
+.block,
+.block-static {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
   z-index: 0;
+}
 
+.block {
   &:hover {
     border: 1px solid var(--color-background);
     border-radius: 2px;

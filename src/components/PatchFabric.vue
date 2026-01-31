@@ -32,7 +32,7 @@ const handleFabricChanged = ({ newFabric }: { oldFabric?: number; newFabric: num
   console.log(
     `PatchFabric: changing fabric for patch index ${props.patch} in BlockDesign ${props.blockDesignId} to fabric id ${newFabric}`,
   )
-  blockDesignsStore.changeBlockDesignFabricByIndex(props.blockDesignId, props.patch, newFabric)
+  blockDesignsStore.changePatchFabric(props.blockDesignId, props.patch, newFabric)
 }
 </script>
 
