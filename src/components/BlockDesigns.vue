@@ -10,10 +10,15 @@ const blockDesignCollection = computed(() => blockDesignsStore.getAll)
 
 <template>
   <div class="designList">
-    <div v-for="(design, index) in blockDesignCollection" :key="index" class="designItem">
+    <router-link
+      v-for="design in blockDesignCollection"
+      :key="design.id"
+      class="designItem"
+      :to="{ name: 'blockdesign', params: { name: design.name } }"
+    >
       <GenericBlock :block="design"></GenericBlock>
       <span>{{ design.name }}</span>
-    </div>
+    </router-link>
   </div>
 </template>
 
@@ -32,13 +37,14 @@ const blockDesignCollection = computed(() => blockDesignsStore.getAll)
   align-items: center;
   width: 6rem;
   gap: 0.5rem;
+  text-decoration: none;
 
   span {
+    text-align: center;
     height: 2.4rem;
     line-height: 120%;
     overflow: hidden;
     text-overflow: ellipsis;
-    text-align: center;
     display: block;
   }
 }

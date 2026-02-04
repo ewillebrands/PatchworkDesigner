@@ -57,6 +57,6 @@ main {
   flex: 1 1 0%;
   min-height: 0;
   align-items: stretch;
-  height: 100%;
+  justify-items: stretch;
 }
 </style>

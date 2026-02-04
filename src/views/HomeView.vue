@@ -38,12 +38,12 @@ const quiltDesigns = computed(() => quiltDesignsStore.getAll)
 .welcome {
   display: flex;
   width: 100vw;
-  height: 100vh;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100%;
-  gap: 32px;
+  justify-content: stretch;
+  gap: 2rem;
+  overflow: auto;
+  padding: 2rem;
 }
 .quilt-thumbnails {
   display: flex;

@@ -33,8 +33,8 @@
           "id": 1,
           "name": "HST",
           "patches": [
-            { "id": 0, "path": "M 0 0 V 100 L 100 0 Z", "fabricId": 7 },
-            { "id": 1, "path": "M 0 100 H 100 V 0 Z", "fabricId": 2 }
+            { "id": 0, "path": "M 0 0 V 100 L 100 0 Z", "fabricId": 1 },
+            { "id": 1, "path": "M 0 100 H 100 V 0 Z", "fabricId": 5 }
           ]
         },
         {
@@ -54,8 +54,8 @@
           "id": 4,
           "name": "HST",
           "patches": [
-            { "id": 0, "path": "M 0 0 V 100 L 100 0 Z", "fabricId": 2 },
-            { "id": 1, "path": "M 0 100 H 100 V 0 Z", "fabricId": 7 }
+            { "id": 0, "path": "M 0 0 V 100 L 100 0 Z", "fabricId": 5 },
+            { "id": 1, "path": "M 0 100 H 100 V 0 Z", "fabricId": 1 }
           ]
         }
       ]
