@@ -10,7 +10,7 @@ const blockDesignsStore = useBlockDesignsStore()
 
 const emit = defineEmits(['fabricSelected'])
 const props = defineProps<{
-  blockDesignId: number
+  blockDesignId: string
 }>()
 
 // reactive reference to the block design in the store

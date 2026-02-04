@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, useId } from 'vue'
+import { ref, reactive } from 'vue'
 import type { initialQuiltDesign } from './_types'
 import { useQuiltDesignsStore } from '@/stores/quiltdesigns'
 import { useBlockDesignsStore } from '@/stores/blockdesigns'
@@ -83,17 +83,13 @@ function startDesign(initialQuiltDesign: initialQuiltDesign) {
 //functions to create blocklist based on arrangement choice:
 //use 2 simple square designs for alternating blocks
 function alternatingBlocks(x: number, y: number) {
-  const block1Id = useId()
-  const block2Id = useId()
   blockDesignsStore.addBlockDesign({
     type: 'atomic',
-    id: block1Id,
     name: 'Simple Square 1',
     patches: [{ id: 0, path: 'M 0 0 H 100 V 100 H 0 Z', fabricId: 4 }],
   })
   blockDesignsStore.addBlockDesign({
     type: 'atomic',
-    id: block2Id,
     name: 'Simple Square 2',
     patches: [{ id: 0, path: 'M 0 0 H 100 V 100 H 0 Z', fabricId: 3 }],
   })
@@ -120,10 +116,8 @@ function alternatingBlocks(x: number, y: number) {
 }
 //use single half square triangle design for rotational arrangement
 function rotationalArrangement(x: number, y: number) {
-  const hstBlockId = useId()
   blockDesignsStore.addBlockDesign({
     type: 'atomic',
-    id: hstBlockId,
     name: 'Half Square Triangle',
     patches: [
       { id: 0, path: 'M 0 0 V 100 L 100 0 Z', fabricId: 4 },

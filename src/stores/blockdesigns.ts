@@ -1,18 +1,18 @@
 import { defineStore } from 'pinia'
-import type { BlockDesign } from '../components/_types'
+import type { AtomicBlock, CompoundBlock, BlockDesign } from '../components/_types'
 import QuiltprojectService from '@/services/QuiltprojectService.js'
+import { useId } from 'vue'
 
 export const useBlockDesignsStore = defineStore('blockdesigns', {
   state: () => ({
     blockDesigns: [] as BlockDesign[],
     isLoading: false,
     error: null as Error | null,
-    highestId: 0,
   }),
   getters: {
     getAll: (state) => state.blockDesigns,
     getById: (state) => {
-      return (id: number) => state.blockDesigns.find((design) => design.id === id)
+      return (id: string) => state.blockDesigns.find((design) => design.id === id)
     },
     getByName: (state) => {
       return (name: string) => state.blockDesigns.find((design) => design.name === name)
@@ -26,8 +26,6 @@ export const useBlockDesignsStore = defineStore('blockdesigns', {
       try {
         const response = await QuiltprojectService.getBlockDesigns()
         this.blockDesigns = response.data
-        const ids = this.blockDesigns.map((f: BlockDesign) => f.id)
-        this.highestId = ids.length ? Math.max(...ids) + 1 : 0
       } catch (err) {
         this.error = err as Error
         console.error('fetchAll block designs failed', err)
@@ -35,14 +33,15 @@ export const useBlockDesignsStore = defineStore('blockdesigns', {
         this.isLoading = false
       }
     },
-    addBlockDesign(design: BlockDesign) {
-      this.blockDesigns.push({ ...design, id: this.highestId++ })
+    addBlockDesign(design: Omit<AtomicBlock, 'id'> | Omit<CompoundBlock, 'id'>) {
+      const newBlockId = useId()
+      this.blockDesigns.push({ ...design, id: newBlockId } as BlockDesign)
     },
-    removeBlockDesign(id: number) {
+    removeBlockDesign(id: string) {
       this.blockDesigns = this.blockDesigns.filter((design) => design.id !== id)
     },
 
-    changeBlockDesignFabric(designId: number, oldFabricId: number, newFabricId: number) {
+    changeBlockDesignFabric(designId: string, oldFabricId: number, newFabricId: number) {
       const design = this.blockDesigns.find((d) => d.id === designId)
       if (!design) return
 
@@ -70,7 +69,7 @@ export const useBlockDesignsStore = defineStore('blockdesigns', {
     // Simple atomic block, patch 1: path = [1]
     // Compound block, sub-block 2, patch 1: path = [2, 1]
     // Nested compound, sub-block 0 → sub-block 3 → patch 2: path = [0, 3, 2]
-    changePatchFabric(designId: number, path: number[], newFabricId: number) {
+    changePatchFabric(designId: string, path: number[], newFabricId: number) {
       const design = this.blockDesigns.find((d) => d.id === designId)
       if (!design) return
 

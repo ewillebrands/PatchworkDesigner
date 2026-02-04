@@ -22,7 +22,7 @@ export interface initialQuiltDesign {
 }
 
 export interface block {
-  design: string // should match one of the BlockDesign.name values
+  design: string // should match one of the BlockDesign.id values
   position: blockPosition
   rotation?: number // in degrees, e.g., 0, 90, 180, 270
 }
