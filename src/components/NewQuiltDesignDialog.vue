@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, useId } from 'vue'
 import type { initialQuiltDesign } from './_types'
 import { useQuiltDesignsStore } from '@/stores/quiltdesigns'
+import { useBlockDesignsStore } from '@/stores/blockdesigns'
 import type { quiltDesign } from './_types'
 import { useRouter } from 'vue-router'
 
 const quiltDesignsStore = useQuiltDesignsStore()
+const blockDesignsStore = useBlockDesignsStore()
 const router = useRouter()
 
 const dialog = ref<HTMLDialogElement | null>(null)
@@ -81,6 +83,20 @@ function startDesign(initialQuiltDesign: initialQuiltDesign) {
 //functions to create blocklist based on arrangement choice:
 //use 2 simple square designs for alternating blocks
 function alternatingBlocks(x: number, y: number) {
+  const block1 = useId()
+  const block2 = useId()
+  blockDesignsStore.addBlockDesign({
+    type: 'atomic',
+    id: block1,
+    name: 'Simple Square 1',
+    patches: [{ id: 0, path: 'M 0 0 H 100 V 100 H 0 Z', fabricId: 4 }],
+  })
+  blockDesignsStore.addBlockDesign({
+    type: 'atomic',
+    id: block2,
+    name: 'Simple Square 2',
+    patches: [{ id: 0, path: 'M 0 0 H 100 V 100 H 0 Z', fabricId: 3 }],
+  })
   newQuiltDesign.blockList = []
   for (let row = 0; row < y; row++) {
     if (x % 2 === 0 && row % 2 === 0) {

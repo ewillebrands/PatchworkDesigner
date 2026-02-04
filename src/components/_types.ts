@@ -48,7 +48,7 @@ export interface PatchDefinition {
 // Atomic block (single square with patches)
 export interface AtomicBlock {
   type: 'atomic'
-  id: number
+  id: string
   name: string
   patches: PatchDefinition[]
   viewBox?: string // defaults to "0 0 100 100" for square blocks
@@ -57,7 +57,7 @@ export interface AtomicBlock {
 // Compound block (grid of sub-blocks)
 export interface CompoundBlock {
   type: 'compound'
-  id: number
+  id: string
   name: string
   rows: number
   columns: number
