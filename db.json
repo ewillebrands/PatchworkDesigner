@@ -1,15 +1,6 @@
 {
   "blockDesigns": [
     {
-      "type": "atomic",
-      "id": "3",
-      "name": "Half Square Triangle",
-      "patches": [
-        { "id": 0, "path": "M 0 0 V 100 L 100 0 Z", "fabricId": 4 },
-        { "id": 1, "path": "M 0 100 H 100 V 0 Z", "fabricId": 6 }
-      ]
-    },
-    {
       "type": "compound",
       "id": "4",
       "name": "Four Patch",
