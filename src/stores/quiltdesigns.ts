@@ -1,17 +1,17 @@
 import { defineStore } from 'pinia'
 import type { quiltDesign } from '../components/_types'
+import { useId } from 'vue'
 
 export const useQuiltDesignsStore = defineStore('quiltdesigns', {
   state: () => ({
     quiltDesigns: [] as quiltDesign[],
     isLoading: false,
     error: null as Error | null,
-    highestId: 0,
   }),
   getters: {
     getAll: (state) => state.quiltDesigns,
     getById: (state) => {
-      return (id: number) => state.quiltDesigns.find((design) => design.id === id)
+      return (id: string) => state.quiltDesigns.find((design) => design.id === id)
     },
     getByName: (state) => {
       return (name: string) => state.quiltDesigns.find((design) => design.name === name)
@@ -24,13 +24,13 @@ export const useQuiltDesignsStore = defineStore('quiltdesigns', {
   },
   actions: {
     addQuiltDesign(design: quiltDesign) {
-      this.quiltDesigns.push({ ...design, id: this.highestId++ })
+      this.quiltDesigns.push({ ...design, id: useId() })
     },
     updateQuiltDesign(updatedDesign: quiltDesign) {
       const index = this.quiltDesigns.findIndex((design) => design.id === updatedDesign.id)
       this.quiltDesigns[index] = updatedDesign
     },
-    removeQuiltDesign(id: number) {
+    removeQuiltDesign(id: string) {
       this.quiltDesigns = this.quiltDesigns.filter((design) => design.id !== id)
     },
   },

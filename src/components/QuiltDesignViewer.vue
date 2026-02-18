@@ -59,10 +59,14 @@ const thumbnailWidth = computed(() => {
       :quiltBlock="block"
       :interactive="!asThumbnailOfHeight"
       @blockSelected="emit('blockSelected', block)"
-      :style="{
-        width: asThumbnailOfHeight ? 'auto' : `${10 * currentQuiltDesign.blockSize}px`,
-        height: asThumbnailOfHeight ? 'auto' : `${10 * currentQuiltDesign.blockSize}px`,
-      }"
+      :style="
+        asThumbnailOfHeight
+          ? {}
+          : {
+              width: `${10 * currentQuiltDesign.blockSize}px`,
+              height: `${10 * currentQuiltDesign.blockSize}px`,
+            }
+      "
     />
   </div>
 </template>

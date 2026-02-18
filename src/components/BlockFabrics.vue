@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { fabric } from './_types'
+import type { fabric, BlockDesign } from './_types'
 import { computed } from 'vue'
 import FabricSwatches from './FabricSwatches.vue'
 import { useFabricsStore } from '@/stores/fabrics'
@@ -21,13 +21,25 @@ const currentDesign = computed(() =>
 // map design.fabrics (ids or strings) -> fabric objects from fabrics store
 const fabricsForDesign = computed<fabric[]>(() => {
   const design = currentDesign.value
-  if (!design || !Array.isArray(design.fabrics)) return []
-  return design.fabrics
-    .map((fid) => {
-      const id = typeof fid === 'string' ? parseInt(fid, 10) : fid
-      if (Number.isNaN(id)) return null
-      return fabricsStore.getById ? fabricsStore.getById(id) : null
-    })
+  if (!design) return []
+
+  // Recursively collect all fabricIds from the block design
+  const collectFabricIds = (block: BlockDesign): number[] => {
+    if (block.type === 'atomic') {
+      return block.patches.map((patch) => patch.fabricId)
+    } else if (block.type === 'compound') {
+      return block.subBlocks.flatMap((subBlock: BlockDesign) => collectFabricIds(subBlock))
+    }
+    return []
+  }
+
+  const fabricIds = collectFabricIds(design)
+  console.log('Collected fabricIds:', fabricIds)
+  console.log('Design:', design)
+
+  // Get unique fabric objects from the store
+  return [...new Set(fabricIds)]
+    .map((id) => (fabricsStore.getById ? fabricsStore.getById(id) : null))
     .filter((f): f is fabric => !!f)
 })
 

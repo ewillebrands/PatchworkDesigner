@@ -1,5 +1,5 @@
 export interface quiltDesign {
-  id: number
+  id: string
   name: string
   columns: number
   rows: number
