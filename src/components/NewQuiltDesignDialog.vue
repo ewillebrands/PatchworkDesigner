@@ -86,11 +86,15 @@ function alternatingBlocks(x: number, y: number) {
   blockDesignsStore.addBlockDesign({
     type: 'atomic',
     name: 'Simple Square 1',
+    width: newQuiltDesign.blockSize,
+    height: newQuiltDesign.blockSize,
     patches: [{ id: 0, path: 'M 0 0 H 100 V 100 H 0 Z', fabricId: 4 }],
   })
   blockDesignsStore.addBlockDesign({
     type: 'atomic',
     name: 'Simple Square 2',
+    width: newQuiltDesign.blockSize,
+    height: newQuiltDesign.blockSize,
     patches: [{ id: 0, path: 'M 0 0 H 100 V 100 H 0 Z', fabricId: 3 }],
   })
   newQuiltDesign.blockList = []
@@ -119,6 +123,8 @@ function rotationalArrangement(x: number, y: number) {
   blockDesignsStore.addBlockDesign({
     type: 'atomic',
     name: 'Half Square Triangle',
+    width: newQuiltDesign.blockSize,
+    height: newQuiltDesign.blockSize,
     patches: [
       { id: 0, path: 'M 0 0 V 100 L 100 0 Z', fabricId: 4 },
       { id: 1, path: 'M 0 100 H 100 V 0 Z', fabricId: 6 },

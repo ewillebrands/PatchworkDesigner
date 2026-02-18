@@ -44,6 +44,8 @@ function deselectPatch() {
       <h1>{{ currentBlockDesign.name }}</h1>
       <GenericBlock
         :block="currentBlockDesign"
+        :width="currentBlockDesign.width ? `${50 * currentBlockDesign.width}px` : '400px'"
+        :height="currentBlockDesign.height ? `${50 * currentBlockDesign.height}px` : '400px'"
         class="outline-patch blockdesign"
         editable
         @patchSelected="(patch: number) => (selectedPatch = patch)"

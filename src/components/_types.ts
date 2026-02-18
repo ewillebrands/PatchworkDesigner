@@ -50,6 +50,8 @@ export interface AtomicBlock {
   type: 'atomic'
   id: string
   name: string
+  width?: number // in units (e.g., inches)
+  height?: number // in units (e.g., inches)
   patches: PatchDefinition[]
   viewBox?: string // defaults to "0 0 100 100" for square blocks
 }
@@ -59,6 +61,8 @@ export interface CompoundBlock {
   type: 'compound'
   id: string
   name: string
+  width?: number // in units (e.g., inches)
+  height?: number // in units (e.g., inches)
   rows: number
   columns: number
   subBlocks: (AtomicBlock | CompoundBlock)[] // recursive!
