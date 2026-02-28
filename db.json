@@ -41,14 +41,14 @@
     },
     {
       "type": "compound",
-      "id": "4",
+      "id": "1",
       "name": "Complex",
       "rows": 2,
       "columns": 2,
       "subBlocks": [
         {
           "type": "atomic",
-          "id": "1",
+          "id": "1.1",
           "name": "HST",
           "patches": [
             { "id": 0, "path": "M 0 0 V 100 L 100 0 Z", "fabricId": 1 },
@@ -57,14 +57,14 @@
         },
         {
           "type": "compound",
-          "id": "4",
+          "id": "1.2",
           "name": "Four Patch",
           "rows": 2,
           "columns": 2,
           "subBlocks": [
             {
               "type": "atomic",
-              "id": "1",
+              "id": "1.2.1",
               "name": "HST",
               "patches": [
                 { "id": 0, "path": "M 0 0 V 100 L 100 0 Z", "fabricId": 1 },
@@ -73,19 +73,19 @@
             },
             {
               "type": "atomic",
-              "id": "2",
+              "id": "1.2.2",
               "name": "Plain",
               "patches": [{ "id": 0, "path": "M 0 0 H 100 V 100 H 0 Z", "fabricId": 3 }]
             },
             {
               "type": "atomic",
-              "id": "3",
+              "id": "1.2.3",
               "name": "Plain",
               "patches": [{ "id": 0, "path": "M 0 0 H 100 V 100 H 0 Z", "fabricId": 4 }]
             },
             {
               "type": "atomic",
-              "id": "4",
+              "id": "1.2.4",
               "name": "HST",
               "patches": [
                 { "id": 0, "path": "M 0 0 V 100 L 100 0 Z", "fabricId": 5 },
@@ -96,14 +96,14 @@
         },
         {
           "type": "compound",
-          "id": "4",
+          "id": "1.3",
           "name": "Four Patch",
           "rows": 2,
           "columns": 2,
           "subBlocks": [
             {
               "type": "atomic",
-              "id": "1",
+              "id": "1.3.1",
               "name": "HST",
               "patches": [
                 { "id": 0, "path": "M 0 0 V 100 L 100 0 Z", "fabricId": 1 },
@@ -112,19 +112,19 @@
             },
             {
               "type": "atomic",
-              "id": "2",
+              "id": "1.3.2",
               "name": "Plain",
               "patches": [{ "id": 0, "path": "M 0 0 H 100 V 100 H 0 Z", "fabricId": 3 }]
             },
             {
               "type": "atomic",
-              "id": "3",
+              "id": "1.3.3",
               "name": "Plain",
               "patches": [{ "id": 0, "path": "M 0 0 H 100 V 100 H 0 Z", "fabricId": 4 }]
             },
             {
               "type": "atomic",
-              "id": "4",
+              "id": "1.3.4",
               "name": "HST",
               "patches": [
                 { "id": 0, "path": "M 0 0 V 100 L 100 0 Z", "fabricId": 5 },
@@ -135,7 +135,7 @@
         },
         {
           "type": "atomic",
-          "id": "4",
+          "id": "1.4",
           "name": "HST",
           "patches": [
             { "id": 0, "path": "M 0 0 V 100 L 100 0 Z", "fabricId": 5 },
