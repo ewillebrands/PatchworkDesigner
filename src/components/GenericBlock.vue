@@ -17,8 +17,8 @@ const fabricsStore = useFabricsStore()
 const blockDesignsStore = useBlockDesignsStore()
 const selectedPieces = computed(() => blockDesignsStore.selectedPieces)
 
-const getAtomicDomId = () => `atomic-${instanceId.value}`
 const getCompoundDomId = () => `compound-${instanceId.value}`
+const getAtomicDomId = () => `atomic-${instanceId.value}`
 const getPatchDomId = (patchId: string | number) => `patch-${instanceId.value}-${patchId}`
 const getMaskDomId = (patchId: string | number) => `mask-${instanceId.value}-${patchId}`
 
@@ -103,7 +103,15 @@ function handlePatchClick(event: MouseEvent, patchId: string) {
   if (!props.editable) return
 
   const selectionChain = getSelectionChainFromPatchClick(event, patchId)
-  cycleSelection(event, selectionChain)
+
+  // If it's an atomic block with only one patch, omit the patch form the selection chain for cycling,
+  // to avoid seemingly double selection of atomic block and its single patch.
+  // Unless Alt key is pressed, in which case we allow selecting the patch itself.
+  const isSinglePatchAtomic = type.value === 'atomic' && atomicPatchEntries.value.length === 1
+  const chainForCycle =
+    !event.altKey && isSinglePatchAtomic ? selectionChain.slice(0, -1) : selectionChain
+
+  cycleSelection(event, chainForCycle)
 
   console.log('Patch clicked:', event, patchId, 'Selection chain:', selectionChain)
 }
