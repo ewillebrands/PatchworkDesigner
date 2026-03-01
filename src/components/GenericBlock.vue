@@ -114,42 +114,6 @@ function handlePatchClick(event: MouseEvent, pieceId: string) {
   console.log('Patch clicked:', event, pieceId, 'Selection chain:', selectionChain)
 }
 
-function handleAtomicBlockClick(event: MouseEvent, pieceId: string) {
-  event.stopPropagation()
-
-  if (!props.editable || event.altKey) return
-  if (event.target !== event.currentTarget) return
-
-  if (!event.shiftKey) {
-    blockDesignsStore.clearSelectedPieces()
-  }
-  if (!selectedPieces.value.includes(pieceId)) {
-    blockDesignsStore.addSelectedPieceId(pieceId)
-  } else {
-    // If already selected, deselect it
-    blockDesignsStore.subtractSelectedPieceId(pieceId)
-  }
-  console.log('Atomic block clicked:', event, pieceId, 'Selected pieces:', selectedPieces.value)
-}
-
-function handleCompoundBlockClick(event: MouseEvent, pieceId: string) {
-  event.stopPropagation()
-
-  if (!props.editable || event.altKey) return
-  if (event.target !== event.currentTarget) return
-
-  if (!event.shiftKey) {
-    blockDesignsStore.clearSelectedPieces()
-  }
-
-  if (!selectedPieces.value.includes(pieceId)) {
-    blockDesignsStore.addSelectedPieceId(pieceId)
-  } else {
-    blockDesignsStore.subtractSelectedPieceId(pieceId)
-  }
-
-  console.log('Compound block clicked:', event, pieceId, 'Selected pieces:', selectedPieces.value)
-}
 
 onUnmounted(() => {
   // Clear selected pieces when unmounted to avoid stale selection
@@ -165,7 +129,6 @@ onUnmounted(() => {
     :id="getAtomicDomId()"
     xmlns="http://www.w3.org/2000/svg"
     preserveAspectRatio="none"
-    @click="handleAtomicBlockClick($event, getAtomicDomId())"
     class="atomic-block"
     :class="{ selected: selectedPieces.includes(getAtomicDomId()) }"
   >
@@ -215,7 +178,7 @@ onUnmounted(() => {
     :id="getCompoundDomId()"
     class="compound-block"
     :class="{ selected: selectedPieces.includes(getCompoundDomId()) }"
-    @click="handleCompoundBlockClick($event, getCompoundDomId())"
+
   >
     <g v-for="(cell, index) in gridLayout" :key="index">
       <svg
