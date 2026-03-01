@@ -1,7 +1,8 @@
 <!-- GenericBlock.vue -->
 <script setup lang="ts">
-import { computed, useId } from 'vue'
+import { computed, onUnmounted } from 'vue'
 import { useFabricsStore } from '@/stores/fabrics'
+import { useBlockDesignsStore } from '@/stores/blockdesigns'
 import type { BlockDesign, AtomicBlock, CompoundBlock } from './_types'
 
 const props = defineProps<{
@@ -10,11 +11,28 @@ const props = defineProps<{
 }>()
 
 // Generate unique ID for this component instance to avoid mask ID conflicts
-const instanceId = useId()
+const instanceId = props.block?.id
 
 const fabricsStore = useFabricsStore()
+const blockDesignsStore = useBlockDesignsStore()
+const selectedPieceId = computed(() => blockDesignsStore.selectedPieceId)
+
+const getAtomicDomId = () => `atomic-${instanceId}`
+const getCompoundDomId = () => `compound-${instanceId}`
+const getPatchDomId = (patchId: string | number) => `patch-${instanceId}-${patchId}`
+const getMaskDomId = (patchId: string | number) => `mask-${instanceId}-${patchId}`
 
 const type = computed(() => props.block?.type)
+
+const atomicPatchEntries = computed(() => {
+  if (props.block?.type !== 'atomic') return []
+
+  return (props.block as AtomicBlock).patches.map((patch) => ({
+    patch,
+    patchDomId: getPatchDomId(patch.id),
+    maskDomId: getMaskDomId(patch.id),
+  }))
+})
 
 // For compound blocks - layout sub-blocks in grid
 const gridLayout = computed(() => {
@@ -31,6 +49,26 @@ const gridLayout = computed(() => {
     height: cellHeight,
   }))
 })
+
+// Emit selected patch ID when a patch is clicked (only if editable)
+
+function handlePatchClick(event: MouseEvent, pieceId: string) {
+  if (props.editable) {
+    blockDesignsStore.setSelectedPieceId(pieceId)
+    console.log('Patch clicked:', event, pieceId, 'Selected piece:', selectedPieceId.value)
+  }
+}
+function handleCompoundBlockClick(event: MouseEvent) {
+  if (props.editable && !event.altKey) console.log('Compound block clicked:', event)
+}
+function handleAtomicBlockClick(event: MouseEvent) {
+  if (props.editable && !event.altKey) console.log('Atomic block clicked:', event)
+}
+
+onUnmounted(() => {
+  // Clear selected piece when unmounted to avoid stale selection
+  if (props.editable) blockDesignsStore.setSelectedPieceId(null)
+})
 </script>
 
 <template>
@@ -38,32 +76,34 @@ const gridLayout = computed(() => {
   <svg
     v-if="type === 'atomic'"
     :viewBox="(block as AtomicBlock).viewBox || '0 0 100 100'"
+    :id="getAtomicDomId()"
     xmlns="http://www.w3.org/2000/svg"
     preserveAspectRatio="none"
+    @click="handleAtomicBlockClick"
   >
     <defs>
-      <mask
-        v-for="patch in (block as AtomicBlock).patches"
-        :key="`mask-${instanceId}-${patch.id}`"
-        :id="`mask-${instanceId}-${patch.id}`"
-      >
-        <path :d="patch.path" fill="white" />
+      <mask v-for="entry in atomicPatchEntries" :key="entry.maskDomId" :id="entry.maskDomId">
+        <path :d="entry.patch.path" fill="white" />
       </mask>
     </defs>
 
-    <g
-      v-for="patch in (block as AtomicBlock).patches"
-      :key="`patch-${instanceId}-${patch.id}`"
-      :mask="`url(#mask-${instanceId}-${patch.id})`"
+    <svg
+      v-for="entry in atomicPatchEntries"
+      :key="entry.patchDomId"
+      :mask="`url(#${entry.maskDomId})`"
     >
       <path
         class="patch"
-        :d="patch.path"
-        :fill="fabricsStore.getById(patch.fabricId)?.color"
+        :class="{ selected: selectedPieceId === entry.patchDomId }"
+        :id="entry.patchDomId"
+        :d="entry.patch.path"
+        :fill="fabricsStore.getById(entry.patch.fabricId)?.color"
         stroke="rgba(0,0,0,0.5)"
         stroke-width="0.8"
+        vector-effect="non-scaling-stroke"
+        @click="handlePatchClick($event, entry.patchDomId)"
       />
-    </g>
+    </svg>
   </svg>
 
   <!-- Compound block: render grid of sub-blocks -->
@@ -72,6 +112,8 @@ const gridLayout = computed(() => {
     viewBox="0 0 100 100"
     xmlns="http://www.w3.org/2000/svg"
     preserveAspectRatio="none"
+    :id="getCompoundDomId()"
+    @click="handleCompoundBlockClick"
   >
     <g v-for="(cell, index) in gridLayout" :key="index">
       <svg
