@@ -57,7 +57,12 @@ function handlePatchClick(event: MouseEvent, pieceId: string) {
     if (!event.shiftKey) {
       blockDesignsStore.clearSelectedPieces()
     }
-    blockDesignsStore.addSelectedPieceId(pieceId)
+    if (!selectedPieces.value.includes(pieceId)) {
+      blockDesignsStore.addSelectedPieceId(pieceId)
+    } else {
+      // If already selected, deselect it
+      blockDesignsStore.subtractSelectedPieceId(pieceId)
+    }
     console.log('Patch clicked:', event, pieceId, 'Selected pieces:', selectedPieces.value)
   }
 }

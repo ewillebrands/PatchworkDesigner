@@ -38,18 +38,23 @@ export const useBlockDesignsStore = defineStore('blockdesigns', {
       const newBlockId = useId()
       this.blockDesigns.push({ ...design, id: newBlockId } as BlockDesign)
     },
+
     removeBlockDesign(id: string) {
       this.blockDesigns = this.blockDesigns.filter((design) => design.id !== id)
     },
 
+    // Selection management for pieces
     addSelectedPieceId(pieceId: string) {
       this.selectedPieces.push(pieceId)
     },
-
+    subtractSelectedPieceId(pieceId: string) {
+      this.selectedPieces = this.selectedPieces.filter((id) => id !== pieceId)
+    },
     clearSelectedPieces() {
       this.selectedPieces = []
     },
 
+    // Change managing functions
     changeBlockDesignFabric(designId: string, oldFabricId: number, newFabricId: number) {
       const design = this.blockDesigns.find((d) => d.id === designId)
       if (!design) return
