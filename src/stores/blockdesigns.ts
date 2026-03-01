@@ -6,7 +6,7 @@ import { useId } from 'vue'
 export const useBlockDesignsStore = defineStore('blockdesigns', {
   state: () => ({
     blockDesigns: [] as BlockDesign[],
-    selectedPieceId: null as string | null,
+    selectedPieces: [] as string[],
     isLoading: false,
     error: null as Error | null,
   }),
@@ -42,8 +42,12 @@ export const useBlockDesignsStore = defineStore('blockdesigns', {
       this.blockDesigns = this.blockDesigns.filter((design) => design.id !== id)
     },
 
-    setSelectedPieceId(pieceId: string | null) {
-      this.selectedPieceId = pieceId
+    addSelectedPieceId(pieceId: string) {
+      this.selectedPieces.push(pieceId)
+    },
+
+    clearSelectedPieces() {
+      this.selectedPieces = []
     },
 
     changeBlockDesignFabric(designId: string, oldFabricId: number, newFabricId: number) {

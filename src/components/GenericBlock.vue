@@ -15,7 +15,7 @@ const instanceId = props.block?.id
 
 const fabricsStore = useFabricsStore()
 const blockDesignsStore = useBlockDesignsStore()
-const selectedPieceId = computed(() => blockDesignsStore.selectedPieceId)
+const selectedPieces = computed(() => blockDesignsStore.selectedPieces)
 
 const getAtomicDomId = () => `atomic-${instanceId}`
 const getCompoundDomId = () => `compound-${instanceId}`
@@ -54,8 +54,11 @@ const gridLayout = computed(() => {
 
 function handlePatchClick(event: MouseEvent, pieceId: string) {
   if (props.editable) {
-    blockDesignsStore.setSelectedPieceId(pieceId)
-    console.log('Patch clicked:', event, pieceId, 'Selected piece:', selectedPieceId.value)
+    if (!event.shiftKey) {
+      blockDesignsStore.clearSelectedPieces()
+    }
+    blockDesignsStore.addSelectedPieceId(pieceId)
+    console.log('Patch clicked:', event, pieceId, 'Selected pieces:', selectedPieces.value)
   }
 }
 function handleCompoundBlockClick(event: MouseEvent) {
@@ -66,8 +69,8 @@ function handleAtomicBlockClick(event: MouseEvent) {
 }
 
 onUnmounted(() => {
-  // Clear selected piece when unmounted to avoid stale selection
-  if (props.editable) blockDesignsStore.setSelectedPieceId(null)
+  // Clear selected pieces when unmounted to avoid stale selection
+  if (props.editable) blockDesignsStore.clearSelectedPieces()
 })
 </script>
 
@@ -94,7 +97,7 @@ onUnmounted(() => {
     >
       <path
         class="patch"
-        :class="{ selected: selectedPieceId === entry.patchDomId }"
+        :class="{ selected: selectedPieces.includes(entry.patchDomId) }"
         :id="entry.patchDomId"
         :d="entry.patch.path"
         :fill="fabricsStore.getById(entry.patch.fabricId)?.color"
