@@ -53,6 +53,9 @@ export const useBlockDesignsStore = defineStore('blockdesigns', {
     clearSelectedPieces() {
       this.selectedPieces = []
     },
+    setSelectedPieces(pieceIds: string[]) {
+      this.selectedPieces = [...new Set(pieceIds)]
+    },
 
     // Change managing functions
     changeBlockDesignFabric(designId: string, oldFabricId: number, newFabricId: number) {

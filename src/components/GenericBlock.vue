@@ -5,22 +5,28 @@ import { useFabricsStore } from '@/stores/fabrics'
 import { useBlockDesignsStore } from '@/stores/blockdesigns'
 import type { BlockDesign, AtomicBlock, CompoundBlock } from './_types'
 
-const props = defineProps<{
-  block: BlockDesign | null
-  editable?: boolean
-}>()
+const props = withDefaults(
+  defineProps<{
+    block: BlockDesign | null
+    editable?: boolean
+    renderPath?: string
+  }>(),
+  {
+    renderPath: 'root',
+  },
+)
 
 // Generate unique ID for this component instance to avoid mask ID conflicts
-const instanceId = props.block?.id
+const instanceId = computed(() => `${props.renderPath}-${props.block?.id || 'none'}`)
 
 const fabricsStore = useFabricsStore()
 const blockDesignsStore = useBlockDesignsStore()
 const selectedPieces = computed(() => blockDesignsStore.selectedPieces)
 
-const getAtomicDomId = () => `atomic-${instanceId}`
-const getCompoundDomId = () => `compound-${instanceId}`
-const getPatchDomId = (patchId: string | number) => `patch-${instanceId}-${patchId}`
-const getMaskDomId = (patchId: string | number) => `mask-${instanceId}-${patchId}`
+const getAtomicDomId = () => `atomic-${instanceId.value}`
+const getCompoundDomId = () => `compound-${instanceId.value}`
+const getPatchDomId = (patchId: string | number) => `patch-${instanceId.value}-${patchId}`
+const getMaskDomId = (patchId: string | number) => `mask-${instanceId.value}-${patchId}`
 
 const type = computed(() => props.block?.type)
 
@@ -52,25 +58,97 @@ const gridLayout = computed(() => {
 
 // Emit selected patch ID when a patch is clicked (only if editable)
 
-function handlePatchClick(event: MouseEvent, pieceId: string) {
-  if (props.editable) {
-    if (!event.shiftKey) {
-      blockDesignsStore.clearSelectedPieces()
+function getSelectionChainFromPatchClick(event: MouseEvent, patchDomId: string) {
+  const ancestorLayerIds = event
+    .composedPath()
+    .filter((node): node is SVGElement => node instanceof SVGElement)
+    .map((node) => node.id)
+    .filter((id) => id.startsWith('compound-') || id.startsWith('atomic-'))
+
+  const topToBottomLayers = [...new Set([...ancestorLayerIds].reverse())]
+  return [...topToBottomLayers, patchDomId]
+}
+
+function getDeepestSelectedIndex(selectionChain: string[]) {
+  for (let index = selectionChain.length - 1; index >= 0; index--) {
+    if (selectedPieces.value.includes(selectionChain[index])) {
+      return index
     }
-    if (!selectedPieces.value.includes(pieceId)) {
-      blockDesignsStore.addSelectedPieceId(pieceId)
-    } else {
-      // If already selected, deselect it
-      blockDesignsStore.subtractSelectedPieceId(pieceId)
-    }
-    console.log('Patch clicked:', event, pieceId, 'Selected pieces:', selectedPieces.value)
   }
+  return -1
 }
-function handleCompoundBlockClick(event: MouseEvent) {
-  if (props.editable && !event.altKey) console.log('Compound block clicked:', event)
+
+function cycleSelection(event: MouseEvent, selectionChain: string[]) {
+  const patchIndex = selectionChain.length - 1
+  const deepestSelectedIndex = getDeepestSelectedIndex(selectionChain)
+
+  let nextSelectedIndex = -1
+
+  if (event.altKey) {
+    nextSelectedIndex = patchIndex
+  } else if (deepestSelectedIndex === -1) {
+    nextSelectedIndex = 0
+  } else if (deepestSelectedIndex < patchIndex) {
+    nextSelectedIndex = deepestSelectedIndex + 1
+  }
+
+  const remainingSelection = event.shiftKey
+    ? selectedPieces.value.filter((id) => !selectionChain.includes(id))
+    : []
+
+  if (nextSelectedIndex >= 0) {
+    remainingSelection.push(selectionChain[nextSelectedIndex])
+  }
+
+  blockDesignsStore.setSelectedPieces(remainingSelection)
 }
-function handleAtomicBlockClick(event: MouseEvent) {
-  if (props.editable && !event.altKey) console.log('Atomic block clicked:', event)
+
+function handlePatchClick(event: MouseEvent, pieceId: string) {
+  event.stopPropagation()
+
+  if (!props.editable) return
+
+  const selectionChain = getSelectionChainFromPatchClick(event, pieceId)
+  cycleSelection(event, selectionChain)
+
+  console.log('Patch clicked:', event, pieceId, 'Selection chain:', selectionChain)
+}
+
+function handleAtomicBlockClick(event: MouseEvent, pieceId: string) {
+  event.stopPropagation()
+
+  if (!props.editable || event.altKey) return
+  if (event.target !== event.currentTarget) return
+
+  if (!event.shiftKey) {
+    blockDesignsStore.clearSelectedPieces()
+  }
+  if (!selectedPieces.value.includes(pieceId)) {
+    blockDesignsStore.addSelectedPieceId(pieceId)
+  } else {
+    // If already selected, deselect it
+    blockDesignsStore.subtractSelectedPieceId(pieceId)
+  }
+  console.log('Atomic block clicked:', event, pieceId, 'Selected pieces:', selectedPieces.value)
+}
+
+function handleCompoundBlockClick(event: MouseEvent, pieceId: string) {
+  event.stopPropagation()
+
+  if (!props.editable || event.altKey) return
+  if (event.target !== event.currentTarget) return
+
+  if (!event.shiftKey) {
+    blockDesignsStore.clearSelectedPieces()
+  }
+
+  if (!selectedPieces.value.includes(pieceId)) {
+    blockDesignsStore.addSelectedPieceId(pieceId)
+  } else {
+    blockDesignsStore.subtractSelectedPieceId(pieceId)
+  }
+
+  console.log('Compound block clicked:', event, pieceId, 'Selected pieces:', selectedPieces.value)
 }
 
 onUnmounted(() => {
@@ -87,7 +165,9 @@ onUnmounted(() => {
     :id="getAtomicDomId()"
     xmlns="http://www.w3.org/2000/svg"
     preserveAspectRatio="none"
-    @click="handleAtomicBlockClick"
+    @click="handleAtomicBlockClick($event, getAtomicDomId())"
+    class="atomic-block"
+    :class="{ selected: selectedPieces.includes(getAtomicDomId()) }"
   >
     <defs>
       <mask v-for="entry in atomicPatchEntries" :key="entry.maskDomId" :id="entry.maskDomId">
@@ -99,19 +179,31 @@ onUnmounted(() => {
       v-for="entry in atomicPatchEntries"
       :key="entry.patchDomId"
       :mask="`url(#${entry.maskDomId})`"
+      stroke="none"
+      stroke-width="0"
     >
       <path
-        class="patch"
+        class="patch-piece"
         :class="{ selected: selectedPieces.includes(entry.patchDomId) }"
         :id="entry.patchDomId"
         :d="entry.patch.path"
         :fill="fabricsStore.getById(entry.patch.fabricId)?.color"
         stroke="rgba(0,0,0,0.5)"
         stroke-width="0.8"
-        vector-effect="non-scaling-stroke"
         @click="handlePatchClick($event, entry.patchDomId)"
       />
     </svg>
+
+    <rect
+      v-if="selectedPieces.includes(getAtomicDomId())"
+      class="layer-selection-indicator"
+      x="0"
+      y="0"
+      width="100"
+      height="100"
+      fill="none"
+      pointer-events="none"
+    />
   </svg>
 
   <!-- Compound block: render grid of sub-blocks -->
@@ -121,7 +213,9 @@ onUnmounted(() => {
     xmlns="http://www.w3.org/2000/svg"
     preserveAspectRatio="none"
     :id="getCompoundDomId()"
-    @click="handleCompoundBlockClick"
+    class="compound-block"
+    :class="{ selected: selectedPieces.includes(getCompoundDomId()) }"
+    @click="handleCompoundBlockClick($event, getCompoundDomId())"
   >
     <g v-for="(cell, index) in gridLayout" :key="index">
       <svg
@@ -131,11 +225,29 @@ onUnmounted(() => {
         :height="cell.height"
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
+        stroke="none"
+        stroke-width="0"
       >
         <!-- Recursive: render sub-block (can be atomic or compound) -->
-        <GenericBlock :block="cell.block" :editable="editable" />
+        <GenericBlock
+          :block="cell.block"
+          :editable="editable"
+          :render-path="`${props.renderPath}-${index}`"
+        />
       </svg>
     </g>
+
+    <rect
+      v-if="selectedPieces.includes(getCompoundDomId())"
+      class="layer-selection-indicator"
+      x="0"
+      y="0"
+      width="100"
+      height="100"
+      fill="none"
+      vector-effect="non-scaling-stroke"
+      pointer-events="none"
+    />
   </svg>
   <svg v-else viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
     <rect x="0" y="0" width="100" height="100" fill="red" />
