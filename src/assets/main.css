@@ -132,12 +132,12 @@ dialog::backdrop {
   background: rgba(0, 0, 0, 0.6);
 }
 
-.patch-piece {
+.patch {
   stroke: rgba(0, 0, 0, 0.5);
   stroke-width: 0.4;
   vector-effect: non-scaling-stroke;
 }
-.patch-piece.selected {
+.patch.selected {
   stroke: rgba(255, 0, 0, 0.8);
   stroke-width: 2;
 }

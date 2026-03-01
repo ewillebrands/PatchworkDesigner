@@ -103,17 +103,16 @@ function cycleSelection(event: MouseEvent, selectionChain: string[]) {
   blockDesignsStore.setSelectedPieces(remainingSelection)
 }
 
-function handlePatchClick(event: MouseEvent, pieceId: string) {
+function handlePatchClick(event: MouseEvent, patchId: string) {
   event.stopPropagation()
 
   if (!props.editable) return
 
-  const selectionChain = getSelectionChainFromPatchClick(event, pieceId)
+  const selectionChain = getSelectionChainFromPatchClick(event, patchId)
   cycleSelection(event, selectionChain)
 
-  console.log('Patch clicked:', event, pieceId, 'Selection chain:', selectionChain)
+  console.log('Patch clicked:', event, patchId, 'Selection chain:', selectionChain)
 }
-
 
 onUnmounted(() => {
   // Clear selected pieces when unmounted to avoid stale selection
@@ -146,7 +145,7 @@ onUnmounted(() => {
       stroke-width="0"
     >
       <path
-        class="patch-piece"
+        class="patch"
         :class="{ selected: selectedPieces.includes(entry.patchDomId) }"
         :id="entry.patchDomId"
         :d="entry.patch.path"
@@ -178,7 +177,6 @@ onUnmounted(() => {
     :id="getCompoundDomId()"
     class="compound-block"
     :class="{ selected: selectedPieces.includes(getCompoundDomId()) }"
-
   >
     <g v-for="(cell, index) in gridLayout" :key="index">
       <svg
