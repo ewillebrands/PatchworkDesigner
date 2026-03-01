@@ -5,19 +5,13 @@ import { useFabricsStore } from '@/stores/fabrics'
 import { useBlockDesignsStore } from '@/stores/blockdesigns'
 import type { BlockDesign, AtomicBlock, CompoundBlock } from './_types'
 
-const props = withDefaults(
-  defineProps<{
-    block: BlockDesign | null
-    editable?: boolean
-    renderPath?: string
-  }>(),
-  {
-    renderPath: 'root',
-  },
-)
+const props = defineProps<{
+  block: BlockDesign | null
+  editable?: boolean
+}>()
 
 // Generate unique ID for this component instance to avoid mask ID conflicts
-const instanceId = computed(() => `${props.renderPath}-${props.block?.id || 'none'}`)
+const instanceId = computed(() => `${props.block?.id || 'none'}`)
 
 const fabricsStore = useFabricsStore()
 const blockDesignsStore = useBlockDesignsStore()
@@ -190,11 +184,7 @@ onUnmounted(() => {
         stroke-width="0"
       >
         <!-- Recursive: render sub-block (can be atomic or compound) -->
-        <GenericBlock
-          :block="cell.block"
-          :editable="editable"
-          :render-path="`${props.renderPath}-${index}`"
-        />
+        <GenericBlock :block="cell.block" :editable="editable" :render-path="`${index}`" />
       </svg>
     </g>
 
