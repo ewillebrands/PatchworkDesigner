@@ -12,7 +12,7 @@ export const useFabricsStore = defineStore('fabrics', {
   getters: {
     getAll: (state) => state.fabrics,
     getById: (state) => {
-      return (id: number) => state.fabrics.find((fabric) => fabric.id === id)
+      return (id: string) => state.fabrics.find((fabric) => fabric.id === id)
     },
     getByName: (state) => {
       return (name: string) => state.fabrics.find((fabric) => fabric.name === name)
@@ -26,7 +26,7 @@ export const useFabricsStore = defineStore('fabrics', {
       try {
         const response = await QuiltprojectService.getFabricsCollection()
         this.fabrics = response.data
-        const ids = this.fabrics.map((f: fabric) => f.id)
+        const ids = this.fabrics.map((f: fabric) => parseInt(f.id))
         this.highestId = ids.length ? Math.max(...ids) + 1 : 0
       } catch (err) {
         this.error = err as Error
@@ -36,9 +36,10 @@ export const useFabricsStore = defineStore('fabrics', {
       }
     },
     addFabric(fabric: fabric) {
-      this.fabrics.push({ ...fabric, id: this.highestId++ })
+      this.fabrics.push({ ...fabric, id: this.highestId.toString() })
+      this.highestId++
     },
-    removeFabric(fabricId: number) {
+    removeFabric(fabricId: string) {
       this.fabrics = this.fabrics.filter((fabric) => fabric.id !== fabricId)
     },
   },

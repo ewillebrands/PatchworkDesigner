@@ -18,6 +18,25 @@ export const useBlockDesignsStore = defineStore('blockdesigns', {
     getByName: (state) => {
       return (name: string) => state.blockDesigns.find((design) => design.name === name)
     },
+    getSelectedPieces: (state) => state.selectedPieces,
+    getFabricsForSelectedPieces: (state) => {
+      const fabrics = new Set<string>()
+      state.blockDesigns.forEach((design) => {
+        const collectFabrics = (block: BlockDesign) => {
+          if (block.type === 'atomic') {
+            block.patches.forEach((patch) => {
+              if (state.selectedPieces.includes(patch.id)) {
+                fabrics.add(patch.fabricId)
+              }
+            })
+          } else if (block.type === 'compound') {
+            block.subBlocks.forEach(collectFabrics)
+          }
+        }
+        collectFabrics(design)
+      })
+      return Array.from(fabrics)
+    },
   },
   actions: {
     // populate store from database
@@ -58,7 +77,7 @@ export const useBlockDesignsStore = defineStore('blockdesigns', {
     },
 
     // Change managing functions
-    changeBlockDesignFabric(designId: string, oldFabricId: number, newFabricId: number) {
+    changeBlockDesignFabric(designId: string, oldFabricId: string, newFabricId: string) {
       const design = this.blockDesigns.find((d) => d.id === designId)
       if (!design) return
 
@@ -86,7 +105,7 @@ export const useBlockDesignsStore = defineStore('blockdesigns', {
     // Simple atomic block, patch 1: path = [1]
     // Compound block, sub-block 2, patch 1: path = [2, 1]
     // Nested compound, sub-block 0 → sub-block 3 → patch 2: path = [0, 3, 2]
-    changePatchFabric(designId: string, path: number[], newFabricId: number) {
+    changePatchFabric(designId: string, path: number[], newFabricId: string) {
       const design = this.blockDesigns.find((d) => d.id === designId)
       if (!design) return
 

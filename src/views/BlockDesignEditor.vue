@@ -4,7 +4,7 @@ import { ref, computed, watch } from 'vue'
 import SideBar from '@/components/SideBar.vue'
 import AccordionPanel from '@/components/AccordionPanel.vue'
 import BlockFabrics from '@/components/BlockFabrics.vue'
-import PatchFabric from '@/components/PatchFabric.vue'
+import SelectionFabrics from '@/components/SelectionFabrics.vue'
 import GenericBlock from '@/components/GenericBlock.vue'
 import { router } from '@/router'
 import { useBlockDesignsStore } from '@/stores/blockdesigns'
@@ -63,7 +63,7 @@ function deselectPatch() {
       v-if="currentBlockDesign && selectedPatch !== null"
       :title="`Selected Patch ${selectedPatch} Fabric`"
     >
-      <PatchFabric :blockDesignId="currentBlockDesign.id" :patch="selectedPatch" />
+      <SelectionFabrics :blockDesignId="currentBlockDesign.id" :patch="selectedPatch" />
     </AccordionPanel>
   </SideBar>
 </template>

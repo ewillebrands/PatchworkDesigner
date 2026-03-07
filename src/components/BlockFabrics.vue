@@ -24,7 +24,7 @@ const fabricsForDesign = computed<fabric[]>(() => {
   if (!design) return []
 
   // Recursively collect all fabricIds from the block design
-  const collectFabricIds = (block: BlockDesign): number[] => {
+  const collectFabricIds = (block: BlockDesign): string[] => {
     if (block.type === 'atomic') {
       return block.patches.map((patch) => patch.fabricId)
     } else if (block.type === 'compound') {
@@ -48,8 +48,8 @@ const handleFabricChanged = ({
   oldFabric,
   newFabric,
 }: {
-  oldFabric: number
-  newFabric: number
+  oldFabric: string
+  newFabric: string
 }) => {
   blockDesignsStore.changeBlockDesignFabric(props.blockDesignId, oldFabric, newFabric)
 }

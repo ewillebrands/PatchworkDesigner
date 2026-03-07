@@ -13,7 +13,7 @@ const emit = defineEmits(['fabricPicked'])
 
 const fabricsCollection = ref<fabric[]>([])
 
-const pickFabric = (newFabric: number) => {
+const pickFabric = (newFabric: string) => {
   emit('fabricPicked', newFabric)
   console.log('Picked fabric', newFabric)
 }

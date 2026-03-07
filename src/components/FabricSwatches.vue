@@ -2,25 +2,38 @@
 import { computed } from 'vue'
 import type { fabric } from './_types'
 import FabricPicker from './FabricPicker.vue'
+import { useFabricsStore } from '@/stores/fabrics'
+
+const fabricsStore = useFabricsStore()
 
 const emit = defineEmits(['fabricChanged', 'fabricSelected'])
 const props = defineProps<{
-  fabrics: fabric[]
+  fabrics: fabric[] | string[]
   editable?: boolean
   deduplicated?: boolean
 }>()
 
-const changeFabric = (oldFabric: number, newFabric: number) => {
+const changeFabric = (oldFabric: string, newFabric: string) => {
   emit('fabricChanged', { oldFabric, newFabric })
   console.log('Emitted fabric change', oldFabric, newFabric)
 }
 
-// simplified, reactive dedupe assuming every fabric has a numeric id
+const fabrics = computed(() => {
+  if (typeof props.fabrics[0] === 'string') {
+    // If fabrics are passed as strings, we need to resolve them to fabric objects
+    return (props.fabrics as string[])
+      .map((fabricId) => fabricsStore.getById(fabricId))
+      .filter(Boolean) as fabric[]
+  }
+  return props.fabrics as fabric[]
+})
+
+// simplified, reactive dedupe assuming every fabric has a numeric id,
 const visibleFabrics = computed(() => {
-  const allFabrics = props.fabrics ?? []
+  const allFabrics = fabrics.value ?? []
   if (!props.deduplicated) return allFabrics
 
-  const seen = new Set<number>()
+  const seen = new Set<string>()
   const out: fabric[] = []
   for (const f of allFabrics) {
     if (seen.has(f.id)) continue

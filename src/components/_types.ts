@@ -33,16 +33,16 @@ export interface blockPosition {
 }
 
 export interface fabric {
-  id: number
+  id: string
   name: string
   color: string
 }
 
 // Atomic patch (single shape in a square)
 export interface PatchDefinition {
-  id: number
+  id: string
   path: string
-  fabricId: number
+  fabricId: string
 }
 
 // Atomic block (single square with patches)

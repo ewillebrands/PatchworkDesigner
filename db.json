@@ -51,8 +51,8 @@
           "id": "1.1",
           "name": "HST",
           "patches": [
-            { "id": 0, "path": "M 0 0 V 100 L 100 0 Z", "fabricId": 1 },
-            { "id": 1, "path": "M 0 100 H 100 V 0 Z", "fabricId": 5 }
+            { "id": "0", "path": "M 0 0 V 100 L 100 0 Z", "fabricId": "1" },
+            { "id": "1", "path": "M 0 100 H 100 V 0 Z", "fabricId": "5" }
           ]
         },
         {
@@ -67,29 +67,29 @@
               "id": "1.2.1",
               "name": "HST",
               "patches": [
-                { "id": 0, "path": "M 0 0 V 100 L 100 0 Z", "fabricId": 1 },
-                { "id": 1, "path": "M 0 100 H 100 V 0 Z", "fabricId": 5 }
+                { "id": "0", "path": "M 0 0 V 100 L 100 0 Z", "fabricId": "1" },
+                { "id": "1", "path": "M 0 100 H 100 V 0 Z", "fabricId": "5" }
               ]
             },
             {
               "type": "atomic",
               "id": "1.2.2",
               "name": "Plain",
-              "patches": [{ "id": 0, "path": "M 0 0 H 100 V 100 H 0 Z", "fabricId": 3 }]
+              "patches": [{ "id": "0", "path": "M 0 0 H 100 V 100 H 0 Z", "fabricId": "3" }]
             },
             {
               "type": "atomic",
               "id": "1.2.3",
               "name": "Plain",
-              "patches": [{ "id": 0, "path": "M 0 0 H 100 V 100 H 0 Z", "fabricId": 4 }]
+              "patches": [{ "id": "0", "path": "M 0 0 H 100 V 100 H 0 Z", "fabricId": "4" }]
             },
             {
               "type": "atomic",
               "id": "1.2.4",
               "name": "HST",
               "patches": [
-                { "id": 0, "path": "M 0 0 V 100 L 100 0 Z", "fabricId": 5 },
-                { "id": 1, "path": "M 0 100 H 100 V 0 Z", "fabricId": 1 }
+                { "id": "0", "path": "M 0 0 V 100 L 100 0 Z", "fabricId": "5" },
+                { "id": "1", "path": "M 0 100 H 100 V 0 Z", "fabricId": "1" }
               ]
             }
           ]
@@ -106,29 +106,29 @@
               "id": "1.3.1",
               "name": "HST",
               "patches": [
-                { "id": 0, "path": "M 0 0 V 100 L 100 0 Z", "fabricId": 1 },
-                { "id": 1, "path": "M 0 100 H 100 V 0 Z", "fabricId": 5 }
+                { "id": "0", "path": "M 0 0 V 100 L 100 0 Z", "fabricId": "1" },
+                { "id": "1", "path": "M 0 100 H 100 V 0 Z", "fabricId": "5" }
               ]
             },
             {
               "type": "atomic",
               "id": "1.3.2",
               "name": "Plain",
-              "patches": [{ "id": 0, "path": "M 0 0 H 100 V 100 H 0 Z", "fabricId": 3 }]
+              "patches": [{ "id": "0", "path": "M 0 0 H 100 V 100 H 0 Z", "fabricId": "3" }]
             },
             {
               "type": "atomic",
               "id": "1.3.3",
               "name": "Plain",
-              "patches": [{ "id": 0, "path": "M 0 0 H 100 V 100 H 0 Z", "fabricId": 4 }]
+              "patches": [{ "id": "0", "path": "M 0 0 H 100 V 100 H 0 Z", "fabricId": "4" }]
             },
             {
               "type": "atomic",
               "id": "1.3.4",
               "name": "HST",
               "patches": [
-                { "id": 0, "path": "M 0 0 V 100 L 100 0 Z", "fabricId": 5 },
-                { "id": 1, "path": "M 0 100 H 100 V 0 Z", "fabricId": 1 }
+                { "id": "0", "path": "M 0 0 V 100 L 100 0 Z", "fabricId": "5" },
+                { "id": "1", "path": "M 0 100 H 100 V 0 Z", "fabricId": "1" }
               ]
             }
           ]
@@ -138,22 +138,22 @@
           "id": "1.4",
           "name": "HST",
           "patches": [
-            { "id": 0, "path": "M 0 0 V 100 L 100 0 Z", "fabricId": 5 },
-            { "id": 1, "path": "M 0 100 H 100 V 0 Z", "fabricId": 1 }
+            { "id": "0", "path": "M 0 0 V 100 L 100 0 Z", "fabricId": "5" },
+            { "id": "1", "path": "M 0 100 H 100 V 0 Z", "fabricId": "1" }
           ]
         }
       ]
     }
   ],
   "fabrics": [
-    { "id": 1, "name": "white", "color": "var(--color-white-mute)" },
-    { "id": 2, "name": "black", "color": "var(--color-black-mute)" },
-    { "id": 3, "name": "dusk-light", "color": "var(--color-dusk-light)" },
-    { "id": 4, "name": "dusk", "color": "var(--color-dusk)" },
-    { "id": 5, "name": "dusk-dark", "color": "var(--color-dusk-dark)" },
-    { "id": 6, "name": "dawn-light", "color": "var(--color-dawn-light)" },
-    { "id": 7, "name": "dawn", "color": "var(--color-dawn)" },
-    { "id": 8, "name": "dawn-dark", "color": "var(--color-dawn-dark)" }
+    { "id": "1", "name": "white", "color": "var(--color-white-mute)" },
+    { "id": "2", "name": "black", "color": "var(--color-black-mute)" },
+    { "id": "3", "name": "dusk-light", "color": "var(--color-dusk-light)" },
+    { "id": "4", "name": "dusk", "color": "var(--color-dusk)" },
+    { "id": "5", "name": "dusk-dark", "color": "var(--color-dusk-dark)" },
+    { "id": "6", "name": "dawn-light", "color": "var(--color-dawn-light)" },
+    { "id": "7", "name": "dawn", "color": "var(--color-dawn)" },
+    { "id": "8", "name": "dawn-dark", "color": "var(--color-dawn-dark)" }
   ],
   "profile": {
     "name": "typicode"
