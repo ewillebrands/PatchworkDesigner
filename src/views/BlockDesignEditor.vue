@@ -31,15 +31,11 @@ watch(
   },
   { immediate: true },
 )
-const selectedPatch = ref<number | null>(null)
-
-function deselectPatch() {
-  selectedPatch.value = null
-}
+const selection = computed(() => blockDesignsStore.selectedPieces)
 </script>
 
 <template>
-  <div class="canvas-viewer" @click.self="deselectPatch">
+  <div class="canvas-viewer">
     <div v-if="currentBlockDesign">
       <h1>{{ currentBlockDesign.name }}</h1>
       <GenericBlock
@@ -48,22 +44,15 @@ function deselectPatch() {
         :height="currentBlockDesign.height ? `${50 * currentBlockDesign.height}px` : '400px'"
         class="outline-patch blockdesign"
         editable
-        @patchSelected="(patch: number) => (selectedPatch = patch)"
       />
     </div>
   </div>
   <SideBar title="Toolbox">
-    <AccordionPanel
-      v-if="currentBlockDesign && selectedPatch === null"
-      :title="`${currentBlockDesign?.name} Fabrics`"
-    >
+    <AccordionPanel v-if="currentBlockDesign" :title="`${currentBlockDesign?.name} Fabrics`">
       <BlockFabrics :blockDesignId="currentBlockDesign.id" />
     </AccordionPanel>
-    <AccordionPanel
-      v-if="currentBlockDesign && selectedPatch !== null"
-      :title="`Selected Patch ${selectedPatch} Fabric`"
-    >
-      <SelectionFabrics :blockDesignId="currentBlockDesign.id" :patch="selectedPatch" />
+    <AccordionPanel v-if="currentBlockDesign && selection.length > 0" title="Selection Fabrics">
+      <SelectionFabrics :blockDesignId="currentBlockDesign.id" />
     </AccordionPanel>
   </SideBar>
 </template>
