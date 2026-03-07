@@ -67,14 +67,13 @@ const selectBlock = (event?: Event) => {
     position: relative;
     z-index: 1;
   }
-}
-
-.selected {
-  outline: 2px solid var(--color-primary-dark);
-  outline-offset: 2px;
-  outline-style: dotted;
-  border: none;
-  border-radius: 2px;
-  z-index: 2;
+  &.selected {
+    outline: 2px solid var(--color-primary-dark);
+    outline-offset: 2px;
+    outline-style: dotted;
+    border: none;
+    border-radius: 2px;
+    z-index: 2;
+  }
 }
 </style>
