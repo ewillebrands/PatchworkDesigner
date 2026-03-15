@@ -41,19 +41,19 @@ const selectionName = ref('Quilt')
 const selectedBlock = ref<block | null>(null)
 
 //functions to apply block design and rotation changes
-function applyBlockDesign(blockPosition: blockPosition, blockdesign: string) {
-  const blockID = localCopy.value.blockList.findIndex(
+function applyBlockDesign(blockPosition: blockPosition, blockdesignId: string) {
+  const blockIndex = localCopy.value.blockList.findIndex(
     (b: block) => b.position.row === blockPosition.row && b.position.col === blockPosition.col,
   )
-  localCopy.value.blockList[blockID].design = blockdesign
+  localCopy.value.blockList[blockIndex].designId = blockdesignId
 }
 function applyBlockRotation(blockPosition: blockPosition, blockrotation: number) {
   console.log('apply rotation triggered', blockPosition, blockrotation)
-  const blockID = localCopy.value.blockList.findIndex(
+  const blockIndex = localCopy.value.blockList.findIndex(
     (b: block) => b.position.row === blockPosition.row && b.position.col === blockPosition.col,
   )
-  console.log('found blockID', blockID)
-  localCopy.value.blockList[blockID].rotation = blockrotation
+  console.log('found blockIndex', blockIndex)
+  localCopy.value.blockList[blockIndex].rotation = blockrotation
 }
 
 function applyBorderSize(borderSize: number) {

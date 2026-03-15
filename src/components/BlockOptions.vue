@@ -83,7 +83,9 @@ function rotateRight() {
         id="blockdesign"
         @change="handleDesignChange"
       >
-        <option v-for="design in blockDesignCollection" :key="design.id">{{ design.name }}</option>
+        <option v-for="design in blockDesignCollection" :key="design.id" :value="design.id">
+          {{ design.name }}
+        </option>
       </select>
     </div>
     <div class="buttons">
