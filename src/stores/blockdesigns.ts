@@ -19,23 +19,63 @@ export const useBlockDesignsStore = defineStore('blockdesigns', {
       return (name: string) => state.blockDesigns.find((design) => design.name === name)
     },
     getSelectedPieces: (state) => state.selectedPieces,
-    getFabricsForSelectedPieces: (state) => {
-      const fabrics = new Set<string>()
-      state.blockDesigns.forEach((design) => {
-        const collectFabrics = (block: BlockDesign) => {
-          if (block.type === 'atomic') {
-            block.patches.forEach((patch) => {
-              if (state.selectedPieces.includes(patch.id)) {
+    getFabricIdsForSelectedPieces: (state) => {
+      return (blockDesignId: string) => {
+        const fabrics = new Set<string>()
+        const block: BlockDesign | undefined = state.blockDesigns.find(
+          (design) => design.id === blockDesignId,
+        )
+
+        // Recursive function to search the subblock and find patch(es) based on the path
+        const getFabricsFromPiece = (piece: BlockDesign, path: string[]) => {
+          // Base case: if it's an atomic block, we check the patches
+          if (piece.type === 'atomic') {
+            // If path length is 1, we want all patches of this atomic block
+            if (path.length === 1) {
+              piece.patches.forEach((patch) => {
                 fabrics.add(patch.fabricId)
-              }
+              })
+              // If path length is greater than 1, we want a specific patch
+            } else {
+              fabrics.add(piece.patches[parseInt(path[1])].fabricId)
+            }
+            // Recursive case: if it's a compound block, we need to go deeper
+          } else if (piece.type === 'compound') {
+            piece.subBlocks.forEach((subBlock) => {
+              getFabricsFromPiece(subBlock, path)
             })
-          } else if (block.type === 'compound') {
-            block.subBlocks.forEach(collectFabrics)
           }
         }
-        collectFabrics(design)
-      })
-      return Array.from(fabrics)
+
+        const getPieceFromBlock = (block: BlockDesign, pathId: string): BlockDesign | undefined => {
+          if (block.id === pathId) {
+            return block
+          }
+          // If the piece does not match the path, we need to search deeper if it's a compound block
+          else if (block.type === 'compound') {
+            for (const subBlock of block.subBlocks) {
+              const result = getPieceFromBlock(subBlock, pathId)
+              if (result) return result
+            }
+          }
+          return undefined
+        }
+
+        state.selectedPieces.forEach((pieceId) => {
+          const [type, ...path] = pieceId.split(/\./)
+          console.log('Finding fabrics for pieceId:', pieceId, 'of type:', type, 'path:', path)
+
+          if (block !== undefined) {
+            const foundPiece = getPieceFromBlock(block, path[0])
+            if (foundPiece !== undefined) {
+              getFabricsFromPiece(foundPiece, path)
+            }
+          }
+        })
+
+        console.log('Fabrics found for selected pieces:', Array.from(fabrics))
+        return Array.from(fabrics)
+      }
     },
   },
   actions: {
@@ -101,6 +141,7 @@ export const useBlockDesignsStore = defineStore('blockdesigns', {
       replaceFabricInBlock(design)
     },
 
+    //TODO: function will not work with current data structure, needs to be adapted to use path to find correct patch
     // Simple atomic block, patch 0: path = [0]
     // Simple atomic block, patch 1: path = [1]
     // Compound block, sub-block 2, patch 1: path = [2, 1]

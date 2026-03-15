@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { BlockDesign } from '@/components/_types'
-import { ref, computed, watch } from 'vue'
+import { computed, watch } from 'vue'
 import SideBar from '@/components/SideBar.vue'
 import AccordionPanel from '@/components/AccordionPanel.vue'
 import BlockFabrics from '@/components/BlockFabrics.vue'

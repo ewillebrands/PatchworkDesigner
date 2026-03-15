@@ -17,10 +17,10 @@ const fabricsStore = useFabricsStore()
 const blockDesignsStore = useBlockDesignsStore()
 const selectedPieces = computed(() => blockDesignsStore.selectedPieces)
 
-const getCompoundDomId = () => `compound-${instanceId.value}`
-const getAtomicDomId = () => `atomic-${instanceId.value}`
-const getPatchDomId = (patchId: string | number) => `patch-${instanceId.value}-${patchId}`
-const getMaskDomId = (patchId: string | number) => `mask-${instanceId.value}-${patchId}`
+const getCompoundDomId = () => `compound.${instanceId.value}`
+const getAtomicDomId = () => `atomic.${instanceId.value}`
+const getPatchDomId = (patchId: string | number) => `patch.${instanceId.value}.${patchId}`
+const getMaskDomId = (patchId: string | number) => `mask.${instanceId.value}.${patchId}`
 
 const type = computed(() => props.block?.type)
 
@@ -57,7 +57,7 @@ function getSelectionChainFromPatchClick(event: MouseEvent, patchDomId: string) 
     .composedPath()
     .filter((node): node is SVGElement => node instanceof SVGElement)
     .map((node) => node.id)
-    .filter((id) => id.startsWith('compound-') || id.startsWith('atomic-'))
+    .filter((id) => id.startsWith('compound.') || id.startsWith('atomic.'))
 
   const topToBottomLayers = [...new Set([...ancestorLayerIds].reverse())]
   return [...topToBottomLayers, patchDomId]

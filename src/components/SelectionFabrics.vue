@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onUpdated } from 'vue'
 import FabricSwatches from './FabricSwatches.vue'
 
 import { useBlockDesignsStore } from '@/stores/blockdesigns'
@@ -13,7 +13,9 @@ const props = defineProps<{
 const selection = computed(() => blockDesignsStore.selectedPieces)
 
 // object with fabricIds from blockdesignstore returned in an array
-const fabricsForSelection = computed(() => blockDesignsStore.getFabricsForSelectedPieces)
+const fabricIds = computed(() =>
+  blockDesignsStore.getFabricIdsForSelectedPieces(props.blockDesignId),
+)
 
 // destructure only newFabric, ignore oldFabric (or any other fields)
 const handleFabricChanged = ({ newFabric }: { oldFabric?: string; newFabric: string }) => {
@@ -22,14 +24,24 @@ const handleFabricChanged = ({ newFabric }: { oldFabric?: string; newFabric: str
   )
   // blockDesignsStore.changePatchFabric(props.blockDesignId, props.patch, newFabric)
 }
+
+onUpdated(() => {
+  console.log(
+    'SelectionFabrics updated with blockDesignId',
+    props.blockDesignId,
+    'and selection',
+    selection.value,
+    'and fabricIds',
+    fabricIds.value,
+  )
+})
 </script>
 
 <template>
   <FabricSwatches
     editable
-    deduplicated
-    v-if="fabricsForSelection.length > 0"
-    :fabrics="fabricsForSelection"
+    v-if="fabricIds.length > 0"
+    :fabrics="fabricIds"
     @fabricChanged="handleFabricChanged"
   />
 </template>
