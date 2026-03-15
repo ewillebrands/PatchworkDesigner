@@ -16,14 +16,14 @@ import isEqual from 'fast-deep-equal'
 import { useRouter } from 'vue-router'
 
 const props = defineProps<{
-  name: string
+  id: string
 }>()
 
 const quiltDesignsStore = useQuiltDesignsStore()
 const router = useRouter()
 
-const localCopy = ref(cloneDeep(quiltDesignsStore.getByName(props.name))) // editable
-const isEdited = computed(() => !isEqual(localCopy.value, quiltDesignsStore.getByName(props.name)))
+const localCopy = ref(cloneDeep(quiltDesignsStore.getById(props.id))) // editable
+const isEdited = computed(() => !isEqual(localCopy.value, quiltDesignsStore.getById(props.id)))
 
 // if store is still loading we wait; when loading finished and item missing, route to 404/network
 watch(
@@ -87,7 +87,7 @@ function selectQuilt() {
 function saveQuiltDesign() {
   console.log('Saving quilt design')
   quiltDesignsStore.updateQuiltDesign(localCopy.value)
-  localCopy.value = cloneDeep(quiltDesignsStore.getByName(props.name))
+  localCopy.value = cloneDeep(quiltDesignsStore.getById(props.id))
 }
 </script>
 

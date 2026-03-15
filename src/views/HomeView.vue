@@ -7,7 +7,6 @@ import FabricsCollection from '@/components/FabricsCollection.vue'
 import QuiltDesignViewer from '@/components/QuiltDesignViewer.vue'
 
 const quiltDesignsStore = useQuiltDesignsStore()
-
 const quiltDesigns = computed(() => quiltDesignsStore.getAll)
 </script>
 
@@ -20,7 +19,7 @@ const quiltDesigns = computed(() => quiltDesignsStore.getAll)
       <router-link
         v-for="design in quiltDesigns"
         :key="design.id"
-        :to="{ name: 'quiltdesign', params: { name: design.name } }"
+        :to="{ name: 'quiltdesign', params: { id: design.id } }"
         class="quilt-thumbnail"
       >
         <quilt-design-viewer :current-quilt-design="design" :asThumbnailOfHeight="80" />

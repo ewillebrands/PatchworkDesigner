@@ -75,9 +75,9 @@ function startDesign(initialQuiltDesign: initialQuiltDesign) {
   } else {
     rotationalArrangement(newQuiltDesign.columns, newQuiltDesign.rows)
   }
-  quiltDesignsStore.addQuiltDesign(newQuiltDesign)
-  console.log('created new quilt design', newQuiltDesign)
-  router.push({ name: 'quiltdesign', params: { name: newQuiltDesign.name } })
+  const createdDesign = quiltDesignsStore.addQuiltDesign(newQuiltDesign)
+  console.log('created new quilt design', createdDesign)
+  router.push({ name: 'quiltdesign', params: { id: createdDesign.id } })
 }
 
 //functions to create blocklist based on arrangement choice:

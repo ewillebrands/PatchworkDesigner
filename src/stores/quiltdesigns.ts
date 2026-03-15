@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import type { quiltDesign } from '../components/_types'
-import { useId } from 'vue'
+import { nanoid } from 'nanoid'
 
 export const useQuiltDesignsStore = defineStore('quiltdesigns', {
   state: () => ({
@@ -24,7 +24,8 @@ export const useQuiltDesignsStore = defineStore('quiltdesigns', {
   },
   actions: {
     addQuiltDesign(design: quiltDesign) {
-      this.quiltDesigns.push({ ...design, id: useId() })
+      this.quiltDesigns.push({ ...design, id: nanoid(16) })
+      return this.quiltDesigns[this.quiltDesigns.length - 1] // return the newly added design with its generated id
     },
     updateQuiltDesign(updatedDesign: quiltDesign) {
       const index = this.quiltDesigns.findIndex((design) => design.id === updatedDesign.id)

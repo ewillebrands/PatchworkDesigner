@@ -98,9 +98,9 @@ function cycleSelection(event: MouseEvent, selectionChain: string[]) {
 }
 
 function handlePatchClick(event: MouseEvent, patchId: string) {
-  event.stopPropagation()
-
   if (!props.editable) return
+
+  event.stopPropagation()
 
   const selectionChain = getSelectionChainFromPatchClick(event, patchId)
 
