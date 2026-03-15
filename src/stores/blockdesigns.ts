@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import type { AtomicBlock, CompoundBlock, BlockDesign } from '../components/_types'
 import QuiltprojectService from '@/services/QuiltprojectService.js'
-import { useId } from 'vue'
+import { nanoid } from 'nanoid'
 
 export const useBlockDesignsStore = defineStore('blockdesigns', {
   state: () => ({
@@ -94,8 +94,8 @@ export const useBlockDesignsStore = defineStore('blockdesigns', {
       }
     },
     addBlockDesign(design: Omit<AtomicBlock, 'id'> | Omit<CompoundBlock, 'id'>) {
-      const newBlockId = useId()
-      this.blockDesigns.push({ ...design, id: newBlockId } as BlockDesign)
+      this.blockDesigns.push({ ...design, id: nanoid(16) })
+      return this.blockDesigns[this.blockDesigns.length - 1] // return the newly added design with its generated id
     },
 
     removeBlockDesign(id: string) {

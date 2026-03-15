@@ -17,7 +17,7 @@ const props = withDefaults(
 const blockDesignsStore = useBlockDesignsStore()
 
 const currentBlockDesign = computed<BlockDesign | null>(() => {
-  return blockDesignsStore.getByName(props.quiltBlock.design) || null
+  return blockDesignsStore.getById(props.quiltBlock.designId) || null
 })
 
 const emit = defineEmits(['blockSelected'])

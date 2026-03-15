@@ -83,14 +83,14 @@ function startDesign(initialQuiltDesign: initialQuiltDesign) {
 //functions to create blocklist based on arrangement choice:
 //use 2 simple square designs for alternating blocks
 function alternatingBlocks(x: number, y: number) {
-  blockDesignsStore.addBlockDesign({
+  const createdBlock1 = blockDesignsStore.addBlockDesign({
     type: 'atomic',
     name: 'Simple Square 1',
     width: newQuiltDesign.blockSize,
     height: newQuiltDesign.blockSize,
     patches: [{ id: '0', path: 'M 0 0 H 100 V 100 H 0 Z', fabricId: '4' }],
   })
-  blockDesignsStore.addBlockDesign({
+  const createdBlock2 = blockDesignsStore.addBlockDesign({
     type: 'atomic',
     name: 'Simple Square 2',
     width: newQuiltDesign.blockSize,
@@ -103,7 +103,7 @@ function alternatingBlocks(x: number, y: number) {
       for (let col = 0; col < x; col++) {
         const count = row * x + col
         newQuiltDesign.blockList.push({
-          design: count % 2 === 0 ? 'Simple Square 1' : 'Simple Square 2',
+          designId: count % 2 === 0 ? createdBlock1.id : createdBlock2.id,
           position: { row: row + 1, col: col + 1 },
         })
       }
@@ -111,7 +111,7 @@ function alternatingBlocks(x: number, y: number) {
       for (let col = 0; col < x; col++) {
         const count = row * x + col
         newQuiltDesign.blockList.push({
-          design: count % 2 === 0 ? 'Simple Square 2' : 'Simple Square 1',
+          designId: count % 2 === 0 ? createdBlock2.id : createdBlock1.id,
           position: { row: row + 1, col: col + 1 },
         })
       }
@@ -120,7 +120,7 @@ function alternatingBlocks(x: number, y: number) {
 }
 //use single half square triangle design for rotational arrangement
 function rotationalArrangement(x: number, y: number) {
-  blockDesignsStore.addBlockDesign({
+  const createdBlock = blockDesignsStore.addBlockDesign({
     type: 'atomic',
     name: 'Half Square Triangle',
     width: newQuiltDesign.blockSize,
@@ -136,7 +136,7 @@ function rotationalArrangement(x: number, y: number) {
       for (let col = 0; col < x; col++) {
         const count = row * x + col
         newQuiltDesign.blockList.push({
-          design: 'Half Square Triangle',
+          designId: createdBlock.id,
           position: { row: row + 1, col: col + 1 },
           rotation: count % 2 === 0 ? 0 : 90,
         })
@@ -145,7 +145,7 @@ function rotationalArrangement(x: number, y: number) {
       for (let col = 0; col < x; col++) {
         const count = col
         newQuiltDesign.blockList.push({
-          design: 'Half Square Triangle',
+          designId: createdBlock.id,
           position: { row: row + 1, col: col + 1 },
           rotation: count % 2 === 0 ? 270 : 180,
         })

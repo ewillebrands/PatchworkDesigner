@@ -10,14 +10,14 @@ import { router } from '@/router'
 import { useBlockDesignsStore } from '@/stores/blockdesigns'
 
 const props = defineProps<{
-  name: string
+  id: string
 }>()
 
 const blockDesignsStore = useBlockDesignsStore()
 
 // computed reference into the store; reactive to store changes
 const currentBlockDesign = computed<BlockDesign | undefined>(() =>
-  blockDesignsStore.getByName?.(props.name),
+  blockDesignsStore.getById?.(props.id),
 )
 
 // if store is still loading we wait; when loading finished and item missing, route to 404/network

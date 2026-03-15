@@ -14,7 +14,7 @@ const blockDesignCollection = computed(() => blockDesignsStore.getAll)
       v-for="design in blockDesignCollection"
       :key="design.id"
       class="designItem"
-      :to="{ name: 'blockdesign', params: { name: design.name } }"
+      :to="{ name: 'blockdesign', params: { id: design.id } }"
     >
       <GenericBlock :block="design"></GenericBlock>
       <span>{{ design.name }}</span>

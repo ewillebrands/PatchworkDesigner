@@ -21,7 +21,7 @@ const openBlockDesigner = () => {
   if (props.selectedBlock) {
     router.push({
       name: 'blockdesign',
-      params: { name: props.selectedBlock.design },
+      params: { id: props.selectedBlock.designId },
     })
   }
 }
@@ -32,7 +32,7 @@ const blockDesignCollection = ref<BlockDesign[]>([])
 const blockDesignsStore = useBlockDesignsStore()
 //object for mapping formfields to block properties
 const formFields = ref({
-  blockDesign: props.selectedBlock?.design || '',
+  blockDesign: props.selectedBlock?.designId || '',
 
   //invisible field for rotation
   blockRotation: props.selectedBlock?.rotation || 0,
@@ -43,7 +43,7 @@ watch(
   () => props.selectedBlock,
   (newBlock) => {
     if (newBlock) {
-      formFields.value.blockDesign = newBlock.design
+      formFields.value.blockDesign = newBlock.designId
       formFields.value.blockRotation = newBlock.rotation || 0
     }
   },
