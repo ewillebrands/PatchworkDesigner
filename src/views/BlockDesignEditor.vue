@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { BlockDesign } from '@/components/_types'
-import { computed, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
+import cloneDeep from 'lodash/cloneDeep'
+import isEqual from 'fast-deep-equal'
 import SideBar from '@/components/SideBar.vue'
 import AccordionPanel from '@/components/AccordionPanel.vue'
 import BlockFabrics from '@/components/BlockFabrics.vue'
@@ -19,6 +21,9 @@ const blockDesignsStore = useBlockDesignsStore()
 const currentBlockDesign = computed<BlockDesign | undefined>(() =>
   blockDesignsStore.getById?.(props.id),
 )
+
+const localCopy = ref(cloneDeep(blockDesignsStore.getById(props.id))) // editable
+const isEdited = computed(() => !isEqual(localCopy.value, blockDesignsStore.getById(props.id)))
 
 // if store is still loading we wait; when loading finished and item missing, route to 404/network
 watch(

@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 
 import { mount } from '@vue/test-utils'
-import quiltDesignForm from '../QuiltDesignForm.vue'
+import quiltDesignForm from '../NewQuiltDesignDialog.vue'
 
 describe('Quilt design form', () => {
   it('renders properly', () => {

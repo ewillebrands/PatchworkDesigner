@@ -10,8 +10,7 @@ import AccordionPanel from '../components/AccordionPanel.vue'
 import BlockOptions from '../components/BlockOptions.vue'
 import SideBar from '../components/SideBar.vue'
 import { useQuiltDesignsStore } from '@/stores/quiltdesigns'
-// @ts-expect-error: no type declarations for lodash.clonedeep
-import cloneDeep from 'lodash.clonedeep'
+import cloneDeep from 'lodash/cloneDeep'
 import isEqual from 'fast-deep-equal'
 import { useRouter } from 'vue-router'
 
@@ -42,12 +41,16 @@ const selectedBlock = ref<block | null>(null)
 
 //functions to apply block design and rotation changes
 function applyBlockDesign(blockPosition: blockPosition, blockdesignId: string) {
+  if (!localCopy.value) return
   const blockIndex = localCopy.value.blockList.findIndex(
     (b: block) => b.position.row === blockPosition.row && b.position.col === blockPosition.col,
   )
-  localCopy.value.blockList[blockIndex].designId = blockdesignId
+  if (blockIndex !== undefined && blockIndex !== -1) {
+    localCopy.value.blockList[blockIndex].designId = blockdesignId
+  }
 }
 function applyBlockRotation(blockPosition: blockPosition, blockrotation: number) {
+  if (!localCopy.value) return
   console.log('apply rotation triggered', blockPosition, blockrotation)
   const blockIndex = localCopy.value.blockList.findIndex(
     (b: block) => b.position.row === blockPosition.row && b.position.col === blockPosition.col,
@@ -57,14 +60,17 @@ function applyBlockRotation(blockPosition: blockPosition, blockrotation: number)
 }
 
 function applyBorderSize(borderSize: number) {
+  if (!localCopy.value) return
   localCopy.value.border = borderSize
 }
 
 function applyBindingSize(bindingSize: number) {
+  if (!localCopy.value) return
   localCopy.value.binding = bindingSize
 }
 
 function applyBindingRadius(bindingRadius: number) {
+  if (!localCopy.value) return
   localCopy.value.radius = bindingRadius
 }
 
@@ -86,6 +92,7 @@ function selectQuilt() {
 
 function saveQuiltDesign() {
   console.log('Saving quilt design')
+  if (!localCopy.value) return
   quiltDesignsStore.updateQuiltDesign(localCopy.value)
   localCopy.value = cloneDeep(quiltDesignsStore.getById(props.id))
 }
@@ -94,6 +101,7 @@ function saveQuiltDesign() {
 <template>
   <div class="canvas-viewer" @click="selectQuilt">
     <QuiltDesignViewer
+      v-if="localCopy"
       :currentQuiltDesign="localCopy"
       @quiltSelected="selectQuilt"
       @blockSelected="selectBlock"
