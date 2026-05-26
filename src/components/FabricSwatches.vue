@@ -51,7 +51,7 @@ const visibleFabrics = computed(() => {
         <button
           :popovertarget="`fabric-picker-${fabric.name}`"
           class="swatch"
-          :style="{ backgroundColor: `${fabric.color}` }"
+          :style="{ backgroundColor: `${fabric.color}`, cursor: 'pointer' }"
           :title="fabric.name"
           :id="fabric.name"
         ></button>
@@ -90,6 +90,5 @@ const visibleFabrics = computed(() => {
   border: 0.25rem solid #ffffff;
   border-radius: 99px;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
-  cursor: pointer;
 }
 </style>

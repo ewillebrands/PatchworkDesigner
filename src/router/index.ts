@@ -3,6 +3,7 @@ import { createWebHistory, createRouter } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import QuiltDesignEditor from '../views/QuiltDesignEditor.vue'
 import BlockDesignEditor from '../views/BlockDesignEditor.vue'
+import FabricsEditor from '../views/FabricsEditor.vue'
 import NotFound from '../views/NotFound.vue'
 import NetworkError from '@/views/NetworkError.vue'
 
@@ -10,6 +11,7 @@ const routes = [
   { path: '/', name: 'home', component: HomeView },
   { path: '/quiltdesign/:id', name: 'quiltdesign', component: QuiltDesignEditor, props: true },
   { path: '/blockdesign/:id', name: 'blockdesign', component: BlockDesignEditor, props: true },
+  { path: '/fabrics', name: 'fabrics', component: FabricsEditor },
   { path: '/network-error', name: 'networkerror', component: NetworkError },
   { path: '/404/:resource', name: 'notfoundwithresource', component: NotFound, props: true },
   { path: '/:catchAll(.*)', name: 'notfound', component: NotFound },

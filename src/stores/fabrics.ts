@@ -42,5 +42,11 @@ export const useFabricsStore = defineStore('fabrics', {
     removeFabric(fabricId: string) {
       this.fabrics = this.fabrics.filter((fabric) => fabric.id !== fabricId)
     },
+    updateFabricColor(fabricId: string, color: string) {
+      const fabric = this.fabrics.find((item) => item.id === fabricId)
+      if (!fabric) return
+
+      fabric.color = color
+    },
   },
 })
