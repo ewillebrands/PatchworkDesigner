@@ -146,14 +146,14 @@
     }
   ],
   "fabrics": [
-    { "id": "1", "name": "white", "color": "var(--color-white-mute)" },
-    { "id": "2", "name": "black", "color": "var(--color-black-mute)" },
-    { "id": "3", "name": "dusk-light", "color": "var(--color-dusk-light)" },
-    { "id": "4", "name": "dusk", "color": "var(--color-dusk)" },
-    { "id": "5", "name": "dusk-dark", "color": "var(--color-dusk-dark)" },
-    { "id": "6", "name": "dawn-light", "color": "var(--color-dawn-light)" },
-    { "id": "7", "name": "dawn", "color": "var(--color-dawn)" },
-    { "id": "8", "name": "dawn-dark", "color": "var(--color-dawn-dark)" }
+    { "id": "1", "name": "white", "color": "#f2f2f2" },
+    { "id": "2", "name": "black", "color": "#282828" },
+    { "id": "3", "name": "dusk-light", "color": "#4080bf" },
+    { "id": "4", "name": "dusk", "color": "#204060" },
+    { "id": "5", "name": "dusk-dark", "color": "#132639" },
+    { "id": "6", "name": "dawn-light", "color": "#f9bd62" },
+    { "id": "7", "name": "dawn", "color": "#e6994c" },
+    { "id": "8", "name": "dawn-dark", "color": "#e97807" }
   ],
   "profile": {
     "name": "typicode"
