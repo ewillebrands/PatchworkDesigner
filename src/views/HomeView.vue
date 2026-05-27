@@ -30,6 +30,7 @@ const quiltDesigns = computed(() => quiltDesignsStore.getAll)
     <BlockDesigns />
     <h2>Your Fabrics Collection</h2>
     <FabricsCollection />
+    <router-link :to="{ name: 'fabrics' }">Go to Fabrics Editor</router-link>
   </div>
 </template>
 
