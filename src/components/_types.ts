@@ -10,6 +10,8 @@ export interface quiltDesign {
   radius: number
 }
 
+export type NewQuiltDesign = Omit<quiltDesign, 'id'>
+
 export interface initialQuiltDesign {
   name: string
   columns: number
@@ -37,6 +39,8 @@ export interface fabric {
   name: string
   color: string
 }
+
+export type NewFabric = Omit<fabric, 'id'>
 
 // Atomic patch (single shape in a square)
 export interface PatchDefinition {

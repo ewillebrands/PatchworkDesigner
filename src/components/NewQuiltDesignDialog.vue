@@ -3,7 +3,7 @@ import { ref, reactive } from 'vue'
 import type { initialQuiltDesign } from './_types'
 import { useQuiltDesignsStore } from '@/stores/quiltdesigns'
 import { useBlockDesignsStore } from '@/stores/blockdesigns'
-import type { quiltDesign } from './_types'
+import type { NewQuiltDesign } from './_types'
 import { useRouter } from 'vue-router'
 
 const quiltDesignsStore = useQuiltDesignsStore()
@@ -30,7 +30,7 @@ function closeDialog() {
   }
 }
 
-const newQuiltDesign = reactive<quiltDesign>({} as quiltDesign)
+const newQuiltDesign = reactive<NewQuiltDesign>({} as NewQuiltDesign)
 
 const uniqueName = (name: string): boolean => {
   return !quiltDesignsStore.existsByName(name)

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import QuiltprojectService from '@/services/QuiltprojectService.js'
-import type { fabric } from '../components/_types'
+import type { fabric, NewFabric } from '../components/_types'
 
 export const useFabricsStore = defineStore('fabrics', {
   state: () => ({
@@ -35,18 +35,25 @@ export const useFabricsStore = defineStore('fabrics', {
         this.isLoading = false
       }
     },
-    addFabric(fabric: fabric) {
+    addFabric(fabric: NewFabric) {
       this.fabrics.push({ ...fabric, id: this.highestId.toString() })
       this.highestId++
+      return this.fabrics[this.fabrics.length - 1]
     },
     removeFabric(fabricId: string) {
       this.fabrics = this.fabrics.filter((fabric) => fabric.id !== fabricId)
     },
     updateFabricColor(fabricId: string, color: string) {
-      const fabric = this.fabrics.find((item) => item.id === fabricId)
+      const fabric = this.fabrics.find((fabric) => fabric.id === fabricId)
       if (!fabric) return
 
       fabric.color = color
+    },
+    updateFabricName(fabricId: string, name: string) {
+      const fabric = this.fabrics.find((fabric) => fabric.id === fabricId)
+      if (!fabric) return
+
+      fabric.name = name
     },
   },
 })

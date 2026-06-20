@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { fabric } from './_types'
+import type { fabric } from '../_types.ts'
 import FabricPicker from './FabricPicker.vue'
 import { useFabricsStore } from '@/stores/fabrics'
 

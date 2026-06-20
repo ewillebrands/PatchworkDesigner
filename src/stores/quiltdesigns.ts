@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { quiltDesign } from '../components/_types'
+import type { quiltDesign, NewQuiltDesign } from '../components/_types'
 import { nanoid } from 'nanoid'
 
 export const useQuiltDesignsStore = defineStore('quiltdesigns', {
@@ -23,7 +23,7 @@ export const useQuiltDesignsStore = defineStore('quiltdesigns', {
     },
   },
   actions: {
-    addQuiltDesign(design: quiltDesign) {
+    addQuiltDesign(design: NewQuiltDesign) {
       this.quiltDesigns.push({ ...design, id: nanoid(16) })
       return this.quiltDesigns[this.quiltDesigns.length - 1] // return the newly added design with its generated id
     },

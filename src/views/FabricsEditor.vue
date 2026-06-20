@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useFabricsStore } from '@/stores/fabrics'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faPlus, faTrash, faPencil } from '@fortawesome/free-solid-svg-icons'
 
 const fabricsStore = useFabricsStore()
 const fabrics = computed(() => fabricsStore.getAll)
@@ -12,7 +14,12 @@ function handleFabricColorChange(fabricId: string, color: string) {
 
 <template>
   <div class="welcome">
-    <h2>Your Fabrics Collection</h2>
+    <div class="header">
+      <h2>Your Fabrics Collection</h2>
+      <button @click="fabricsStore.addFabric({ name: 'New Fabric', color: '#ffffff' })">
+        <FontAwesomeIcon :icon="faPlus" /> Add Fabric
+      </button>
+    </div>
     <div class="list">
       <div v-for="fabric in fabrics" :key="fabric.id" class="item">
         <input
@@ -22,12 +29,18 @@ function handleFabricColorChange(fabricId: string, color: string) {
           @input="handleFabricColorChange(fabric.id, ($event.target as HTMLInputElement).value)"
         />
         <label :for="`fabric-${fabric.id}`">{{ fabric.name }}</label>
+        <button aria-label="Rename Fabric" @click="makeNameEditable">
+          <FontAwesomeIcon :icon="faPencil" />
+        </button>
+        <button aria-label="Remove Fabric" @click="fabricsStore.removeFabric(fabric.id)">
+          <FontAwesomeIcon :icon="faTrash" />
+        </button>
       </div>
     </div>
   </div>
 </template>
 
-<style>
+<style scoped>
 .welcome {
   display: flex;
   width: 100vw;
@@ -35,6 +48,14 @@ function handleFabricColorChange(fabricId: string, color: string) {
   align-items: center;
   gap: 2rem;
   padding: 2rem;
+}
+h2 {
+  margin: 0;
+}
+.header {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
 }
 .list {
   display: flex;

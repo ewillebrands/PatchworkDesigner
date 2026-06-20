@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { fabric, BlockDesign } from './_types'
+import type { fabric, BlockDesign } from '../_types.ts'
 import { computed } from 'vue'
 import FabricSwatches from './FabricSwatches.vue'
 import { useFabricsStore } from '@/stores/fabrics'

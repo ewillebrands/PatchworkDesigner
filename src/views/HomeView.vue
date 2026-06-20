@@ -3,7 +3,7 @@ import NewQuiltDesignDialog from '@/components/NewQuiltDesignDialog.vue'
 import { useQuiltDesignsStore } from '@/stores/quiltdesigns'
 import { computed } from 'vue'
 import BlockDesigns from '@/components/BlockDesigns.vue'
-import FabricsCollection from '@/components/FabricsCollection.vue'
+import FabricsCollection from '@/components/Fabrics/FabricsCollection.vue'
 import QuiltDesignViewer from '@/components/QuiltDesignViewer.vue'
 
 const quiltDesignsStore = useQuiltDesignsStore()
